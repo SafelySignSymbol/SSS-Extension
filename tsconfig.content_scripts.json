@@ -1,0 +1,14 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "noEmit": false,
+  },
+  "include": [
+    "src/content_scripts"
+  ],
+  "exclude": [
+    "node_modules",
+    "bower_components",
+    "jspm_packages"
+  ],
+}
