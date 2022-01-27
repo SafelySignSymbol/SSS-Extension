@@ -16,7 +16,7 @@
     "background": {
     "service_worker": "background_script.js"
   },
-  "description": "SSS Extension",
+  "description": "Symbolブロックチェーンのトランザクションへと安全に署名を行うブラウザ拡張機能",
   "options_page": "options.html",
   "web_accessible_resources": [
     {
