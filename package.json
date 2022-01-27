@@ -32,12 +32,24 @@
     "rename:popup": "sed 's/root/popup/' build/index.html > build/popup.html",
     "rename:options": "sed -e 's/root/options/' build/index.html >  build/options.html",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "storybook": "start-storybook -p 6006 -s public",
+    "build-storybook": "build-storybook -s public"
   },
   "eslintConfig": {
     "extends": [
       "react-app",
       "react-app/jest"
+    ],
+    "overrides": [
+      {
+        "files": [
+          "**/*.stories.*"
+        ],
+        "rules": {
+          "import/no-anonymous-default-export": "off"
+        }
+      }
     ]
   },
   "browserslist": {
@@ -53,6 +65,12 @@
     ]
   },
   "devDependencies": {
+    "@storybook/addon-actions": "^6.4.14",
+    "@storybook/addon-essentials": "^6.4.14",
+    "@storybook/addon-links": "^6.4.14",
+    "@storybook/node-logger": "^6.4.14",
+    "@storybook/preset-create-react-app": "^3.2.0",
+    "@storybook/react": "^6.4.14",
     "@types/chrome": "^0.0.177",
     "ts-loader": "^8.2.0",
     "ts-node": "^10.4.0",
