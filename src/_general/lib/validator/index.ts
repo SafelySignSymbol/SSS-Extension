@@ -13,7 +13,10 @@ export const validateRef = (
 }
 
 export const validateAddress = (address: string): string => {
-  if (address.length === 39 && ADDRESS_PATTERN.test(address)) {
+  if (
+    address.trim().toUpperCase().replace(/-/g, '').length === 39 &&
+    ADDRESS_PATTERN.test(address)
+  ) {
     return address
   }
   return ''
