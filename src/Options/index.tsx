@@ -1,27 +1,19 @@
-import React, { useEffect } from 'react';
+import React, { useRef } from 'react'
+
+import Presenter from './Presenter'
 
 const Options: React.VFC = () => {
-    useEffect(() => {
-        chrome.storage.local.get(['greeting'], (result) => {
-            const element = document.querySelector('input');
-            element && element.setAttribute('value', result.greeting);
-        });
-    }, []);
+  const addressRef = useRef<HTMLInputElement>(null)
+  const priKeyRef = useRef<HTMLInputElement>(null)
+  const passRef = useRef<HTMLInputElement>(null)
 
-    const save = () => {
-        chrome.storage.local.set({
-            greeting: document.querySelector('input')?.value || 'Hello',
-        });
-        alert('保存しました');
-    }
-
-    return (
-        <div>
-            <label htmlFor='greeting'>挨拶: </label>
-            <input id='greeting' />
-            <button onClick={save}>保存</button>
-        </div>
-    );
+  return (
+    <Presenter
+      addressRef={addressRef}
+      priKeyRef={priKeyRef}
+      passRef={passRef}
+    />
+  )
 }
 
-export default Options;
+export default Options
