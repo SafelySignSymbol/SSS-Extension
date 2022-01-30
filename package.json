@@ -17,6 +17,7 @@
     "crypto-js": "^4.1.1",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
+    "react-icons": "^4.3.1",
     "react-scripts": "4.0.3",
     "rxjs": "^7.5.2",
     "symbol-sdk": "^1.0.3",

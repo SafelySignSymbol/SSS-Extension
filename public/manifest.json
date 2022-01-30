@@ -2,6 +2,12 @@
   "manifest_version": 3,
   "name": "SSS Extension",
   "version": "0.0.1",
+  "icons": {
+    "16": "./sss_16.png",
+    "32": "./sss_32.png",
+    "64": "./sss_64.png",
+    "128": "./sss_128.png"
+  },
 
   "action": {
     "default_title": "サンプルアプリ",
