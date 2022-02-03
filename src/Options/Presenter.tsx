@@ -50,7 +50,9 @@ const Options: React.VFC = () => {
       <Container>
         <Logo onClick={() => console.log('')} />
         <Box sx={{ flexGrow: 1, height: '1px' }} />
-        <Button text="ADD ACCOUNT" onClick={clickAddButton} />
+        <Spacer margin="8px">
+          <Button text="ADD ACCOUNT" onClick={clickAddButton} />
+        </Spacer>
       </Container>
       <Wrapper>
         <Grid container>

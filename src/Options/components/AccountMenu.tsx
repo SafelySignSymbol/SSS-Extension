@@ -76,10 +76,12 @@ const Component: React.VFC<Props> = ({ index, reload }) => {
     setOpenSB(false)
   }
   return (
-    <IconButton onClick={handleOpen}>
-      <IconContext.Provider value={{ size: '24px' }}>
-        <RiSettings2Fill style={{ margin: '6px' }} />
-      </IconContext.Provider>
+    <>
+      <IconButton onClick={handleOpen}>
+        <IconContext.Provider value={{ size: '24px' }}>
+          <RiSettings2Fill style={{ margin: '6px' }} />
+        </IconContext.Provider>
+      </IconButton>
       <Menu open={open} anchorEl={anchorEl} onClose={handleClose}>
         <MenuItem onClick={onClickActive}>ActiveAccountに変更</MenuItem>
         <MenuItem onClick={onClickDelete}>Accountの登録解除</MenuItem>
@@ -92,7 +94,7 @@ const Component: React.VFC<Props> = ({ index, reload }) => {
           {message}
         </Alert>
       </Snackbar>
-    </IconButton>
+    </>
   )
 }
 
