@@ -1,7 +1,5 @@
-import { Session } from 'inspector'
 import { Transaction, TransactionMapping } from 'symbol-sdk'
 import { TransactionURI } from 'symbol-uri-scheme'
-import { setSignStatus } from '../_general/lib/Storage'
 
 export {}
 
