@@ -46,6 +46,7 @@ AggregateTransacion 生成時等に Web アプリケーションへと提供す�
 拡張機能、又は個人情報の取扱いに関しては、下記へお問い合わせください。
 
 メールアドレス：inatatsu.0906@gmail.com
+
 Twitter : @_inatatsu_csg_
 
 ## 策定日
