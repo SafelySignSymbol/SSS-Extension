@@ -2,6 +2,12 @@
   "manifest_version": 3,
   "name": "SSS Extension",
   "version": "0.0.1",
+  "icons": {
+    "16": "./sss_16.png",
+    "32": "./sss_32.png",
+    "64": "./sss_64.png",
+    "128": "./sss_128.png"
+  },
 
   "action": {
     "default_title": "サンプルアプリ",
@@ -16,16 +22,15 @@
     "background": {
     "service_worker": "background_script.js"
   },
-  "description": "SSS Extension",
+  "description": "Symbolブロックチェーンのトランザクションへと安全に署名を行うブラウザ拡張機能",
   "options_page": "options.html",
   "web_accessible_resources": [
     {
-      "resources" : ["inject_script.js"],
+      "resources" : ["inject_script.js", "snackbar.css"],
       "matches" : ["*://*/*"]
     }
   ],
   "permissions": [
-    "storage",
-    "tabs"
+    "storage"
   ]
 }
