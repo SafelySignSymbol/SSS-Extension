@@ -1,46 +1,53 @@
-# Getting Started with Create React App
+# Privacy policy for SSS Extension developed by inatatsu
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## SSS Extension のプライバシーポリシー
 
-## Available Scripts
+本プライバシーポリシーは SSS Extension において当開発者が遵守する方針を示したものです。
 
-In the project directory, you can run:
+### 基本方針
 
-### `yarn start`
+当開発者は、個人情報の重要性を認識し、個人情報を保護することが社会的責務であると考え、個人情報に関する法令を遵守し、拡張機能で取扱う個人情報の取得、利用、管理を適正に行います。
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+### 取得方法
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+SSS Extension オプションページ内に入力フォームを表示します。
 
-### `yarn test`
+### 取得内容
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+- Symbol ブロックチェーンアカウント
+  - アドレス
+  - 公開鍵
+  - 暗号化秘密鍵
 
-### `yarn build`
+### 保存先
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+SSS Extension の Storage 領域(local)
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+### 利用目的
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+#### アドレス
 
-### `yarn eject`
+ログイン時に入力したパスワードの整合性確認・登録時の誤入力防止のために使用します。
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+#### 公開鍵
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+AggregateTransacion 生成時等に Web アプリケーションへと提供するために使用します。
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+#### 暗号化秘密鍵
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+入力したパスワードを用いて復号し、トランザクションへと署名する際に使用します。
 
-## Learn More
+### 安全管理措置
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+拡張機能において、情報の漏洩、滅失を防止するために拡張機能内において利用目的外のサーバーへの情報送信を行いません。
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+#### 問い合わせ先
+
+拡張機能、又は個人情報の取扱いに関しては、下記へお問い合わせください。
+
+メールアドレス：inatatsu.0906@gmail.com
+Twitter : @_inatatsu_csg_
+
+## 策定日
+
+2022 年 2 月 4 日
