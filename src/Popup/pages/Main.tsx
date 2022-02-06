@@ -14,6 +14,7 @@ import TransactionInfo from './components/TransactionInfo'
 import { getTransaction } from '../../_general/lib/Storage'
 import { TransactionURI } from 'symbol-uri-scheme'
 import { Transaction, TransactionMapping } from 'symbol-sdk'
+import NotFoundTx from './components/NotFoundTx'
 
 export interface Props {
   extensionAccount: ExtensionAccount
@@ -25,6 +26,7 @@ const Main: React.VFC<Props> = ({ extensionAccount, sign }) => {
 
   useEffect(() => {
     getTransaction().then((tx) => {
+      if (tx === null) return
       const transaction = TransactionURI.fromURI(
         tx,
         TransactionMapping.createFromPayload
@@ -32,7 +34,6 @@ const Main: React.VFC<Props> = ({ extensionAccount, sign }) => {
       setTransaction(transaction)
     })
   }, [])
-
 
   return (
     <Container>
@@ -48,13 +49,15 @@ const Main: React.VFC<Props> = ({ extensionAccount, sign }) => {
         </IconButton>
       </Header>
       <Contents>
-        {transaction !== null && (
+        {transaction !== null ? (
           <TransactionInfo
             transaction={new TransactionURI(
               transaction.serialize(),
               TransactionMapping.createFromPayload
             ).build()}
           />
+        ) : (
+          <NotFoundTx />
         )}
       </Contents>
       <Footer>
