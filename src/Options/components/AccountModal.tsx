@@ -1,6 +1,6 @@
 import React, { Dispatch, useRef, useState } from 'react'
 import styled from '@emotion/styled'
-import CryptoJS from 'crypto-js'
+import { encrypt } from '../../_general/lib/Crypto'
 
 import {
   Alert,
@@ -90,7 +90,7 @@ const Component: React.VFC<Props> = ({ open, setOpen, reload }) => {
         setOpenSB(true)
       } else {
         const password = status === 'NOPASS' ? '' : ps
-        const enpk = CryptoJS.AES.encrypt(pk, password).toString()
+        const enpk = encrypt(pk, password)
 
         const extensionAccount = new ExtensionAccount(
           enpk,

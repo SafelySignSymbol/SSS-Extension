@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import styled from '@emotion/styled'
-import CryptoJS from 'crypto-js'
+import { decrypt } from '../_general/lib/Crypto'
 
 import './global.css'
 
@@ -38,10 +38,7 @@ const Popup: React.VFC = () => {
     if (extensionAccount === null || transaction === null) {
       return
     }
-    const priKey = CryptoJS.AES.decrypt(
-      extensionAccount.encriptedPrivateKey,
-      pass
-    ).toString(CryptoJS.enc.Utf8)
+    const priKey = decrypt(extensionAccount.encriptedPrivateKey, pass)
 
     const net_type =
       extensionAccount.address.charAt(0) === 'T'
