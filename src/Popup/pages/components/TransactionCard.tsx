@@ -1,16 +1,11 @@
 import React from 'react'
 
 import styled from '@emotion/styled'
-import {
-  Mosaic,
-  MosaicId,
-  Transaction,
-  TransactionType,
-  TransferTransaction,
-} from 'symbol-sdk'
+import { Transaction, TransactionType, TransferTransaction } from 'symbol-sdk'
 import Typography from '../../../_general/components/Typography'
 import Spacer from '../../../_general/components/Spacer'
-import { useEffect } from '@storybook/addons'
+import TxAddress from '../../../_general/components/TransactionInfo/Address'
+import TxMosaic from '../../../_general/components/TransactionInfo/Mosaic'
 
 export type Props = {
   transaction: Transaction
@@ -24,7 +19,12 @@ const TransactionCard: React.VFC<Props> = ({ transaction }) => {
       />
     )
   }
-  return <>404</>
+
+  return (
+    <Center>
+      <Typography text="Can not preview this Transaction." variant="h4" />
+    </Center>
+  )
 }
 
 export default TransactionCard
@@ -36,37 +36,16 @@ type TransferProps = {
 const TransferTransactionCard: React.VFC<TransferProps> = ({ transaction }) => {
   return (
     <Wrapper>
-      <Center>
-        <Spacer margin="16px 0px">
-          <Typography
-            text={transaction.recipientAddress.plain()}
-            variant="h5"
-          />
-        </Spacer>
-      </Center>
-      <Typography text="Message" variant="h4" />
+      <TxAddress address={transaction.recipientAddress} />
+      <Typography text="Message" variant="h5" />
       <Spacer MLeft="16px">
         <Typography text={transaction.message.payload} variant="h5" />
       </Spacer>
-      <Typography text="Mosaics" variant="h4" />
-      <Spacer MLeft="16px">
-        {transaction.mosaics.map((mosaic) => {
-          console.log('amount', mosaic.amount.toString())
-          console.log('amount')
-
-          return <MosaicData mosaic={mosaic} />
-        })}
-      </Spacer>
+      <Typography text="Mosaics" variant="h5" />
+      {transaction.mosaics.map((mosaic) => {
+        return <TxMosaic mosaic={mosaic} key={mosaic.id.toHex()} />
+      })}
     </Wrapper>
-  )
-}
-
-const MosaicData: React.VFC<{ mosaic: Mosaic }> = ({ mosaic }) => {
-  return (
-    <Side>
-      <Typography text={mosaic.id.toHex()} variant="h5" />
-      <Typography text={mosaic.amount.toString()} variant="subtitle1" />
-    </Side>
   )
 }
 
@@ -78,9 +57,6 @@ const Wrapper = styled('div')({
 const Center = styled('div')({
   display: 'flex',
   justifyContent: 'center',
-})
-
-const Side = styled('div')({
-  display: 'flex',
-  justifyContent: 'space-between',
+  alignItems: 'center',
+  height: '100%',
 })
