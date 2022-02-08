@@ -1,4 +1,5 @@
 import {
+  getActiveAccount,
   removeTransaction,
   setSignStatus,
   setTransaction,
@@ -22,8 +23,25 @@ const injectStylefile = function (file, node) {
   return th.appendChild(s)
 }
 
+const sendPublicKey = () => {
+  console.log('send pub key')
+  getActiveAccount().then((activeAccount) => {
+    console.log('acc', activeAccount)
+    setTimeout(() => {
+      window.postMessage(
+        {
+          type: 'SET_PUBLIC_KEY',
+          publicKey: activeAccount.publicKey,
+        },
+        '*'
+      )
+    }, 100)
+  })
+}
+
 injectScript('inject_script.js', 'body')
 injectStylefile('snackbar.css', 'body')
+sendPublicKey()
 
 window.addEventListener('message', (event) => {
   if (event.data.function === 'setTransaction') {
