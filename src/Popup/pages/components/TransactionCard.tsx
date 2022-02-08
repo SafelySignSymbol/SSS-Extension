@@ -67,7 +67,6 @@ type AggregateComplateProps = {
 const AggregateComplateTransactionCard: React.VFC<AggregateComplateProps> = ({
   transaction,
 }) => {
-  console.log('tx', transaction)
   return (
     <Wrapper>
       <Typography text="Inner Transactions" variant="h5" />
@@ -75,7 +74,7 @@ const AggregateComplateTransactionCard: React.VFC<AggregateComplateProps> = ({
         return (
           <Wrapper>
             <TransactionCard transaction={tx} />
-            {i !== transaction.innerTransactions.length && <Divider />}
+            {i !== transaction.innerTransactions.length - 1 && <Divider />}
           </Wrapper>
         )
       })}

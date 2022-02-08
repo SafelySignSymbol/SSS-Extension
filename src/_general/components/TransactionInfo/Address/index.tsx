@@ -10,9 +10,7 @@ export type Props = {
 
 const TxAddress: React.VFC<Props> = ({ address }) => {
   if (address instanceof NamespaceId) {
-    console.log('namespace', address)
     const ns = new NamespaceId(address.toHex())
-    console.log('ns-fn', ns.fullName)
     return (
       <Wrapper>
         <Typography text="NameSpace" variant="h5" />
@@ -22,7 +20,6 @@ const TxAddress: React.VFC<Props> = ({ address }) => {
       </Wrapper>
     )
   } else {
-    console.log('addr')
     return (
       <Wrapper>
         <Typography text="Address" variant="h5" />

@@ -29,9 +29,7 @@ const Options: React.VFC = () => {
   }
 
   useEffect(() => {
-    console.log('effect')
     getActiveAccount().then((acc) => {
-      console.log('acc', acc)
       setAccount(acc)
       if (acc === null) setOpenModal(true)
     })
@@ -41,7 +39,6 @@ const Options: React.VFC = () => {
   }, [update])
 
   const clickAddButton = () => {
-    console.log('openmodal')
     setOpenModal(true)
   }
 

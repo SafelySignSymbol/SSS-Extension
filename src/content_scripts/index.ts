@@ -1,6 +1,7 @@
+import { Account, NetworkType } from 'symbol-sdk'
 import {
   getActiveAccount,
-  removeTransaction,
+  setCosignatories,
   setSignStatus,
   setTransaction,
 } from '../_general/lib/Storage'
@@ -26,14 +27,13 @@ const injectStylefile = function (file, node) {
 const sendPublicKey = () => {
   console.log('send pub key')
   getActiveAccount().then((activeAccount) => {
-    console.log('acc', activeAccount)
     setTimeout(() => {
       window.postMessage(
         {
           type: 'SET_PUBLIC_KEY',
           publicKey: activeAccount.publicKey,
         },
-        '*'
+        window.opener
       )
     }, 100)
   })
@@ -47,24 +47,23 @@ window.addEventListener('message', (event) => {
   if (event.data.function === 'setTransaction') {
     setTransaction(event.data.tx)
   }
-  if (event.data.function === 'removeTransaction') {
-    removeTransaction()
-    setSignStatus(false)
-  }
   if (event.data.function === 'requestSign') {
-    setSignStatus(true)
+    setSignStatus(event.data.function)
+  }
+  if (event.data.function === 'requestSignWithCosignatories') {
+    setSignStatus(event.data.function)
+    setCosignatories(event.data.cosignatories)
   }
 })
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-  console.log('content', message)
   if (message.type === 'SIGNED_TRANSACTION') {
     window.postMessage(
       {
         type: 'SIGNED_TRANSACTION',
         signedTx: message.signedTx,
       },
-      '*'
+      window.opener
     )
   }
   // if (message.type === 'SIGN_HARDWARE') {

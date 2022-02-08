@@ -1,3 +1,4 @@
+import { Account } from 'symbol-sdk'
 import {
   ExtensionAccount,
   IExtensionAccount,
@@ -19,7 +20,8 @@ export const initialize = () => {
     accountsCount: 0,
     activeAccount: null,
     transaction: null,
-    signStatus: false,
+    signStatus: '',
+    cosignatories: [],
   })
 }
 
@@ -29,8 +31,6 @@ export const addExtensionAccount = (account: IExtensionAccount) => {
       const test = data.extensionAccounts.filter(
         (e: ExtensionAccount) => e.address === account.address
       )
-
-      console.log('test', test)
 
       if (test.length !== 0) {
         console.log('reject')
@@ -48,7 +48,6 @@ export const addExtensionAccount = (account: IExtensionAccount) => {
           })
         }
 
-        console.log('add', newExtensionAccounts)
         chrome.storage.local.set({
           extensionAccounts: newExtensionAccounts,
           accountsCount: newAccountsCount,
@@ -87,13 +86,10 @@ export const deleteExtensionAccount = (arrayNum: number) => {
   return new Promise((resolve, reject) => {
     chrome.storage.local.get(['extensionAccounts', 'accountsCount'], (data) => {
       getActiveAccount().then((acc) => {
-        console.log('acc1', acc.address)
-        console.log('acc2', data.extensionAccounts[arrayNum].address)
         if (
           acc.address === data.extensionAccounts[arrayNum].address &&
           data.extensionAccounts.length !== 1
         ) {
-          console.log('reject this is active')
           return reject()
         } else {
           if (data.extensionAccounts.length === 1) {
@@ -130,7 +126,6 @@ export const getActiveAccount = (): Promise<ExtensionAccount> => {
 export const setActiveAccount = (arrayNum: number) => {
   return new Promise((resolve) => {
     getExtensionAccount(arrayNum).then((acc) => {
-      console.log('acc: ' + arrayNum, acc)
       setStorage({ activeAccount: acc })
       resolve({})
     })
@@ -155,6 +150,31 @@ export const removeTransaction = () => {
   setStorage({ transaction: null })
 }
 
-export const setSignStatus = (status: boolean) => {
+export const setSignStatus = (status: string) => {
   setStorage({ signStatus: status })
+}
+export const getSignStatus = (): Promise<string> => {
+  return new Promise((resolve) => {
+    getStorage('signStatus').then((status) => {
+      const st = status as {
+        signStatus: string
+      }
+      resolve(st.signStatus as string)
+    })
+  })
+}
+
+export const setCosignatories = (accounts: string[]) => {
+  setStorage({ cosignatories: accounts }) // なんか二重に配列になってる
+}
+
+export const getCosignatories = (): Promise<string[]> => {
+  return new Promise((resolve) => {
+    getStorage('cosignatories').then((cosignatories) => {
+      const c = cosignatories as {
+        cosignatories: string[]
+      }
+      resolve(c.cosignatories as string[])
+    })
+  })
 }
