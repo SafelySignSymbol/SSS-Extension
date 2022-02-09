@@ -1,4 +1,3 @@
-import { Account, MosaicId, Transaction } from 'symbol-sdk'
 import { requestSign, setTransaction } from './signTransaction'
 import { requestSignWithCosignatories } from './signTransactionWithCosignatories'
 
@@ -10,9 +9,6 @@ window.SSS = {
   signedTx: null,
   activePublicKey: '',
   setTransaction: setTransaction,
-  checkLogin: (mosaicId: MosaicId): boolean => {
-    return false
-  },
   requestSign: requestSign,
   requestSignWithCosignatories: requestSignWithCosignatories,
 }

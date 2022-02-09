@@ -1,5 +1,4 @@
 import { Account } from 'symbol-sdk'
-import { setCosignatories } from '../_general/lib/Storage'
 import { showSnackbar } from './snackbar'
 
 export const requestSignWithCosignatories = (cosignatories: Account[]) => {

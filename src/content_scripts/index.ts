@@ -1,4 +1,3 @@
-import { Account, NetworkType } from 'symbol-sdk'
 import {
   getActiveAccount,
   setCosignatories,
@@ -15,7 +14,7 @@ const injectScript = function (file: string, node: any) {
   return th.appendChild(s)
 }
 
-const injectStylefile = function (file, node) {
+const injectStylefile = function (file: string, node: string) {
   const th = document.getElementsByTagName(node)[0]
   const s = document.createElement('link')
   s.setAttribute('rel', 'stylesheet')
@@ -49,10 +48,12 @@ window.addEventListener('message', (event) => {
   }
   if (event.data.function === 'requestSign') {
     setSignStatus(event.data.function)
+    chrome.runtime.sendMessage({ type: 'removeTransaction' })
   }
   if (event.data.function === 'requestSignWithCosignatories') {
     setSignStatus(event.data.function)
     setCosignatories(event.data.cosignatories)
+    chrome.runtime.sendMessage({ type: 'removeTransaction' })
   }
 })
 
