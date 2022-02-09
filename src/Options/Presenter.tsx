@@ -57,6 +57,21 @@ const Options: React.VFC = () => {
     setOpenModal(true)
   }
 
+  if (account === null) {
+    return (
+      <div>
+        <Container>
+          <Logo onClick={() => console.log('')} />
+          <Box sx={{ flexGrow: 1, height: '1px' }} />
+          <Spacer margin="8px">
+            <Button text="ADD ACCOUNT" onClick={clickAddButton} />
+          </Spacer>
+        </Container>
+        <AccountModal open={openModal} setOpen={setOpenModal} reload={reload} />
+      </div>
+    )
+  }
+
   return (
     <div>
       <Container>
