@@ -23,24 +23,38 @@ const injectStylefile = function (file: string, node: string) {
   return th.appendChild(s)
 }
 
-const sendPublicKey = () => {
-  console.log('send pub key')
+const injectSSS = () => {
   getActiveAccount().then((activeAccount) => {
     setTimeout(() => {
       window.postMessage(
         {
-          type: 'SET_PUBLIC_KEY',
+          type: 'INJECT_SSS',
           publicKey: activeAccount.publicKey,
         },
         window.opener
       )
-    }, 100)
+    }, 50)
   })
+}
+
+const isAllowedDoamin = () => {
+  chrome.runtime.sendMessage(
+    {
+      type: 'isAllowDoamin',
+      domain: document.URL.split('://')[1].split('/')[0],
+    },
+    (res) => {
+      console.log('res', res)
+      if (res.status) {
+        injectSSS()
+      }
+    }
+  )
 }
 
 injectScript('inject_script.js', 'body')
 injectStylefile('snackbar.css', 'body')
-sendPublicKey()
+isAllowedDoamin()
 
 window.addEventListener('message', (event) => {
   if (event.data.function === 'setTransaction') {
@@ -54,6 +68,9 @@ window.addEventListener('message', (event) => {
     setSignStatus(event.data.function)
     setCosignatories(event.data.cosignatories)
     chrome.runtime.sendMessage({ type: 'removeTransaction' })
+  }
+  if (event.data.function === 'requestSSS') {
+    isAllowedDoamin()
   }
 })
 
