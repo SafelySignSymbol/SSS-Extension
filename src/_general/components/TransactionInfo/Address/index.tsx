@@ -1,34 +1,61 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 
 import styled from '@emotion/styled'
 import Typography from '../../Typography'
-import { NamespaceId, UnresolvedAddress } from 'symbol-sdk'
+import {
+  NamespaceId,
+  NamespaceService,
+  RepositoryFactoryHttp,
+  UnresolvedAddress,
+} from 'symbol-sdk'
+import { getActiveAccount } from '../../../lib/Storage'
 
 export type Props = {
   address: UnresolvedAddress
 }
 
+const test_net = 'https://sym-test.opening-line.jp:3001'
+const main_net = 'https://sym-main.opening-line.jp:3001'
+
 const TxAddress: React.VFC<Props> = ({ address }) => {
-  if (address instanceof NamespaceId) {
-    const ns = new NamespaceId(address.toHex())
-    return (
-      <Wrapper>
-        <Typography text="NameSpace" variant="h5" />
-        <Center>
-          <Typography text={ns.fullName || address.plain()} variant="h6" />
-        </Center>
-      </Wrapper>
-    )
-  } else {
-    return (
-      <Wrapper>
-        <Typography text="Address" variant="h5" />
-        <Center>
-          <Typography text={address.plain()} variant="h6" />
-        </Center>
-      </Wrapper>
-    )
-  }
+  const [addr, setAddr] = useState('')
+  useEffect(() => {
+    getActiveAccount().then((extensionAccount) => {
+      if (address instanceof NamespaceId) {
+        const addr = extensionAccount.address
+        const url = addr.charAt(0) === 'T' ? test_net : main_net
+        const rep = new RepositoryFactoryHttp(url)
+        const nsRep = rep.createNamespaceRepository()
+        const nsService = new NamespaceService(nsRep)
+        console.log('address', address)
+
+        const nsId = NamespaceId.createFromEncoded(address.toHex())
+        nsService.namespace(nsId).subscribe(
+          (x) => {
+            console.log(x)
+            setAddr(x.name)
+          },
+          (err) => {
+            console.log('err', err)
+            setAddr('NameSpace Not Found')
+          }
+        )
+      } else {
+        setAddr(address.plain())
+      }
+    })
+  }, [address])
+  return (
+    <Wrapper>
+      <Typography
+        text={address instanceof NamespaceId ? 'NameSpace' : 'Address'}
+        variant="h5"
+      />
+      <Center>
+        <Typography text={addr} variant="h6" />
+      </Center>
+    </Wrapper>
+  )
 }
 
 export default TxAddress
