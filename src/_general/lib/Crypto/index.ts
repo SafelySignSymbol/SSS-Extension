@@ -1,8 +1,6 @@
 import CryptoJS from 'crypto-js'
 import crypto from 'crypto'
-
-const key =
-  process.env.REACT_APP_PUBLIC_KEY || '01234567890123456789012345678901' // 256bit secret public key
+import { SECRET_KEY } from '../../utils/Config'
 
 const algorithm = 'aes-256-cbc'
 const delimiter = '$'
@@ -10,7 +8,7 @@ const delimiter = '$'
 export const encrypt = (value: string, password: string) => {
   const iv = crypto.randomBytes(16)
 
-  const cipher = crypto.createCipheriv(algorithm, key, iv)
+  const cipher = crypto.createCipheriv(algorithm, SECRET_KEY, iv)
   const encrypted =
     cipher.update(value, 'utf8', 'base64') + cipher.final('base64')
   const ivWithEncrypted = iv.toString('base64') + delimiter + encrypted
@@ -26,7 +24,7 @@ export const decrypt = (encryptedValue: string, password: string) => {
   const [iv, encrypted] = tmp.split(delimiter)
   const decipher = crypto.createDecipheriv(
     algorithm,
-    key,
+    SECRET_KEY,
     Buffer.from(iv, 'base64')
   )
   const decrypted =
