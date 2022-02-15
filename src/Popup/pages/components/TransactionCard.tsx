@@ -2,16 +2,21 @@ import React from 'react'
 
 import styled from '@emotion/styled'
 import {
+  AccountMetadataTransaction,
   AggregateTransaction,
+  MosaicMetadataTransaction,
+  NamespaceMetadataTransaction,
   Transaction,
   TransactionType,
   TransferTransaction,
 } from 'symbol-sdk'
 import Typography from '../../../_general/components/Typography'
-import Spacer from '../../../_general/components/Spacer'
-import TxAddress from '../../../_general/components/TransactionInfo/Address'
-import TxMosaic from '../../../_general/components/TransactionInfo/Mosaic'
-import { Divider } from '@mui/material'
+
+import TransferCard from '../../../_general/components/Transactions/TransferCard'
+import AggregateComplateTransactionCard from '../../../_general/components/Transactions/AggregateComplateCard'
+import AccountMetadataCard from '../../../_general/components/Transactions/AccountMetadataCard'
+import MosaicMetadataCard from '../../../_general/components/Transactions/MosaicMetadataCard'
+import NamespaceMetadataCard from '../../../_general/components/Transactions/NamespaceMetadataCard'
 
 export type Props = {
   transaction: Transaction
@@ -19,15 +24,37 @@ export type Props = {
 
 const TransactionCard: React.VFC<Props> = ({ transaction }) => {
   if (transaction.type === TransactionType.TRANSFER) {
-    return (
-      <TransferTransactionCard
-        transaction={transaction as TransferTransaction}
-      />
-    )
-  } else if (transaction.type === TransactionType.AGGREGATE_COMPLETE) {
+    return <TransferCard transaction={transaction as TransferTransaction} />
+  }
+
+  if (transaction.type === TransactionType.AGGREGATE_COMPLETE) {
     return (
       <AggregateComplateTransactionCard
         transaction={transaction as AggregateTransaction}
+      />
+    )
+  }
+
+  if (transaction.type === TransactionType.ACCOUNT_METADATA) {
+    return (
+      <AccountMetadataCard
+        transaction={transaction as AccountMetadataTransaction}
+      />
+    )
+  }
+
+  if (transaction.type === TransactionType.MOSAIC_METADATA) {
+    return (
+      <MosaicMetadataCard
+        transaction={transaction as MosaicMetadataTransaction}
+      />
+    )
+  }
+
+  if (transaction.type === TransactionType.NAMESPACE_METADATA) {
+    return (
+      <NamespaceMetadataCard
+        transaction={transaction as NamespaceMetadataTransaction}
       />
     )
   }
@@ -40,52 +67,6 @@ const TransactionCard: React.VFC<Props> = ({ transaction }) => {
 }
 
 export default TransactionCard
-
-type TransferProps = {
-  transaction: TransferTransaction
-}
-const TransferTransactionCard: React.VFC<TransferProps> = ({ transaction }) => {
-  return (
-    <Wrapper>
-      <TxAddress address={transaction.recipientAddress} />
-      <Typography text="Message" variant="h5" />
-      <Spacer MLeft="16px">
-        <Typography text={transaction.message.payload} variant="h5" />
-      </Spacer>
-      <Typography text="Mosaics" variant="h5" />
-      {transaction.mosaics.map((mosaic) => {
-        return <TxMosaic mosaic={mosaic} key={mosaic.id.toHex()} />
-      })}
-    </Wrapper>
-  )
-}
-
-type AggregateComplateProps = {
-  transaction: AggregateTransaction
-}
-
-const AggregateComplateTransactionCard: React.VFC<AggregateComplateProps> = ({
-  transaction,
-}) => {
-  return (
-    <Wrapper>
-      <Typography text="Inner Transactions" variant="h5" />
-      {transaction.innerTransactions.map((tx, i) => {
-        return (
-          <Wrapper>
-            <TransactionCard transaction={tx} />
-            {i !== transaction.innerTransactions.length - 1 && <Divider />}
-          </Wrapper>
-        )
-      })}
-    </Wrapper>
-  )
-}
-
-const Wrapper = styled('div')({
-  margin: '8px',
-  padding: '8px',
-})
 
 const Center = styled('div')({
   display: 'flex',
