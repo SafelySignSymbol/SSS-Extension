@@ -36,3 +36,22 @@ export const isAllowDomain = (domain: string): Promise<boolean> => {
     })
   })
 }
+
+export const deleteAllowList = (arrayNum: number) => {
+  return new Promise((resolve, reject) => {
+    getAllowList().then((al) => {
+      const newAllowList = al.filter((_domain, i) => arrayNum !== i)
+
+      chrome.storage.local
+        .set({
+          allowList: newAllowList,
+        })
+        .then(() => {
+          resolve({})
+        })
+        .catch(() => {
+          reject()
+        })
+    })
+  })
+}

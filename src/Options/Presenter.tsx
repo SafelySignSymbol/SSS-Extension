@@ -18,8 +18,8 @@ import AccountCard from './components/AccountCard'
 import AccountModal from './components/AccountModal'
 import Logo from '../_general/components/Logo'
 import Typography from '../_general/components/Typography'
-import { SignedTransaction } from 'symbol-sdk'
 import AllowList from './components/AllowList'
+import { SignedTransaction } from 'symbol-sdk'
 
 const Options: React.VFC = () => {
   const [openModal, setOpenModal] = useState(false)
@@ -29,6 +29,7 @@ const Options: React.VFC = () => {
     ExtensionAccount[]
   >([])
   const [allowList, setAllowList] = useState<string[]>([])
+  const [history, setHistory] = useState<SignedTransaction[]>([])
 
   const [update, setUpdate] = useState(new Date())
 
@@ -46,6 +47,9 @@ const Options: React.VFC = () => {
     })
     getAllowList().then((al) => {
       setAllowList(al)
+    })
+    getHistory().then((his) => {
+      setHistory(his)
     })
   }, [update])
 

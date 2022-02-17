@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "SSS Extension",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "icons": {
     "16": "./sss_16.png",
     "32": "./sss_32.png",
