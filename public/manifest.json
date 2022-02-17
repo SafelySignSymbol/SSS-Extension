@@ -31,6 +31,9 @@
     }
   ],
   "permissions": [
-    "storage"
+    "storage",
+    "activeTab",
+    "scripting",
+    "contextMenus"
   ]
 }
