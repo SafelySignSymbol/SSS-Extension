@@ -4,7 +4,7 @@ import {
   Account,
   AggregateTransaction,
 } from 'symbol-sdk'
-import { removeTransaction } from '../Storage'
+import { addHistory, removeTransaction } from '../Storage'
 
 export const sign = (
   transaction: Transaction,
@@ -19,6 +19,7 @@ export const sign = (
       : '57F7DA205008026C776CB6AED843393F04CD458E0AA2D9F1D5F31A402072B2D6' // MAIN_NET
 
   const signedTx = acc.sign(transaction, generationHash)
+  addHistory(signedTx)
   removeTransaction()
   chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
     if (!tabs[0].id) {
@@ -50,6 +51,7 @@ export const signWithCosignatories = (
     accounts,
     generationHash
   )
+  addHistory(signedTx)
   removeTransaction()
   chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
     if (!tabs[0].id) {

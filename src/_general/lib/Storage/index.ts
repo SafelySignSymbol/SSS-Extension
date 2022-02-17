@@ -16,6 +16,7 @@ export const initialize = () => {
     transaction: null,
     signStatus: '',
     cosignatories: [],
+    history: [],
   })
 }
 

@@ -22,6 +22,7 @@ export const addHistory = (tx: SignedTransaction) => {
       setStorage({
         history: newHistory,
       })
+      resolve({})
     })
   })
 }
