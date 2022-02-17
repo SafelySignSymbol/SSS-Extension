@@ -1,18 +1,8 @@
 import { requestSign, setTransaction } from './signTransaction'
 import { requestSignWithCosignatories } from './signTransactionWithCosignatories'
-import { showSnackbar } from './snackbar'
+import { showSnackbar, createSnackbar } from './snackbar'
 
 export {}
-
-// window.SSS = {
-//   isSet: false,
-//   signedFrag: false,
-//   signedTx: null,
-//   activePublicKey: '',
-//   setTransaction: setTransaction,
-//   requestSign: requestSign,
-//   requestSignWithCosignatories: requestSignWithCosignatories,
-// }
 
 window.requestSSS = () => {
   console.log('req SSS')
@@ -20,6 +10,7 @@ window.requestSSS = () => {
     showSnackbar('SSSと連携に成功しました。')
     return true
   }
+  createSnackbar()
   showSnackbar('WebアプリケーションとSSSを連携してください。')
   window.postMessage(
     {
@@ -39,7 +30,10 @@ window.allowSSS = false
 
 const injectSSS = (publicKey: string) => {
   console.log('inject sss')
+
+  createSnackbar()
   showSnackbar('SSSと連携しました。')
+
   window.SSS = {
     isSet: false,
     signedFrag: false,
@@ -67,10 +61,3 @@ window.addEventListener(
   },
   true
 )
-
-window.onload = () => {
-  const snackbar = document.createElement('div')
-  snackbar.classList.add('SSS_snackbar')
-  snackbar.id = 'SSS_snackbar'
-  document.body.appendChild(snackbar)
-}
