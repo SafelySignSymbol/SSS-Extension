@@ -6,13 +6,20 @@ import { Box, Grid } from '@mui/material'
 import Spacer from '../_general/components/Spacer'
 import Button from '../_general/components/Button'
 
-import { getActiveAccount, getExtensionAccounts } from '../_general/lib/Storage'
+import {
+  getActiveAccount,
+  getAllowList,
+  getExtensionAccounts,
+  getHistory,
+} from '../_general/lib/Storage'
 import { ExtensionAccount } from '../_general/model/ExtensionAccount'
 import AccountList from './components/AccountList'
 import AccountCard from './components/AccountCard'
 import AccountModal from './components/AccountModal'
 import Logo from '../_general/components/Logo'
 import Typography from '../_general/components/Typography'
+import { SignedTransaction } from 'symbol-sdk'
+import AllowList from './components/AllowList'
 
 const Options: React.VFC = () => {
   const [openModal, setOpenModal] = useState(false)
@@ -21,6 +28,7 @@ const Options: React.VFC = () => {
   const [extensionAccounts, setExtensionAccounts] = useState<
     ExtensionAccount[]
   >([])
+  const [allowList, setAllowList] = useState<string[]>([])
 
   const [update, setUpdate] = useState(new Date())
 
@@ -35,6 +43,9 @@ const Options: React.VFC = () => {
     })
     getExtensionAccounts().then((accounts) => {
       setExtensionAccounts(accounts)
+    })
+    getAllowList().then((al) => {
+      setAllowList(al)
     })
   }, [update])
 
@@ -67,6 +78,9 @@ const Options: React.VFC = () => {
                   }
                 />
               )}
+            </Spacer>
+            <Spacer MTop="32px">
+              <AllowList allowlist={allowList} reload={reload} />
             </Spacer>
           </Grid>
           <Grid item xs={8}>
