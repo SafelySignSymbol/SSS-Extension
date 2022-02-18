@@ -32,7 +32,6 @@
   ],
   "permissions": [
     "storage",
-    "activeTab",
     "scripting",
     "contextMenus"
   ]
