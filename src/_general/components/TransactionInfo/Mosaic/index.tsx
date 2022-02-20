@@ -19,19 +19,28 @@ const main_net = 'https://sym-main.opening-line.jp:3001'
 
 const TxMosaic: React.VFC<Props> = ({ mosaic }) => {
   const [id, setId] = useState('')
+  const [div, setDiv] = useState(0)
   useEffect(() => {
     getActiveAccount().then((extensionAccount) => {
+      const addr = extensionAccount.address
+      const url = addr.charAt(0) === 'T' ? test_net : main_net
+      const rep = new RepositoryFactoryHttp(url)
+      const nsRep = rep.createNamespaceRepository()
+      const nsService = new NamespaceService(nsRep)
+      const mosaicHttp = rep.createMosaicRepository()
       if (mosaic.id instanceof NamespaceId) {
-        const addr = extensionAccount.address
-        const url = addr.charAt(0) === 'T' ? test_net : main_net
-        const rep = new RepositoryFactoryHttp(url)
-        const nsRep = rep.createNamespaceRepository()
-        const nsService = new NamespaceService(nsRep)
         const nsId = NamespaceId.createFromEncoded(mosaic.id.toHex())
         nsService.namespace(nsId).subscribe(
           (x) => {
-            console.log(x)
             setId(x.name)
+            if (x.alias.mosaicId) {
+              mosaicHttp.getMosaic(x.alias.mosaicId).subscribe(
+                (mosaicInfo) => {
+                  setDiv(mosaicInfo.divisibility)
+                },
+                (err) => console.error(err)
+              )
+            }
           },
           (err) => {
             console.log('err', err)
@@ -40,6 +49,16 @@ const TxMosaic: React.VFC<Props> = ({ mosaic }) => {
         )
       } else {
         setId(mosaic.id.toHex())
+        mosaicHttp.getMosaic(mosaic.id).subscribe(
+          (mosaicInfo) => {
+            console.log(
+              'amount',
+              mosaic.amount.compact() / Math.pow(10, mosaicInfo.divisibility)
+            )
+            setDiv(mosaicInfo.divisibility)
+          },
+          (err) => console.error(err)
+        )
       }
     })
   }, [mosaic])
@@ -48,7 +67,10 @@ const TxMosaic: React.VFC<Props> = ({ mosaic }) => {
     <Wrapper>
       <Center>
         <Typography text={id} variant="h5" />
-        <Typography text={mosaic.amount.toString()} variant="subtitle1" />
+        <Typography
+          text={String(mosaic.amount.compact() / Math.pow(10, div))}
+          variant="subtitle1"
+        />
       </Center>
     </Wrapper>
   )
