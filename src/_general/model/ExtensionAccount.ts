@@ -3,6 +3,7 @@ export interface IExtensionAccount {
   publicKey: string
   address: string
   type: 'PASS' | 'NOPASS' | 'HARD'
+  seed: number
 }
 
 export class ExtensionAccount implements IExtensionAccount {
@@ -10,7 +11,8 @@ export class ExtensionAccount implements IExtensionAccount {
     public encriptedPrivateKey: string,
     public publicKey: string,
     public address: string,
-    public type: 'PASS' | 'NOPASS' | 'HARD'
+    public type: 'PASS' | 'NOPASS' | 'HARD',
+    public seed: number
   ) {}
 
   public getAccount(): IExtensionAccount {
@@ -19,6 +21,7 @@ export class ExtensionAccount implements IExtensionAccount {
       publicKey: this.publicKey,
       address: this.address,
       type: this.type,
+      seed: this.seed,
     }
   }
 }

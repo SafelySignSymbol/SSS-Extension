@@ -89,14 +89,16 @@ const Component: React.VFC<Props> = ({ open, setOpen, reload }) => {
         setMessage('秘密鍵とアドレスのペアが一致しません。')
         setOpenSB(true)
       } else {
+        const seed = Math.floor((Math.random() * 10000) % 1000)
         const password = status === 'NOPASS' ? '' : ps
-        const enpk = encrypt(pk, password)
+        const enpk = encrypt(pk, password, seed)
 
         const extensionAccount = new ExtensionAccount(
           enpk,
           acc.publicKey,
           acc.address.plain(),
-          status
+          status,
+          seed
         )
 
         addExtensionAccount(extensionAccount)

@@ -26,7 +26,8 @@ const Login: React.VFC<Props> = ({ extensionAccount, loginSuccess }) => {
     const check = checkPassword(
       extensionAccount.encriptedPrivateKey,
       passRef.current.value,
-      extensionAccount.address
+      extensionAccount.address,
+      extensionAccount.seed
     )
     if (check) {
       loginSuccess(passRef.current.value)
