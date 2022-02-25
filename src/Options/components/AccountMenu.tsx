@@ -45,13 +45,11 @@ const Component: React.VFC<Props> = ({ index, reload }) => {
   const onClickDelete = () => {
     deleteExtensionAccount(index)
       .then(() => {
-        console.log('success delete')
         setSnackbarStatus('success')
         setMessage('アカウントの登録を解除しました。')
         setOpenSB(true)
       })
       .catch(() => {
-        console.log('failed delete')
         setSnackbarStatus('error')
         setMessage('アクティブアカウントを変更してください。')
         setOpenSB(true)

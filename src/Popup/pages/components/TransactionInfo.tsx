@@ -8,9 +8,10 @@ import { IconButton } from '@mui/material'
 import { IconContext } from 'react-icons'
 import { MdUpdate } from 'react-icons/md'
 import TransactionCard from './TransactionCard'
-import { TransactionMapping, TransactionType } from 'symbol-sdk'
+import { TransactionMapping } from 'symbol-sdk'
 import { TransactionURI } from 'symbol-uri-scheme'
 import Typography from '../../../_general/components/Typography'
+import { getTransactionType } from '../../../_general/lib/TransactionType'
 
 export type Props = {
   transaction: string
@@ -22,15 +23,11 @@ const Component: React.VFC<Props> = ({ transaction }) => {
     TransactionMapping.createFromPayload
   ).toTransaction()
 
-  const getTxType = (type: number) => {
-    if (type === TransactionType.TRANSFER) return 'TRANSFER'
-    return 'NOT FOUND'
-  }
   return (
     <Wrapper>
       <Header>
         <TxType>
-          <Typography text={getTxType(tx.type)} variant="h5" />
+          <Typography text={getTransactionType(tx.type)} variant="h5" />
         </TxType>
         <Box sx={{ flexGrow: 1 }} />
         <IconButton onClick={() => console.log('click')}>

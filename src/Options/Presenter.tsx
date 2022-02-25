@@ -6,13 +6,20 @@ import { Box, Grid } from '@mui/material'
 import Spacer from '../_general/components/Spacer'
 import Button from '../_general/components/Button'
 
-import { getActiveAccount, getExtensionAccounts } from '../_general/lib/Storage'
+import {
+  getActiveAccount,
+  getAllowList,
+  getExtensionAccounts,
+  getHistory,
+} from '../_general/lib/Storage'
 import { ExtensionAccount } from '../_general/model/ExtensionAccount'
 import AccountList from './components/AccountList'
 import AccountCard from './components/AccountCard'
 import AccountModal from './components/AccountModal'
 import Logo from '../_general/components/Logo'
 import Typography from '../_general/components/Typography'
+import AllowList from './components/AllowList'
+import { SignedTransaction } from 'symbol-sdk'
 
 const Options: React.VFC = () => {
   const [openModal, setOpenModal] = useState(false)
@@ -21,6 +28,8 @@ const Options: React.VFC = () => {
   const [extensionAccounts, setExtensionAccounts] = useState<
     ExtensionAccount[]
   >([])
+  const [allowList, setAllowList] = useState<string[]>([])
+  const [history, setHistory] = useState<SignedTransaction[]>([])
 
   const [update, setUpdate] = useState(new Date())
 
@@ -29,19 +38,22 @@ const Options: React.VFC = () => {
   }
 
   useEffect(() => {
-    console.log('effect')
     getActiveAccount().then((acc) => {
-      console.log('acc', acc)
       setAccount(acc)
       if (acc === null) setOpenModal(true)
     })
     getExtensionAccounts().then((accounts) => {
       setExtensionAccounts(accounts)
     })
+    getAllowList().then((al) => {
+      setAllowList(al)
+    })
+    getHistory().then((his) => {
+      setHistory(his)
+    })
   }, [update])
 
   const clickAddButton = () => {
-    console.log('openmodal')
     setOpenModal(true)
   }
 
@@ -70,6 +82,9 @@ const Options: React.VFC = () => {
                   }
                 />
               )}
+            </Spacer>
+            <Spacer MTop="32px">
+              <AllowList allowlist={allowList} reload={reload} />
             </Spacer>
           </Grid>
           <Grid item xs={8}>

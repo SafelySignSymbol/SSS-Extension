@@ -69,7 +69,7 @@ export default Component
 const Wrapper = styled('div')<{
   isActive: boolean
 }>((props) => ({
-  width: props.isActive ? 'calc(100% - 32px)' : '50%',
+  width: props.isActive ? '100%' : '50%',
   display: 'flex',
   flexDirection: 'column',
 }))

@@ -1,6 +1,6 @@
 import { RefObject } from 'react'
 
-import CryptoJS from 'crypto-js'
+import { decrypt } from '../Crypto'
 import { Account, NetworkType } from 'symbol-sdk'
 
 const ADDRESS_PATTERN = /[A-Z0-9]{39}/
@@ -38,9 +38,7 @@ export const checkPassword = (
   address: string
 ): boolean => {
   try {
-    const priKey = CryptoJS.AES.decrypt(encriptedPrivateKey, pass).toString(
-      CryptoJS.enc.Utf8
-    )
+    const priKey = decrypt(encriptedPrivateKey, pass)
     const net_type =
       address.charAt(0) === 'T' ? NetworkType.TEST_NET : NetworkType.MAIN_NET
 

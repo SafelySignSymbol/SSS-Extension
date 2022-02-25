@@ -1,14 +1,24 @@
 import React, { useEffect, useState } from 'react'
 import styled from '@emotion/styled'
-import CryptoJS from 'crypto-js'
+import { decrypt } from '../_general/lib/Crypto'
 
 import './global.css'
+import {
+  Account,
+  AggregateTransaction,
+  NetworkType,
+  Transaction,
+} from 'symbol-sdk'
 
-import { getActiveAccount, removeTransaction } from '../_general/lib/Storage'
+import {
+  getActiveAccount,
+  getCosignatories,
+  getSignStatus,
+} from '../_general/lib/Storage'
 import { ExtensionAccount } from '../_general/model/ExtensionAccount'
 import Login from './pages/Login'
 import Main from './pages/Main'
-import { Account, NetworkType, Transaction } from 'symbol-sdk'
+import { sign, signWithCosignatories } from '../_general/lib/Sign'
 
 type PopupStatus = 'LOGIN' | 'MAIN'
 
@@ -33,39 +43,34 @@ const Popup: React.VFC = () => {
     setStatus('MAIN')
   }
 
-  const sign = (transaction: Transaction | null) => {
-    console.log('pass', pass)
+  const signTx = (transaction: Transaction | null) => {
     if (extensionAccount === null || transaction === null) {
       return
     }
-    const priKey = CryptoJS.AES.decrypt(
-      extensionAccount.encriptedPrivateKey,
-      pass
-    ).toString(CryptoJS.enc.Utf8)
+    const priKey = decrypt(extensionAccount.encriptedPrivateKey, pass)
 
     const net_type =
       extensionAccount.address.charAt(0) === 'T'
         ? NetworkType.TEST_NET
         : NetworkType.MAIN_NET
 
-    const acc = Account.createFromPrivateKey(priKey, net_type)
-
-    const generationHash =
-      extensionAccount.address.charAt(0) === 'T'
-        ? '7FCCD304802016BEBBCD342A332F91FF1F3BB5E902988B352697BE245F48E836'
-        : '57F7DA205008026C776CB6AED843393F04CD458E0AA2D9F1D5F31A402072B2D6'
-
-    const signedTx = acc.sign(transaction, generationHash)
-    removeTransaction()
-    chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-      if (!tabs[0].id) {
-        console.error('not found tabs')
-        return
+    getSignStatus().then((status) => {
+      if (status === 'requestSign') {
+        sign(transaction, priKey, net_type)
       }
-      chrome.tabs.sendMessage(tabs[0].id, {
-        type: 'SIGNED_TRANSACTION',
-        signedTx: signedTx,
-      })
+      if (status === 'requestSignWithCosignatories') {
+        getCosignatories().then((accounts) => {
+          const accs = accounts.map((acc) =>
+            Account.createFromPrivateKey(acc, net_type)
+          )
+          signWithCosignatories(
+            transaction as AggregateTransaction,
+            accs,
+            priKey,
+            net_type
+          )
+        })
+      }
     })
   }
 
@@ -83,7 +88,7 @@ const Popup: React.VFC = () => {
     }
 
     if (status === 'MAIN') {
-      return <Main extensionAccount={extensionAccount} sign={sign} />
+      return <Main extensionAccount={extensionAccount} sign={signTx} />
     }
   }
   return <Root>{getBody()}</Root>

@@ -1,6 +1,6 @@
 import React, { Dispatch, useRef, useState } from 'react'
 import styled from '@emotion/styled'
-import CryptoJS from 'crypto-js'
+import { encrypt } from '../../_general/lib/Crypto'
 
 import {
   Alert,
@@ -90,7 +90,7 @@ const Component: React.VFC<Props> = ({ open, setOpen, reload }) => {
         setOpenSB(true)
       } else {
         const password = status === 'NOPASS' ? '' : ps
-        const enpk = CryptoJS.AES.encrypt(pk, password).toString()
+        const enpk = encrypt(pk, password)
 
         const extensionAccount = new ExtensionAccount(
           enpk,
@@ -148,7 +148,9 @@ const Component: React.VFC<Props> = ({ open, setOpen, reload }) => {
             />
           </Spacer>
           <Spacer margin="8px">
-            <Button text="SUBMIT" onClick={submit} />
+            <Right>
+              <Button text="SUBMIT" onClick={submit} />
+            </Right>
           </Spacer>
         </Root>
       )
@@ -171,7 +173,9 @@ const Component: React.VFC<Props> = ({ open, setOpen, reload }) => {
             <TextField text="Password" inputRef={passRef} type="password" />
           </Spacer>
           <Spacer margin="8px">
-            <Button text="SUBMIT" onClick={submit} />
+            <Right>
+              <Button text="SUBMIT" onClick={submit} />
+            </Right>
           </Spacer>
         </Root>
       )
@@ -222,4 +226,9 @@ const Wrapper = styled(Paper)({
 const Root = styled('div')({
   width: '100%',
   margin: '16px',
+})
+
+const Right = styled('div')({
+  display: 'flex',
+  justifyContent: 'end',
 })
