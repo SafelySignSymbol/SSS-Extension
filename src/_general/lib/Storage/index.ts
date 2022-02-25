@@ -1,3 +1,5 @@
+const version = '0.0.6'
+
 export const setStorage = (data: any) => {
   chrome.storage.local.set(data)
 }
@@ -8,7 +10,38 @@ export const getStorage = (key: string) => {
   })
 }
 
+export const getPreviousVersion = (): Promise<string[]> => {
+  return new Promise((resolve, reject) => {
+    chrome.storage.local.get('version', (data) => {
+      if (!data.version) {
+        reject()
+      } else {
+        const prevVersion = (data.version as string).split('.')
+        resolve(prevVersion)
+      }
+    })
+  })
+}
+
 export const initialize = () => {
+  const current = version.split('.')
+  getPreviousVersion()
+    .then((prev) => {
+      if (prev[0] !== current[0]) {
+        init()
+      } else {
+        setStorage({
+          version: version,
+        })
+      }
+    })
+    .catch(() => {
+      console.log('catch')
+      init()
+    })
+}
+
+const init = () => {
   setStorage({
     extensionAccounts: [],
     accountsCount: 0,
@@ -18,6 +51,7 @@ export const initialize = () => {
     cosignatories: [],
     history: [],
     allowList: '',
+    version: version,
   })
 }
 
