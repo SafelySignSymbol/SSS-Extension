@@ -7,18 +7,9 @@ import Color, { addAlpha } from '../../utils/Color'
 export interface Props {
   text: string
   onClick: () => void
-  fill?: boolean
 }
 
-const Component: React.VFC<Props> = ({ text, onClick, fill = false }) => {
-  if (fill) {
-    return (
-      <FButton variant="outlined" onClick={onClick}>
-        {text}
-      </FButton>
-    )
-  }
-
+const Component: React.VFC<Props> = ({ text, onClick }) => {
   return (
     <SButton variant="outlined" onClick={onClick}>
       {text}
@@ -28,12 +19,6 @@ const Component: React.VFC<Props> = ({ text, onClick, fill = false }) => {
 
 export default Component
 
-const FButton = styled(Button)`
-  color: white !important;
-  background: ${Color.pink} !important;
-  border-color: ${Color.pink} !important;
-  font-weight: 700;
-`
 const SButton = styled(Button)`
   color: ${Color.pink} !important;
   border-color: ${Color.pink} !important;

@@ -1,4 +1,4 @@
-import React, { Dispatch, useEffect, useRef } from 'react'
+import React, { Dispatch, useEffect, useRef, useState } from 'react'
 import styled from '@emotion/styled'
 
 import { ExtensionAccount } from '../../_general/model/ExtensionAccount'
@@ -8,6 +8,7 @@ import TextField from '../../_general/components/TextField'
 import Spacer from '../../_general/components/Spacer'
 import Button from '../../_general/components/Button'
 import { checkPassword } from '../../_general/lib/validator'
+import PasswordTextField from '../../_general/components/TextField/PasswordTextField'
 
 export interface Props {
   extensionAccount: ExtensionAccount
@@ -15,6 +16,9 @@ export interface Props {
 }
 
 const Login: React.VFC<Props> = ({ extensionAccount, loginSuccess }) => {
+  const [pass, setPass] = useState('default password')
+  const [isVPass, setIsVPass] = useState(false)
+
   const address = Address.createFromRawAddress(
     extensionAccount.address
   ).pretty()
@@ -52,7 +56,12 @@ const Login: React.VFC<Props> = ({ extensionAccount, loginSuccess }) => {
           <Typography text={address} variant="h6" />
         </Spacer>
         <Spacer margin="48px 0px">
-          <TextField text="Password" inputRef={passRef} type="password" />
+          <PasswordTextField
+            label="Password"
+            setPass={setPass}
+            isVisible={isVPass}
+            updateIsVisible={() => setIsVPass((prev) => !prev)}
+          />
         </Spacer>
         <Spacer margin="48px 0px">
           <Flex>

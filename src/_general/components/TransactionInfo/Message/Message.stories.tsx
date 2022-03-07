@@ -2,7 +2,7 @@ import React from 'react'
 import { Story, Meta } from '@storybook/react'
 
 import Button, { Props } from './index'
-import { Address, PlainMessage } from 'symbol-sdk'
+import { PlainMessage } from 'symbol-sdk'
 
 export default {
   title: 'TransactionInfo/Message',

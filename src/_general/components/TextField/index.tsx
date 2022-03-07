@@ -1,32 +1,17 @@
-import OutlinedInput from '@mui/material/OutlinedInput'
-import FormControl from '@mui/material/FormControl'
-import InputLabel from '@mui/material/InputLabel'
-import React, { Ref } from 'react'
+import { FormControl, InputLabel, OutlinedInput } from '@mui/material'
+import { Dispatch } from 'react'
 
-export type Props = {
-  inputRef: Ref<HTMLInputElement>
-  text: string
-  type?: string
+export interface Props {
+  label: string
+  setText: Dispatch<string>
 }
-
-const Component: React.VFC<Props> = ({
-  inputRef,
-  text,
-  type = 'text',
-  ...args
-}) => {
+const TextField: React.VFC<Props> = ({ label, setText, ...props }) => {
   return (
-    <FormControl fullWidth>
-      <InputLabel htmlFor="outlined-adornment-password">{text}</InputLabel>
-      <OutlinedInput
-        {...args}
-        fullWidth
-        label={text}
-        inputRef={inputRef}
-        type={type}
-      />
+    <FormControl sx={{ m: 1, width: '100%' }} variant="outlined">
+      <InputLabel>{label}</InputLabel>
+      <OutlinedInput label={label} onChange={(e) => setText(e.target.value)} />
     </FormControl>
   )
 }
 
-export default Component
+export default TextField
