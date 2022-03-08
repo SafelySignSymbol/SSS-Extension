@@ -5,7 +5,7 @@ import styled from '@emotion/styled'
 import Typography from '../../_general/components/Typography'
 
 import Color from '../../_general/utils/Color'
-import { IconButton } from '@mui/material'
+import { Divider, IconButton } from '@mui/material'
 import { IconContext } from 'react-icons'
 import { RiDeleteBin2Line } from 'react-icons/ri'
 import { deleteAllowList } from '../../_general/lib/Storage'
@@ -31,16 +31,20 @@ const Component: React.VFC<Props> = ({ allowlist, reload }) => {
           <Typography variant="h5" text="許可リスト" />
         </CardHeader>
       </Center>
+      <Divider />
       {allowlist.map((e, i) => {
         return (
-          <Wrap key={i}>
-            <Typography text={e} variant="h5" />
-            <IconButton size="small" onClick={() => deny(i)}>
-              <IconContext.Provider value={{ size: '24px' }}>
-                <RiDeleteBin2Line style={{ margin: '6px' }} />
-              </IconContext.Provider>
-            </IconButton>
-          </Wrap>
+          <div key={i}>
+            <Wrap>
+              <Typography text={e} variant="h5" />
+              <IconButton size="small" onClick={() => deny(i)}>
+                <IconContext.Provider value={{ size: '24px' }}>
+                  <RiDeleteBin2Line style={{ margin: '6px' }} />
+                </IconContext.Provider>
+              </IconButton>
+            </Wrap>
+            <Divider />
+          </div>
         )
       })}
     </Wrapper>
@@ -50,8 +54,8 @@ const Component: React.VFC<Props> = ({ allowlist, reload }) => {
 export default Component
 
 const Wrapper = styled('div')({
-  width: 'calc(100% - 64px)',
-  margin: '16px',
+  width: '60vw',
+  margin: '16px 20vw',
   padding: '16px',
   display: 'flex',
   flexFlow: 'column wrap',

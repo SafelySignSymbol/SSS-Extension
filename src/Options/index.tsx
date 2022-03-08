@@ -5,6 +5,10 @@ import Home from './pages/Home'
 import Header from './components/Header'
 import AccountModal from './components/AccountModal'
 import { getActiveAccount } from '../_general/lib/Storage'
+import Settings from './pages/Settings'
+import Allow from './pages/Allow'
+import Accounts from './pages/Accounts'
+import History from './pages/History'
 
 export type Page = 'SETTING' | 'HISTORY' | 'ALLOW' | 'HOME' | 'ACCOUNTS'
 
@@ -28,14 +32,18 @@ const Options: React.VFC = () => {
 
   const getBody = () => {
     if (page === 'SETTING') {
+      return <Settings reload={reload} update={update} />
     }
 
     if (page === 'HISTORY') {
+      return <History reload={reload} update={update} />
     }
 
     if (page === 'ALLOW') {
+      return <Allow reload={reload} update={update} />
     }
     if (page === 'ACCOUNTS') {
+      return <Accounts reload={reload} update={update} />
     }
 
     if (page === 'HOME') {

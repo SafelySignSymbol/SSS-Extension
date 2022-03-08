@@ -4,7 +4,6 @@ import styled from '@emotion/styled'
 import { ExtensionAccount } from '../../_general/model/ExtensionAccount'
 import Typography from '../../_general/components/Typography'
 import { Address } from 'symbol-sdk'
-import TextField from '../../_general/components/TextField'
 import Spacer from '../../_general/components/Spacer'
 import Button from '../../_general/components/Button'
 import { checkPassword } from '../../_general/lib/validator'
@@ -23,17 +22,14 @@ const Login: React.VFC<Props> = ({ extensionAccount, loginSuccess }) => {
     extensionAccount.address
   ).pretty()
 
-  const passRef = useRef<HTMLInputElement>(null)
-
   const login = () => {
-    if (passRef === null || passRef.current === null) return
     const check = checkPassword(
       extensionAccount.encriptedPrivateKey,
-      passRef.current.value,
+      pass,
       extensionAccount.address
     )
     if (check) {
-      loginSuccess(passRef.current.value)
+      loginSuccess(pass)
     }
   }
 

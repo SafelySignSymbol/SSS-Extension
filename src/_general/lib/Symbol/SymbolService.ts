@@ -127,7 +127,7 @@ export const getTransactions = (
       .search(searchCriteria)
       .toPromise()
       .then((txs) => {
-        console.log('txs', txs)
+        // console.log('txs', txs)
         resolve(txs.data)
       })
       .catch(() => {

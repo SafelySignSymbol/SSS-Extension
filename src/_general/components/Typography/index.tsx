@@ -29,6 +29,7 @@ const STypography = styled(Typography)<{
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  font-family: Noto Sans JP;
 `
 
 export default Component
