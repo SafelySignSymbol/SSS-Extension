@@ -27,7 +27,7 @@ const Options: React.VFC<Props> = ({ reload, update }) => {
   }, [update])
 
   if (account === null) {
-    return <>Plese set Account</>
+    return <></>
   }
 
   const adr = Address.createFromRawAddress(account.address)
@@ -36,15 +36,19 @@ const Options: React.VFC<Props> = ({ reload, update }) => {
     <Wrapper>
       <Grid container>
         <Grid item xs={4}>
-          <Spacer MTop="32px">
-            {account !== null && <ActiveAccount address={adr.pretty()} />}
+          <Spacer margin="32px 8px">
+            <ActiveAccount address={adr} />
           </Spacer>
-          <Spacer MTop="32px">
+          <Spacer margin="32px 8px">
             <Mosaics address={adr} />
           </Spacer>
         </Grid>
         <Grid item xs={8}>
-          <TransactionHistory address={adr} />
+          <Spacer margin="32px 8px">
+            <Wrap>
+              <TransactionHistory address={adr} />
+            </Wrap>
+          </Spacer>
         </Grid>
       </Grid>
     </Wrapper>
@@ -54,12 +58,10 @@ const Options: React.VFC<Props> = ({ reload, update }) => {
 export default Options
 
 const Wrapper = styled('div')({
-  margin: '32px 80px',
+  margin: '16px 80px',
   width: 'calc(100vw - 64px)',
 })
 
-const Center = styled('div')({
-  display: 'flex',
-  justifyContent: 'center',
-  alignItems: 'center',
+const Wrap = styled('div')({
+  height: 'calc(100vh - 176px)',
 })

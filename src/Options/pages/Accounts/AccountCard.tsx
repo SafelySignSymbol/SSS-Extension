@@ -5,9 +5,9 @@ import { Box, IconButton } from '@mui/material'
 
 import { IconContext } from 'react-icons'
 import { HiOutlineClipboardCopy } from 'react-icons/hi'
-import Color from '../../_general/utils/Color'
-import Typography from '../../_general/components/Typography'
-import Spacer from '../../_general/components/Spacer'
+import Color from '../../../_general/utils/Color'
+import Typography from '../../../_general/components/Typography'
+import Spacer from '../../../_general/components/Spacer'
 
 export type Props = {
   address: string

@@ -1,6 +1,6 @@
 import styled from '@emotion/styled'
 
-import { ReactComponent as SVG } from './sss1_2.svg'
+import { ReactComponent as SVG } from './logo.svg'
 
 export interface Props {
   onClick: () => void
@@ -18,4 +18,7 @@ export default Component
 
 const Wrapper = styled('span')({
   cursor: 'pointer',
+  '& > svg': {
+    height: '80px',
+  },
 })

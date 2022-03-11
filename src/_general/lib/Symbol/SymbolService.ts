@@ -11,13 +11,12 @@ import {
   MosaicInfo,
   NetworkType,
   Order,
-  Page,
   RepositoryFactoryHttp,
   Transaction,
   TransactionGroup,
+  TransactionSearchCriteria,
   UInt64,
 } from 'symbol-sdk'
-import { height } from '@mui/system'
 
 export type MosaicData = {
   mosaic: Mosaic
@@ -115,11 +114,11 @@ export const getTransactions = (
   const NODE_URL = getNodeUrl(net_type)
   const repositoryFactory = new RepositoryFactoryHttp(NODE_URL)
   const transactionHttp = repositoryFactory.createTransactionRepository()
-  const searchCriteria = {
+  const searchCriteria: TransactionSearchCriteria = {
     group: TransactionGroup.Confirmed,
     address,
     pageNumber: pageNum,
-    pageSize: 10,
+    pageSize: 50,
     order: Order.Desc,
   }
   return new Promise((resolve, reject) => {

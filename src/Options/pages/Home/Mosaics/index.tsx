@@ -72,9 +72,9 @@ const Component: React.VFC<Props> = ({ address }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
   return (
-    <Wrapper>
-      <Tmp>
-        <Spacer MBottom="16px">
+    <Root>
+      <Wrapper>
+        <Spacer margin="0px 32px 16px">
           <Typography text="Mosaics" variant="h4" />
         </Spacer>
         <Divider />
@@ -105,20 +105,17 @@ const Component: React.VFC<Props> = ({ address }) => {
             </>
           )
         })}
-      </Tmp>
-    </Wrapper>
+      </Wrapper>
+    </Root>
   )
 }
 
 export default Component
 
-const Wrapper = styled('div')({
-  width: 'calc(100% - 64px)',
-  margin: '16px',
-  padding: '16px',
+const Root = styled('div')({
+  padding: '32px',
+  background: 'white',
   display: 'flex',
-  border: '1px solid',
-  borderRadius: '8px',
 })
 
 const MosaicViewer = styled('div')({
@@ -135,6 +132,6 @@ const Amount = styled('span')((p: { color: string; float: boolean }) => ({
   fontSize: p.float ? '12px' : '14px',
 }))
 
-const Tmp = styled('div')({
+const Wrapper = styled('div')({
   width: '100%',
 })

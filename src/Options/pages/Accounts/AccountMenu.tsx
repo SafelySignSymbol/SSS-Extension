@@ -12,7 +12,7 @@ import {
 import {
   deleteExtensionAccount,
   setActiveAccount,
-} from '../../_general/lib/Storage'
+} from '../../../_general/lib/Storage'
 import { IconContext } from 'react-icons'
 import { RiSettings2Fill } from 'react-icons/ri'
 

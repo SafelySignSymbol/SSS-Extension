@@ -6,6 +6,9 @@ import { getTransactions } from '../../../../_general/lib/Symbol/SymbolService'
 import { getTransactionType } from '../../../../_general/lib/TransactionType'
 import Item from './Item'
 import { Divider } from '@mui/material'
+import Spacer from '../../../../_general/components/Spacer'
+import Typography from '../../../../_general/components/Typography'
+import Color, { addAlpha } from '../../../../_general/utils/Color'
 
 export type Props = {
   address: Address
@@ -21,12 +24,14 @@ const Component: React.VFC<Props> = ({ address }) => {
   }, [address])
   return (
     <Wrapper>
+      <Spacer margin="0px 32px 16px">
+        <Typography text="Recent Transaction" variant="h4" />
+      </Spacer>
+      <Divider />
       {transactions.map((tx) => {
         if (!!tx.transactionInfo) {
           const txInfo = tx.transactionInfo
           const type = tx.type
-          // console.log(tx.transactionInfo)
-          // console.log(tx.transactionInfo.height.toString())
           return (
             <div key={txInfo.hash}>
               <Item
@@ -49,8 +54,27 @@ const Component: React.VFC<Props> = ({ address }) => {
 export default Component
 
 const Wrapper = styled('div')({
-  padding: '16px',
+  padding: '32px',
   background: 'white',
-  border: '1px solid black',
-  borderRadius: '8px',
+  maxHeight: 'calc(100% - 64px)',
+  overflowY: 'scroll',
+  '::-webkit-scrollbar-track': {
+    background: 'white',
+  },
+  '::-webkit-scrollbar-thumb': {
+    borderRadius: '4px',
+    background: Color.grayscale,
+    borderRight: '2px solid white',
+    borderTop: '2px solid white',
+    borderBottom: '2px solid white',
+  },
+  '::-webkit-scrollbar': {
+    width: '4px',
+    borderRadius: '4px',
+  },
+})
+
+const Title = styled('div')({
+  display: 'flex',
+  justifyContent: 'end',
 })

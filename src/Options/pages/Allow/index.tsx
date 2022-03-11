@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import styled from '@emotion/styled'
 
 import { getAllowList } from '../../../_general/lib/Storage'
-import AllowList from '../../components/AllowList'
+import AllowList from './AllowList'
 import Typography from '../../../_general/components/Typography'
 interface Props {
   reload: () => void
@@ -20,7 +20,13 @@ const Options: React.VFC<Props> = ({ reload, update }) => {
 
   return (
     <Wrapper>
-      <Typography text="AllowList" variant="h4" />
+      <Wrap>
+        <Typography text="許可リスト" variant="h5" />
+        <Typography
+          text="SSSを有効にしたドメインを確認・削除できます。"
+          variant="subtitle1"
+        />
+      </Wrap>
       <AllowList allowlist={allowList} reload={reload} />
     </Wrapper>
   )
@@ -29,6 +35,10 @@ const Options: React.VFC<Props> = ({ reload, update }) => {
 export default Options
 
 const Wrapper = styled('div')({
-  margin: '32px 80px',
-  width: 'calc(100vw - 64px)',
+  margin: '32px 10vw',
+  minWidth: '60vw',
+  width: '600px',
+})
+const Wrap = styled('div')({
+  margin: '8px',
 })

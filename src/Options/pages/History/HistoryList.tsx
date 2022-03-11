@@ -17,13 +17,6 @@ export type Props = {
 }
 
 const Component: React.VFC<Props> = ({ history, reload }) => {
-  const deny = (num: number) => {
-    console.log('deny', num)
-    deleteAllowList(num).then(() => {
-      reload()
-    })
-  }
-
   const save = () => {
     const historyText =
       'SSS Extension Sign History \n======================\n' +

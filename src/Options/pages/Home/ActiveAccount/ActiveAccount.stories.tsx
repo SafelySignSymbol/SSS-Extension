@@ -15,5 +15,5 @@ export const Main = Template.bind({})
 Main.args = {
   address: Address.createFromRawAddress(
     'NAW7L44MVKCVBM6IGEBXLF2K7JYKEP6R5XMCEZA'
-  ).pretty(),
+  ),
 }

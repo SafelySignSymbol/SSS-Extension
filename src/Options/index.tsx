@@ -22,7 +22,7 @@ const Options: React.VFC = () => {
   useEffect(() => {
     getActiveAccount().then((acc) => {
       if (acc === null) setOpenModal(true)
-      setUpdate(new Date())
+      // setUpdate(new Date())
     })
   }, [])
 

@@ -3,6 +3,7 @@ import styled from '@emotion/styled'
 import Typography from '../../../../_general/components/Typography'
 import { NetworkType, UInt64 } from 'symbol-sdk'
 import { getTimeStamp } from '../../../../_general/lib/Symbol/SymbolService'
+import Color from '../../../../_general/utils/Color'
 
 export type Props = {
   type: string
@@ -25,11 +26,11 @@ const Component: React.VFC<Props> = ({ type, hash, netType, height }) => {
   return (
     <Column>
       <Right>
-        <Typography text={type} variant="h6" />
+        <Text>{type}</Text>
       </Right>
       <Wrap>
         <Typography text={hash} variant="h5" />
-        <Typography text={time} variant="h5" />
+        <Typography text={time} variant="subtitle1" />
       </Wrap>
     </Column>
   )
@@ -48,9 +49,14 @@ const Column = styled('div')({
   display: 'flex',
   flexDirection: 'column',
   justifyContent: 'center',
+  margin: '2px',
 })
 
 const Right = styled('div')({
   display: 'flex',
   justifyContent: 'end',
+})
+
+const Text = styled('span')({
+  fontSize: '20px',
 })

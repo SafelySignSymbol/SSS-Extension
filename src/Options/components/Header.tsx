@@ -31,10 +31,6 @@ const Component: React.VFC<Props> = ({ page, setPage, handleOpen }) => {
             ACCOUNTS
           </Item>
           <Divider orientation="vertical" flexItem />
-          <Item isOpen={page === 'HISTORY'} onClick={() => setPage('HISTORY')}>
-            HISTORY
-          </Item>
-          <Divider orientation="vertical" flexItem />
           <Item isOpen={page === 'ALLOW'} onClick={() => setPage('ALLOW')}>
             ALLOW LIST
           </Item>
@@ -57,7 +53,7 @@ const Container = styled('div')({
   display: 'flex',
   height: '80px',
   alignItems: 'center',
-  borderBottom: '1px solid black',
+  background: 'white',
 })
 const Flex = styled('div')({
   display: 'flex',
