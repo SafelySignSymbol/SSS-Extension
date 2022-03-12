@@ -1,7 +1,7 @@
 import { getStorage, setStorage } from '.'
 
 export type Setting = {
-  lang: 'JA' | 'EN'
+  lang: string
   session: number
 }
 

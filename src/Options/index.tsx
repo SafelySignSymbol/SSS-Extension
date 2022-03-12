@@ -14,18 +14,17 @@ import { getActiveAccount } from '../_general/lib/Storage'
 import Settings from './pages/Settings'
 import Allow from './pages/Allow'
 import Accounts from './pages/Accounts'
-import History from './pages/History'
 
-export type Page = 'SETTING' | 'HISTORY' | 'ALLOW' | 'HOME' | 'ACCOUNTS'
+export type Page = 'SETTING' | 'ALLOW' | 'HOME' | 'ACCOUNTS'
 
 i18n.use(initReactI18next).init({
   debug: true,
   resources: {
-    en: { translation: enJson },
-    ja: { translation: jaJson },
+    EN: { translation: enJson },
+    JA: { translation: jaJson },
   },
-  lng: 'ja',
-  fallbackLng: 'ja',
+  lng: 'JA',
+  fallbackLng: 'JA',
   returnEmptyString: false,
 })
 
@@ -50,10 +49,6 @@ const Options: React.VFC = () => {
   const getBody = () => {
     if (page === 'SETTING') {
       return <Settings reload={reload} update={update} />
-    }
-
-    if (page === 'HISTORY') {
-      return <History reload={reload} update={update} />
     }
 
     if (page === 'ALLOW') {

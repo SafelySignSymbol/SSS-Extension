@@ -18,10 +18,7 @@ export const SETTING = Template.bind({})
 SETTING.args = {
   page: 'SETTING',
 }
-export const HISTORY = Template.bind({})
-HISTORY.args = {
-  page: 'HISTORY',
-}
+
 export const ALLOW = Template.bind({})
 ALLOW.args = {
   page: 'ALLOW',

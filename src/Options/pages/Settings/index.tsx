@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import styled from '@emotion/styled'
 import { useTranslation } from 'react-i18next'
-
+import i18n from 'i18next'
 import Typography from '../../../_general/components/Typography'
 import Button from '../../../_general/components/Button'
 import { SignedTransaction } from 'symbol-sdk'
@@ -12,10 +12,19 @@ import {
   Setting,
   setSetting as setExtensionSetting,
 } from '../../../_general/lib/Storage/Setting'
+import {
+  FormControl,
+  InputLabel,
+  Select,
+  OutlinedInput,
+  MenuItem,
+} from '@mui/material'
 interface Props {
   reload: () => void
   update: Date
 }
+
+const langs = ['JA', 'EN']
 
 const Options: React.VFC<Props> = ({ reload, update }) => {
   const [history, setHistory] = useState<SignedTransaction[]>([])
@@ -30,6 +39,7 @@ const Options: React.VFC<Props> = ({ reload, update }) => {
 
     getSetting().then((s) => {
       setSetting(s)
+      i18n.changeLanguage(s.lang)
     })
   }, [update])
 
@@ -49,14 +59,15 @@ const Options: React.VFC<Props> = ({ reload, update }) => {
     URL.revokeObjectURL(url)
   }
 
-  const changeLang = () => {
+  const changeLang = (val: string) => {
     const newSetting: Setting = {
-      lang: setting.lang === 'JA' ? 'JA' : 'JA',
+      lang: val,
       session: setting.session,
     }
 
     setSetting(newSetting)
     setExtensionSetting(newSetting)
+    reload()
   }
 
   return (
@@ -79,7 +90,21 @@ const Options: React.VFC<Props> = ({ reload, update }) => {
           />
         </Column>
         <Center>
-          <Button text={setting.lang || 'JA'} onClick={changeLang} />
+          <FormControl sx={{ width: 120 }}>
+            <InputLabel id="demo-multiple-name-label">Langage</InputLabel>
+            <Select
+              labelId="demo-multiple-name-label"
+              id="demo-multiple-name"
+              value={setting.lang}
+              onChange={(e) => changeLang(e.target.value)}
+              input={<OutlinedInput label="Name" />}>
+              {langs.map((l) => (
+                <MenuItem key={l} value={l}>
+                  {l}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
         </Center>
       </Wrapper>
     </Root>

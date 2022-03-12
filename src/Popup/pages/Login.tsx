@@ -46,7 +46,7 @@ const Login: React.VFC<Props> = ({ extensionAccount, loginSuccess }) => {
       <Spacer margin="16px 8px">
         <Spacer margin="32px 0px">
           <Wrapper>
-            <Typography text="ログイン" variant="h4" />
+            <Typography text="Login" variant="h4" />
           </Wrapper>
         </Spacer>
         <Spacer margin="16px 0px">
