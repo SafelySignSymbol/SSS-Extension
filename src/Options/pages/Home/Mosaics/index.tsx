@@ -15,6 +15,7 @@ import {
   getNetworkTypeByAddress,
   getNodeUrl,
 } from '../../../../_general/lib/Symbol/Config'
+import Color from '../../../../_general/utils/Color'
 
 export type Props = {
   address: Address
@@ -75,7 +76,9 @@ const Component: React.VFC<Props> = ({ address }) => {
     <Root>
       <Wrapper>
         <Spacer margin="0px 32px 16px">
-          <Typography text="Mosaics" variant="h4" />
+          <Title>
+            <Typography text="Mosaics" variant="h5" color={Color.grayscale} />
+          </Title>
         </Spacer>
         <Divider />
         {mosaics.map((m) => {
@@ -134,4 +137,9 @@ const Amount = styled('span')((p: { color: string; float: boolean }) => ({
 
 const Wrapper = styled('div')({
   width: '100%',
+})
+
+const Title = styled('div')({
+  display: 'flex',
+  justifyContent: 'end',
 })

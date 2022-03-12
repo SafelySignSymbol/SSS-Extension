@@ -6,6 +6,8 @@ import Typography from '../../../../_general/components/Typography'
 import { Address } from 'symbol-sdk'
 
 import { getAddressXym } from '../../../../_general/lib/Symbol/SymbolService'
+import Color from '../../../../_general/utils/Color'
+import { Chip } from '@mui/material'
 
 export type Props = {
   address: Address
@@ -19,13 +21,31 @@ const Component: React.VFC<Props> = ({ address }) => {
     })
   }, [address])
 
+  const net_type = address.plain().charAt(0) === 'T' ? 'TEST NET' : 'MAIN NET'
+  const color: string = (() => {
+    if (net_type === 'TEST NET') {
+      return 'black'
+    } else {
+      return Color.sky
+    }
+  })()
+
   return (
     <Root>
       <Spacer margin="0px 32px 16px">
-        <Typography text="ActiveAccount Infomation" variant="h4" />
+        <Title>
+          <Typography
+            text="ActiveAccount Infomation"
+            variant="h5"
+            color={Color.grayscale}
+          />
+        </Title>
       </Spacer>
-      <Spacer margin="8px 0px">
-        <Typography text="Address" variant="h5" />
+      <Spacer margin="8px 0px 16px">
+        <Addr>
+          <Typography text="Address" variant="h5" />
+          <SChip label={net_type} clr={color} />
+        </Addr>
         <Typography text={address.pretty()} variant="subtitle1" />
       </Spacer>
       <Spacer margin="8px 0px">
@@ -61,3 +81,18 @@ const Amount = styled('span')((p: { color: string; float: boolean }) => ({
 const Wrap = styled('div')({
   marginBottom: '4px',
 })
+
+const Title = styled('div')({
+  display: 'flex',
+  justifyContent: 'end',
+})
+
+const Addr = styled('div')({
+  display: 'flex',
+  justifyContent: 'space-between',
+})
+
+const SChip = styled(Chip)((p: { clr: string }) => ({
+  margin: '0px 16px',
+  color: p.clr,
+}))

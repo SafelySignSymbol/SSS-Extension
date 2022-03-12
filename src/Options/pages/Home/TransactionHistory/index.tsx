@@ -8,7 +8,7 @@ import Item from './Item'
 import { Divider } from '@mui/material'
 import Spacer from '../../../../_general/components/Spacer'
 import Typography from '../../../../_general/components/Typography'
-import Color, { addAlpha } from '../../../../_general/utils/Color'
+import Color from '../../../../_general/utils/Color'
 
 export type Props = {
   address: Address
@@ -25,7 +25,13 @@ const Component: React.VFC<Props> = ({ address }) => {
   return (
     <Wrapper>
       <Spacer margin="0px 32px 16px">
-        <Typography text="Recent Transaction" variant="h4" />
+        <Title>
+          <Typography
+            text="Recent Transaction"
+            variant="h5"
+            color={Color.grayscale}
+          />
+        </Title>
       </Spacer>
       <Divider />
       {transactions.map((tx) => {

@@ -23,7 +23,6 @@ const Component: React.VFC<Props> = ({
   isActive = false,
 }) => {
   const copy = (value: string) => {
-    console.log('val', value)
     navigator.clipboard.writeText(value)
   }
   return (
