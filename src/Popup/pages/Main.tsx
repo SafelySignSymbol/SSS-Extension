@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import styled from '@emotion/styled'
 
 import { ExtensionAccount } from '../../_general/model/ExtensionAccount'
-import Logo from '../../_general/components/Logo'
+import { SquareLogo } from '../../_general/components/Logo/'
 import { IconButton } from '@mui/material'
 import { IconContext } from 'react-icons'
 import { RiSettings2Fill } from 'react-icons/ri'
@@ -38,7 +38,7 @@ const Main: React.VFC<Props> = ({ extensionAccount, sign }) => {
   return (
     <Container>
       <Header>
-        <Logo onClick={() => console.log('')} />
+        <SquareLogo onClick={() => console.log('')} />
         <Grid>
           <Typography text={extensionAccount.address} variant="h6" />
         </Grid>
