@@ -29,7 +29,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "yarn build:react && yarn build:content_scripts && yarn build:background_scripts && yarn build:inject_scripts",
+    "build": "GENERATE_SOURCEMAP=false WEBPACK_ENV=production yarn build:react && yarn build:content_scripts && yarn build:background_scripts && yarn build:inject_scripts",
     "build:react": "react-scripts build && yarn rename:popup && yarn rename:options",
     "build:content_scripts": "webpack --config webpack.content_scripts.config.ts",
     "build:background_scripts": "webpack --config webpack.background_scripts.config.ts",

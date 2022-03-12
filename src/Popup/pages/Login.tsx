@@ -1,4 +1,4 @@
-import React, { Dispatch, useEffect, useRef, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import styled from '@emotion/styled'
 
 import { ExtensionAccount } from '../../_general/model/ExtensionAccount'
@@ -26,7 +26,8 @@ const Login: React.VFC<Props> = ({ extensionAccount, loginSuccess }) => {
     const check = checkPassword(
       extensionAccount.encriptedPrivateKey,
       pass,
-      extensionAccount.address
+      extensionAccount.address,
+      extensionAccount.seed
     )
     if (check) {
       loginSuccess(pass)

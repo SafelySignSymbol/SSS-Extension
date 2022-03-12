@@ -1,4 +1,4 @@
-import React, { Dispatch, useRef, useState } from 'react'
+import React, { Dispatch, useState } from 'react'
 import styled from '@emotion/styled'
 import { encrypt } from '../../_general/lib/Crypto'
 
@@ -26,9 +26,9 @@ export type Props = {
 }
 
 const Component: React.VFC<Props> = ({ open, setOpen, reload }) => {
-  const addressRef = useRef<HTMLInputElement>(null)
-  const priKeyRef = useRef<HTMLInputElement>(null)
-  const passRef = useRef<HTMLInputElement>(null)
+  // const addressRef = useRef<HTMLInputElement>(null)
+  // const priKeyRef = useRef<HTMLInputElement>(null)
+  // const passRef = useRef<HTMLInputElement>(null)
 
   const [message, setMessage] = useState('')
   const [openSB, setOpenSB] = useState(false)
@@ -48,12 +48,12 @@ const Component: React.VFC<Props> = ({ open, setOpen, reload }) => {
     setOpenSB(false)
   }
   const resetInput = () => {
-    if (!(addressRef === null || addressRef.current === null))
-      addressRef.current.value = ''
-    if (!(priKeyRef === null || priKeyRef.current === null))
-      priKeyRef.current.value = ''
-    if (!(passRef === null || passRef.current === null))
-      passRef.current.value = ''
+    // if (!(addressRef === null || addressRef.current === null))
+    //   addressRef.current.value = ''
+    // if (!(priKeyRef === null || priKeyRef.current === null))
+    //   priKeyRef.current.value = ''
+    // if (!(passRef === null || passRef.current === null))
+    //   passRef.current.value = ''
   }
 
   const submit = () => {
@@ -80,13 +80,15 @@ const Component: React.VFC<Props> = ({ open, setOpen, reload }) => {
       setMessage('秘密鍵とアドレスのペアが一致しません。')
       setOpenSB(true)
     } else {
-      const enpk = encrypt(pk, ps)
+      const seed = Math.floor((Math.random() * 10000) % 1000)
+      const enpk = encrypt(pk, ps, seed)
 
       const extensionAccount = new ExtensionAccount(
         enpk,
         acc.publicKey,
         acc.address.plain(),
-        'PASS'
+        'PASS',
+        seed
       )
 
       addExtensionAccount(extensionAccount)
@@ -96,9 +98,7 @@ const Component: React.VFC<Props> = ({ open, setOpen, reload }) => {
           setOpenSB(true)
           resetInput()
           closeModal()
-          setInterval(() => {
-            reload()
-          }, 100)
+          reload()
         })
         .catch(() => {
           setSnackbarStatus('error')
