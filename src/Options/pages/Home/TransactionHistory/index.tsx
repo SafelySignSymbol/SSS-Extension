@@ -18,7 +18,7 @@ const Component: React.VFC<Props> = ({ address }) => {
   const [transactions, setTransactions] = useState<Transaction[]>([])
   useEffect(() => {
     getTransactions(address, 1).then((txs) => {
-      console.log('page', txs)
+      // console.log('page', txs)
       setTransactions(txs)
     })
   }, [address])

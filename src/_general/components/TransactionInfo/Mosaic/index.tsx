@@ -43,7 +43,7 @@ const TxMosaic: React.VFC<Props> = ({ mosaic }) => {
             }
           },
           (err) => {
-            console.log('err', err)
+            // console.log('err', err)
             setId('NameSpace Not Found')
           }
         )
@@ -51,10 +51,10 @@ const TxMosaic: React.VFC<Props> = ({ mosaic }) => {
         setId(mosaic.id.toHex())
         mosaicHttp.getMosaic(mosaic.id).subscribe(
           (mosaicInfo) => {
-            console.log(
-              'amount',
-              mosaic.amount.compact() / Math.pow(10, mosaicInfo.divisibility)
-            )
+            // console.log(
+            //   'amount',
+            //   mosaic.amount.compact() / Math.pow(10, mosaicInfo.divisibility)
+            // )
             setDiv(mosaicInfo.divisibility)
           },
           (err) => console.error(err)

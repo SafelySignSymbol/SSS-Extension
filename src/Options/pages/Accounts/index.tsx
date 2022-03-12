@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react'
-import styled from '@emotion/styled'
 
 import { getExtensionAccounts } from '../../../_general/lib/Storage'
 import { ExtensionAccount } from '../../../_general/model/ExtensionAccount'

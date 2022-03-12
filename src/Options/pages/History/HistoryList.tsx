@@ -46,19 +46,6 @@ const Component: React.VFC<Props> = ({ history, reload }) => {
             </IconContext.Provider>
           </IconButton>
         </CardHeader>
-        {/* {history.map((h) => {
-          console.log('tx', h)
-          return (
-            <Wrap key={h.hash}>
-              <Typography text={h.hash} variant="h6" />
-              <IconButton onClick={() => ''}>
-                <IconContext.Provider value={{ size: '24px' }}>
-                  <RiSettings2Fill style={{ margin: '6px' }} />
-                </IconContext.Provider>
-              </IconButton>
-            </Wrap>
-          )
-        })} */}
       </Center>
     </Wrapper>
   )

@@ -43,12 +43,12 @@ const Component: React.VFC<Props> = ({ address }) => {
           .createChainRepository()
           .getChainInfo()
           .subscribe((chainInfo) => {
-            console.log('chain', chainInfo)
+            // console.log('chain', chainInfo)
             for (let m of accountInfo.mosaics) {
               mosaicHttp.getMosaic(new MosaicId(m.id.id.toHex())).subscribe(
                 (mosaicInfo) => {
                   if (mosaicInfo.duration.toString() === '0') {
-                    console.log('mosaic', mosaicInfo)
+                    // console.log('mosaic', mosaicInfo)
                     setMosaics((prev) => [
                       ...prev,
                       { mosaicInfo: mosaicInfo, mosaic: m },

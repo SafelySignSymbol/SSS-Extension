@@ -27,16 +27,16 @@ const TxAddress: React.VFC<Props> = ({ address }) => {
         const rep = new RepositoryFactoryHttp(url)
         const nsRep = rep.createNamespaceRepository()
         const nsService = new NamespaceService(nsRep)
-        console.log('address', address)
+        // console.log('address', address)
 
         const nsId = NamespaceId.createFromEncoded(address.toHex())
         nsService.namespace(nsId).subscribe(
           (x) => {
-            console.log(x)
+            // console.log(x)
             setAddr(x.name)
           },
           (err) => {
-            console.log('err', err)
+            // console.log('err', err)
             setAddr('NameSpace Not Found')
           }
         )

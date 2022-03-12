@@ -45,7 +45,7 @@ export const initialize = () => {
       }
     })
     .catch(() => {
-      console.log('catch')
+      // console.log('catch')
       init()
     })
 }

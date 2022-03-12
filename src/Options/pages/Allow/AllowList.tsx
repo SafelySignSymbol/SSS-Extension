@@ -16,7 +16,7 @@ export type Props = {
 
 const Component: React.VFC<Props> = ({ allowlist, reload }) => {
   const deny = (num: number) => {
-    console.log('deny', num)
+    // console.log('deny', num)
     deleteAllowList(num).then(() => {
       reload()
     })

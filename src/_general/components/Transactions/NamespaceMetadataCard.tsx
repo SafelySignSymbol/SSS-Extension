@@ -9,7 +9,7 @@ type Props = {
   transaction: NamespaceMetadataTransaction
 }
 const AccountMetadataCard: React.VFC<Props> = ({ transaction }) => {
-  console.log('id', transaction.targetNamespaceId)
+  // console.log('id', transaction.targetNamespaceId)
   return (
     <Wrapper>
       <Typography text={transaction.targetNamespaceId.toHex()} variant="h5" />

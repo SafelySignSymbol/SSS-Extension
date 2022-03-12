@@ -9,8 +9,8 @@ export type Props = {
 }
 
 const TxMessage: React.VFC<Props> = ({ metadataKey, value }) => {
-  console.log('key', metadataKey)
-  console.log('value', value)
+  // console.log('key', metadataKey)
+  // console.log('value', value)
   return (
     <Wrapper>
       <Typography text="Metadata" variant="h5" />

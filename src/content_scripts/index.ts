@@ -44,7 +44,7 @@ const isAllowedDoamin = () => {
       domain: document.URL.split('://')[1].split('/')[0],
     },
     (res) => {
-      console.log('res', res)
+      // console.log('res', res)
       if (res.status) {
         injectSSS()
       }
