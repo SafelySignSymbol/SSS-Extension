@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 
 import styled from '@emotion/styled'
 
@@ -11,6 +11,7 @@ import { Chip, IconButton } from '@mui/material'
 import { IconContext } from 'react-icons'
 import { HiOutlineClipboardCopy } from 'react-icons/hi'
 import AccountMenu from './AccountMenu'
+import { getActiveAccount } from '../../../_general/lib/Storage'
 
 export type Props = {
   extensionAccounts: ExtensionAccount[]
@@ -18,6 +19,14 @@ export type Props = {
 }
 
 const Component: React.VFC<Props> = ({ extensionAccounts, reload }) => {
+  const [activeAccount, setActiveAccount] = useState<string>('')
+
+  useEffect(() => {
+    getActiveAccount().then((acc) => {
+      setActiveAccount(acc.address)
+    })
+  }, [extensionAccounts])
+
   if (extensionAccounts.length === 0) return <div></div>
 
   return (
@@ -35,10 +44,14 @@ const Component: React.VFC<Props> = ({ extensionAccounts, reload }) => {
           console.log('val', value)
           navigator.clipboard.writeText(value)
         }
+
+        const name = acc.name || `Account ${i + 1}`
         return (
           <Wrapper>
             <Name>
-              <Typography text={`Account ${i + 1}`} variant="h5" />
+              <IsActive isActive={acc.address === activeAccount}>
+                <Typography text={name} variant="h5" />
+              </IsActive>
               <div>
                 <SChip label={net_type} clr={color} />
                 <AccountMenu index={i} reload={reload} />
@@ -102,4 +115,14 @@ const Name = styled('div')({
 const SChip = styled(Chip)((p: { clr: string }) => ({
   margin: '0px 16px',
   color: p.clr,
+}))
+
+const IsActive = styled('span')((p: { isActive: boolean }) => ({
+  display: 'flex',
+  ':after': {
+    content: '"*"',
+    fontSize: '32px',
+    marginLeft: '16px',
+    color: `${p.isActive ? Color.sky : 'white'}`,
+  },
 }))

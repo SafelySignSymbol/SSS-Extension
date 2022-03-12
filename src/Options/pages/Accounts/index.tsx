@@ -14,7 +14,6 @@ const Options: React.VFC<Props> = ({ reload, update }) => {
 
   useEffect(() => {
     getExtensionAccounts().then((data) => {
-      console.log('accs', data)
       setAccounts(data)
     })
   }, [update])

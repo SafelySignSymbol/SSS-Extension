@@ -34,6 +34,7 @@ const Component: React.VFC<Props> = ({ open, setOpen, reload }) => {
   const [openSB, setOpenSB] = useState(false)
   const [snackbarStatus, setSnackbarStatus] = useState<AlertColor>('success')
 
+  const [name, setName] = useState('')
   const [address, setAddress] = useState('')
   const [prikey, setPrikey] = useState('')
   const [pass, setPass] = useState('default password')
@@ -48,12 +49,10 @@ const Component: React.VFC<Props> = ({ open, setOpen, reload }) => {
     setOpenSB(false)
   }
   const resetInput = () => {
-    // if (!(addressRef === null || addressRef.current === null))
-    //   addressRef.current.value = ''
-    // if (!(priKeyRef === null || priKeyRef.current === null))
-    //   priKeyRef.current.value = ''
-    // if (!(passRef === null || passRef.current === null))
-    //   passRef.current.value = ''
+    setName('')
+    setAddress('')
+    setPrikey('')
+    setPass('')
   }
 
   const submit = () => {
@@ -84,6 +83,7 @@ const Component: React.VFC<Props> = ({ open, setOpen, reload }) => {
       const enpk = encrypt(pk, ps, seed)
 
       const extensionAccount = new ExtensionAccount(
+        name,
         enpk,
         acc.publicKey,
         acc.address.plain(),
@@ -120,6 +120,9 @@ const Component: React.VFC<Props> = ({ open, setOpen, reload }) => {
             </Spacer>
           </Title>
           <Root>
+            <Spacer margin="8px">
+              <TextField label="Name" setText={setName} />
+            </Spacer>
             <Spacer margin="8px">
               <TextField label="Address" setText={setAddress} />
             </Spacer>
