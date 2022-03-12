@@ -18,6 +18,7 @@ import { Address, Account, NetworkType } from 'symbol-sdk'
 import { addExtensionAccount } from '../../_general/lib/Storage'
 import { ExtensionAccount } from '../../_general/model/ExtensionAccount'
 import PasswordTextField from '../../_general/components/TextField/PasswordTextField'
+import { useTranslation } from 'react-i18next'
 
 export type Props = {
   open: boolean
@@ -26,10 +27,6 @@ export type Props = {
 }
 
 const Component: React.VFC<Props> = ({ open, setOpen, reload }) => {
-  // const addressRef = useRef<HTMLInputElement>(null)
-  // const priKeyRef = useRef<HTMLInputElement>(null)
-  // const passRef = useRef<HTMLInputElement>(null)
-
   const [message, setMessage] = useState('')
   const [openSB, setOpenSB] = useState(false)
   const [snackbarStatus, setSnackbarStatus] = useState<AlertColor>('success')
@@ -40,6 +37,8 @@ const Component: React.VFC<Props> = ({ open, setOpen, reload }) => {
   const [pass, setPass] = useState('default password')
   const [isVPK, setIsVPK] = useState(false)
   const [isVPass, setIsVPass] = useState(false)
+
+  const [t] = useTranslation()
 
   const closeModal = () => {
     setOpen(false)
@@ -62,12 +61,12 @@ const Component: React.VFC<Props> = ({ open, setOpen, reload }) => {
 
     if (!ad) {
       setSnackbarStatus('error')
-      setMessage('アドレスのフォーマットが間違っています。')
+      setMessage(t('accmodal_wrong_address_format'))
     }
 
     if (!pk) {
       setSnackbarStatus('error')
-      setMessage('秘密鍵のフォーマットが間違っています。')
+      setMessage(t('accmodal_wrong_prikey_format'))
     }
     const addr = Address.createFromRawAddress(ad)
     const acc = Account.createFromPrivateKey(
@@ -76,7 +75,7 @@ const Component: React.VFC<Props> = ({ open, setOpen, reload }) => {
     )
     if (addr.plain() !== acc.address.plain()) {
       setSnackbarStatus('error')
-      setMessage('秘密鍵とアドレスのペアが一致しません。')
+      setMessage(t('accmodal_wrong_keypair'))
       setOpenSB(true)
     } else {
       const seed = Math.floor((Math.random() * 10000) % 1000)
@@ -94,7 +93,7 @@ const Component: React.VFC<Props> = ({ open, setOpen, reload }) => {
       addExtensionAccount(extensionAccount)
         .then(() => {
           setSnackbarStatus('success')
-          setMessage('暗号化秘密鍵を保存しました。')
+          setMessage(t('accmodal_success_register'))
           setOpenSB(true)
           resetInput()
           closeModal()
@@ -102,7 +101,7 @@ const Component: React.VFC<Props> = ({ open, setOpen, reload }) => {
         })
         .catch(() => {
           setSnackbarStatus('error')
-          setMessage('入力されたアドレスは追加済みです。')
+          setMessage(t('accmodal_allready_added'))
           setOpenSB(true)
         })
     }
@@ -115,7 +114,7 @@ const Component: React.VFC<Props> = ({ open, setOpen, reload }) => {
           <Title>
             <Spacer margin="32px 64px">
               <Typography variant="h4" component="div">
-                Sign up
+                {t('accmodal_signup')}
               </Typography>
             </Spacer>
           </Title>
@@ -144,7 +143,7 @@ const Component: React.VFC<Props> = ({ open, setOpen, reload }) => {
             </Spacer>
             <Spacer margin="32px">
               <Right>
-                <Button text="SUBMIT" onClick={submit} />
+                <Button text={t('accmodal_submit')} onClick={submit} />
               </Right>
             </Spacer>
           </Root>

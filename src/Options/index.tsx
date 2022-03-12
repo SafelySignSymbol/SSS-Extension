@@ -1,5 +1,11 @@
-import styled from '@emotion/styled'
 import React, { useEffect, useState } from 'react'
+import styled from '@emotion/styled'
+
+import i18n from 'i18next'
+import { initReactI18next } from 'react-i18next'
+
+import enJson from '../_general/utils/locales/en.json'
+import jaJson from '../_general/utils/locales/ja.json'
 
 import Home from './pages/Home'
 import Header from './components/Header'
@@ -11,6 +17,17 @@ import Accounts from './pages/Accounts'
 import History from './pages/History'
 
 export type Page = 'SETTING' | 'HISTORY' | 'ALLOW' | 'HOME' | 'ACCOUNTS'
+
+i18n.use(initReactI18next).init({
+  debug: true,
+  resources: {
+    en: { translation: enJson },
+    ja: { translation: jaJson },
+  },
+  lng: 'ja',
+  fallbackLng: 'ja',
+  returnEmptyString: false,
+})
 
 const Options: React.VFC = () => {
   const [page, setPage] = useState<Page>('HOME')

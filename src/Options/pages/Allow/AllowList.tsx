@@ -8,13 +8,14 @@ import { IconButton } from '@mui/material'
 import { IconContext } from 'react-icons'
 import { RiDeleteBin2Line } from 'react-icons/ri'
 import { deleteAllowList } from '../../../_general/lib/Storage'
-
+import { useTranslation } from 'react-i18next'
 export type Props = {
   allowlist: string[]
   reload: () => void
 }
 
 const Component: React.VFC<Props> = ({ allowlist, reload }) => {
+  const [t] = useTranslation()
   const deny = (num: number) => {
     // console.log('deny', num)
     deleteAllowList(num).then(() => {
@@ -24,7 +25,7 @@ const Component: React.VFC<Props> = ({ allowlist, reload }) => {
   if (allowlist.length === 0)
     return (
       <div>
-        <div>ドメイン許可に関する説明 (TODO)</div>
+        <div>{t('allowlist_howuse_e')}</div>
       </div>
     )
 

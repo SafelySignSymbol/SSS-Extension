@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import styled from '@emotion/styled'
+import { useTranslation } from 'react-i18next'
 
 import Typography from '../../../_general/components/Typography'
 import Button from '../../../_general/components/Button'
@@ -19,6 +20,8 @@ interface Props {
 const Options: React.VFC<Props> = ({ reload, update }) => {
   const [history, setHistory] = useState<SignedTransaction[]>([])
   const [setting, setSetting] = useState<Setting>(InitSetting)
+
+  const [t] = useTranslation()
 
   useEffect(() => {
     getHistory().then((h) => {
@@ -60,21 +63,18 @@ const Options: React.VFC<Props> = ({ reload, update }) => {
     <Root>
       <Wrapper>
         <Column>
-          <Typography text="署名履歴" variant="h5" />
-          <Typography
-            text="SSS Extensionを用いて署名を行ったトランザクションの情報を保存します。"
-            variant="subtitle1"
-          />
+          <Typography text={t('setting_sign_history')} variant="h5" />
+          <Typography text={t('setting_sign_history_e')} variant="subtitle1" />
         </Column>
         <Center>
-          <Button text="ダウンロード" onClick={save} />
+          <Button text={t('setting_sign_history_btn')} onClick={save} />
         </Center>
       </Wrapper>
       <Wrapper>
         <Column>
-          <Typography text="言語設定" variant="h5" />
+          <Typography text={t('setting_change_langage')} variant="h5" />
           <Typography
-            text="SSS上のテキストの言語を設定します。(*現在は日本語のみ)"
+            text={t('setting_change_langage_e')}
             variant="subtitle1"
           />
         </Column>

@@ -15,6 +15,7 @@ import {
 } from '../../../_general/lib/Storage'
 import { IconContext } from 'react-icons'
 import { RiSettings2Fill } from 'react-icons/ri'
+import { useTranslation } from 'react-i18next'
 
 export type Props = {
   index: number
@@ -27,13 +28,14 @@ const Component: React.VFC<Props> = ({ index, reload }) => {
   const [snackbarStatus, setSnackbarStatus] = useState<AlertColor>('success')
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
 
+  const [t] = useTranslation()
   const open = Boolean(anchorEl)
 
   const onClickActive = () => {
     setActiveAccount(index)
       .then(() => {
         setSnackbarStatus('success')
-        setMessage('アクティブアカウントを変更しました。')
+        setMessage(t('accounts_success_change_active'))
         setOpenSB(true)
       })
       .finally(() => {
@@ -46,12 +48,12 @@ const Component: React.VFC<Props> = ({ index, reload }) => {
     deleteExtensionAccount(index)
       .then(() => {
         setSnackbarStatus('success')
-        setMessage('アカウントの登録を解除しました。')
+        setMessage(t('accounts_success_remove_account'))
         setOpenSB(true)
       })
       .catch(() => {
         setSnackbarStatus('error')
-        setMessage('アクティブアカウントを変更してください。')
+        setMessage(t('accounts_failed_remove_account'))
         setOpenSB(true)
       })
       .finally(() => {
@@ -81,8 +83,12 @@ const Component: React.VFC<Props> = ({ index, reload }) => {
         </IconContext.Provider>
       </IconButton>
       <Menu open={open} anchorEl={anchorEl} onClose={handleClose}>
-        <MenuItem onClick={onClickActive}>ActiveAccountに変更</MenuItem>
-        <MenuItem onClick={onClickDelete}>Accountの登録解除</MenuItem>
+        <MenuItem onClick={onClickActive}>
+          {t('accounts_change_active')}
+        </MenuItem>
+        <MenuItem onClick={onClickDelete}>
+          {t('accounts_remove_account')}
+        </MenuItem>
       </Menu>
       <Snackbar open={openSB} autoHideDuration={6000} onClose={closeSB}>
         <Alert
