@@ -3,7 +3,6 @@ import React from 'react'
 import styled from '@emotion/styled'
 
 import { Box } from '@mui/system'
-// import Color from '../../../_general/utils/Color'
 import { IconButton } from '@mui/material'
 import { IconContext } from 'react-icons'
 import { MdUpdate } from 'react-icons/md'

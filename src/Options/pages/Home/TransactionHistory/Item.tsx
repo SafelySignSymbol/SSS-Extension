@@ -3,7 +3,6 @@ import styled from '@emotion/styled'
 import Typography from '../../../../_general/components/Typography'
 import { NetworkType, UInt64 } from 'symbol-sdk'
 import { getTimeStamp } from '../../../../_general/lib/Symbol/SymbolService'
-import Color from '../../../../_general/utils/Color'
 
 export type Props = {
   type: string

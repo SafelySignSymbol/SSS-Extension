@@ -8,7 +8,6 @@ import Color from '../../../_general/utils/Color'
 import { IconButton } from '@mui/material'
 import { IconContext } from 'react-icons'
 import { RiSettings2Fill } from 'react-icons/ri'
-import { deleteAllowList } from '../../../_general/lib/Storage'
 import { SignedTransaction } from 'symbol-sdk'
 
 export type Props = {
@@ -74,10 +73,4 @@ const Center = styled('div')({
   justifyContent: 'center',
   alignItems: 'center',
   flexDirection: 'column',
-})
-
-const Wrap = styled('div')({
-  display: 'flex',
-  justifyContent: 'space-between',
-  width: '100%',
 })
