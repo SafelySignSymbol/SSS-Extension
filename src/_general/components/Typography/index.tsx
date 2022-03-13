@@ -24,11 +24,14 @@ const Component: React.FC<Props> = ({
 
 const STypography = styled(Typography)<{
   color: string
+  variant: string
 }>`
   color: ${(props) => props.color};
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  font-family: Noto Sans JP;
+  ${(props) => props.variant === 'h4' && 'font-size: 1.75rem;'}
 `
 
 export default Component

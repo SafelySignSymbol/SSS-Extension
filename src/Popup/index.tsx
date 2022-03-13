@@ -47,7 +47,11 @@ const Popup: React.VFC = () => {
     if (extensionAccount === null || transaction === null) {
       return
     }
-    const priKey = decrypt(extensionAccount.encriptedPrivateKey, pass)
+    const priKey = decrypt(
+      extensionAccount.encriptedPrivateKey,
+      pass,
+      extensionAccount.seed
+    )
 
     const net_type =
       extensionAccount.address.charAt(0) === 'T'

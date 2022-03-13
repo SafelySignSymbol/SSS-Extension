@@ -1,0 +1,22 @@
+{
+  "accmodal_signup": "アカウントを追加",
+  "accmodal_submit": "登録",
+  "accmodal_wrong_address_format": "アドレスのフォーマットが間違っています",
+  "accmodal_wrong_prikey_format": "秘密鍵のフォーマットが間違っています",
+  "accmodal_wrong_keypair": "秘密鍵とアドレスのペアが一致しません",
+  "accmodal_success_register": "暗号化秘密鍵を保存しました",
+  "accmodal_allready_added": "入力されたアドレスは追加済みです",
+  "accounts_change_active": "Active Accountに変更する",
+  "accounts_success_change_active": "Active Accountを変更しました",
+  "accounts_remove_account": "Accountの登録を解除する",
+  "accounts_success_remove_account": "Accountの登録を解除しました",
+  "accounts_failed_remove_account": "Active Accountを変更してください",
+  "allowlist_title": "許可リスト",
+  "allowlist_title_e": "SSSとの連携を許可したドメインの確認・連携解除を行うことができます",
+  "allowlist_howuse_e": "右クリックでWebアプリケーションをSSSと連携してください",
+  "setting_sign_history": "署名履歴のダウンロード",
+  "setting_sign_history_e": "SSS上で行われた署名の情報をファイルに保存する",
+  "setting_sign_history_btn": "ダウンロード",
+  "setting_change_langage": "言語設定",
+  "setting_change_langage_e": "SSS上で表示されるテキストの言語を変更する"
+}

@@ -1,30 +1,30 @@
-import { Configuration } from "webpack";
-import * as path from "path";
+import { Configuration } from 'webpack'
+import * as path from 'path'
 
 const config: Configuration = {
-  mode: "production",
-  entry: "./src/background_scripts/index.ts",
+  mode: 'production',
+  entry: './src/background_scripts/index.ts',
   output: {
-    path: path.resolve(__dirname, "build"),
-    filename: "background_script.js",
+    path: path.resolve(__dirname, 'build'),
+    filename: 'background_script.js',
   },
   module: {
     rules: [
       {
         test: /\.ts$/,
         use: {
-          loader: "ts-loader",
+          loader: 'ts-loader',
           options: {
             transpileOnly: true,
-            configFile: "tsconfig.background_scripts.json",
+            configFile: 'tsconfig.background_scripts.json',
           },
         },
       },
     ],
   },
   resolve: {
-    extensions: [".ts", ".js"],
+    extensions: ['.ts', '.js'],
   },
-};
+}
 
-export default config;
+export default config

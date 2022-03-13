@@ -5,7 +5,7 @@ import { showSnackbar, createSnackbar } from './snackbar'
 export {}
 
 window.requestSSS = () => {
-  console.log('req SSS')
+  // console.log('req SSS')
   if (window.isAllowedSSS()) {
     showSnackbar('SSSと連携に成功しました。')
     return true
@@ -29,7 +29,7 @@ window.installedSSS = true
 window.allowSSS = false
 
 const injectSSS = (publicKey: string) => {
-  console.log('inject sss')
+  // console.log('inject sss')
 
   createSnackbar()
   showSnackbar('SSSと連携しました。')
@@ -48,8 +48,8 @@ const injectSSS = (publicKey: string) => {
 window.addEventListener(
   'message',
   async (event) => {
-    console.log(event)
-    console.log('event', event)
+    // console.log(event)
+    // console.log('event', event)
     if (event.data.type === 'SIGNED_TRANSACTION') {
       SSS.signedTx = event.data.signedTx
       SSS.signedFrag = true

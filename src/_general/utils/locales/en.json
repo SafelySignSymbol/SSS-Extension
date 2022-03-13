@@ -1,0 +1,22 @@
+{
+  "accmodal_signup": "Add an account",
+  "accmodal_submit": "Register",
+  "accmodal_wrong_address_format": "Incorrect address format",
+  "accmodal_wrong_prikey_format": "Incorrect private key format",
+  "accmodal_wrong_keypair": "Private key/address pair does not match",
+  "accmodal_success_register": "Encryption private key saved",
+  "accmodal_allready_added": "The address entered has already been added",
+  "accounts_change_active": "Change to Active Account",
+  "accounts_success_change_active": "Active Account has been successfully changed",
+  "accounts_remove_account": "Deregister from an Account",
+  "accounts_success_remove_account": "Account has been successfully deregistered",
+  "accounts_failed_remove_account": "Please change Active Account",
+  "allowlist_title": "Allow List",
+  "allowlist_title_e": "Confirmation and cancellation of domains that have been allowed to link with SSS",
+  "allowlist_howuse_e": "Right click to link web application with SSS",
+  "setting_sign_history": "Download Signature History",
+  "setting_sign_history_e": "Keep a file with information about signatures made on the SSS",
+  "setting_sign_history_btn": "Download",
+  "setting_change_langage": "Language Settings",
+  "setting_change_langage_e": "Change the language of text displayed on the SSS"
+}

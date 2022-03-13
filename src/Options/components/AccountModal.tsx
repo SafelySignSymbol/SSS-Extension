@@ -1,13 +1,10 @@
-import React, { Dispatch, useRef, useState } from 'react'
+import React, { Dispatch, useState } from 'react'
 import styled from '@emotion/styled'
 import { encrypt } from '../../_general/lib/Crypto'
 
 import {
   Alert,
   AlertColor,
-  List,
-  ListItemButton,
-  ListItemText,
   Modal,
   Paper,
   Snackbar,
@@ -17,14 +14,11 @@ import {
 import TextField from '../../_general/components/TextField'
 import Spacer from '../../_general/components/Spacer'
 import Button from '../../_general/components/Button'
-import {
-  validateRef,
-  validateAddress,
-  validatePrivateKey,
-} from '../../_general/lib/validator'
 import { Address, Account, NetworkType } from 'symbol-sdk'
 import { addExtensionAccount } from '../../_general/lib/Storage'
 import { ExtensionAccount } from '../../_general/model/ExtensionAccount'
+import PasswordTextField from '../../_general/components/TextField/PasswordTextField'
+import { useTranslation } from 'react-i18next'
 
 export type Props = {
   open: boolean
@@ -32,23 +26,21 @@ export type Props = {
   reload: () => void
 }
 
-type ModalStatus = 'PASS' | 'NOPASS' | 'HARD' | 'INIT'
 const Component: React.VFC<Props> = ({ open, setOpen, reload }) => {
-  const addressRef = useRef<HTMLInputElement>(null)
-  const priKeyRef = useRef<HTMLInputElement>(null)
-  const passRef = useRef<HTMLInputElement>(null)
-
-  const [status, setStatus] = useState<ModalStatus>('INIT')
   const [message, setMessage] = useState('')
   const [openSB, setOpenSB] = useState(false)
   const [snackbarStatus, setSnackbarStatus] = useState<AlertColor>('success')
 
-  const select = (status: ModalStatus) => {
-    setStatus(status)
-  }
+  const [name, setName] = useState('')
+  const [address, setAddress] = useState('')
+  const [prikey, setPrikey] = useState('')
+  const [pass, setPass] = useState('default password')
+  const [isVPK, setIsVPK] = useState(false)
+  const [isVPass, setIsVPass] = useState(false)
+
+  const [t] = useTranslation()
 
   const closeModal = () => {
-    setStatus('INIT')
     setOpen(false)
   }
 
@@ -56,129 +48,62 @@ const Component: React.VFC<Props> = ({ open, setOpen, reload }) => {
     setOpenSB(false)
   }
   const resetInput = () => {
-    if (!(addressRef === null || addressRef.current === null))
-      addressRef.current.value = ''
-    if (!(priKeyRef === null || priKeyRef.current === null))
-      priKeyRef.current.value = ''
-    if (!(passRef === null || passRef.current === null))
-      passRef.current.value = ''
+    setName('')
+    setAddress('')
+    setPrikey('')
+    setPass('')
   }
 
   const submit = () => {
-    const ad = validateRef(addressRef, validateAddress)
-    const pk = validateRef(priKeyRef, validatePrivateKey)
-    const ps = validateRef(passRef)
+    const ad = address
+    const pk = prikey
+    const ps = pass
 
     if (!ad) {
       setSnackbarStatus('error')
-      setMessage('アドレスのフォーマットが間違っています。')
+      setMessage(t('accmodal_wrong_address_format'))
     }
 
-    if (status === 'NOPASS' || status === 'PASS') {
-      if (!pk) {
-        setSnackbarStatus('error')
-        setMessage('秘密鍵のフォーマットが間違っています。')
-      }
-      const addr = Address.createFromRawAddress(ad)
-      const acc = Account.createFromPrivateKey(
-        pk,
-        ad.charAt(0) === 'T' ? NetworkType.TEST_NET : NetworkType.MAIN_NET
-      )
-      if (addr.plain() !== acc.address.plain()) {
-        setSnackbarStatus('error')
-        setMessage('秘密鍵とアドレスのペアが一致しません。')
-        setOpenSB(true)
-      } else {
-        const password = status === 'NOPASS' ? '' : ps
-        const enpk = encrypt(pk, password)
-
-        const extensionAccount = new ExtensionAccount(
-          enpk,
-          acc.publicKey,
-          acc.address.plain(),
-          status
-        )
-
-        addExtensionAccount(extensionAccount)
-          .then(() => {
-            setSnackbarStatus('success')
-            setMessage('暗号化秘密鍵を保存しました。')
-            setOpenSB(true)
-            resetInput()
-            closeModal()
-            reload()
-          })
-          .catch(() => {
-            setSnackbarStatus('error')
-            setMessage('入力されたアドレスは追加済みです。')
-            setOpenSB(true)
-          })
-      }
+    if (!pk) {
+      setSnackbarStatus('error')
+      setMessage(t('accmodal_wrong_prikey_format'))
     }
-  }
+    const addr = Address.createFromRawAddress(ad)
+    const acc = Account.createFromPrivateKey(
+      pk,
+      ad.charAt(0) === 'T' ? NetworkType.TEST_NET : NetworkType.MAIN_NET
+    )
+    if (addr.plain() !== acc.address.plain()) {
+      setSnackbarStatus('error')
+      setMessage(t('accmodal_wrong_keypair'))
+      setOpenSB(true)
+    } else {
+      const seed = Math.floor((Math.random() * 10000) % 1000)
+      const enpk = encrypt(pk, ps, seed)
 
-  const getBody = () => {
-    if (status === 'INIT') {
-      return (
-        <List component="nav" sx={{ width: '100%', margin: '0px 16px' }}>
-          <ListItemButton onClick={() => select('NOPASS')}>
-            <ListItemText primary="パスワードなしで登録" />
-          </ListItemButton>
-          <ListItemButton onClick={() => select('PASS')}>
-            <ListItemText primary="パスワードありで登録" />
-          </ListItemButton>
-          <ListItemButton onClick={() => select('HARD')}>
-            <ListItemText primary="ハードウェアウォレットで登録 (Comming soon...)" />
-          </ListItemButton>
-        </List>
+      const extensionAccount = new ExtensionAccount(
+        name,
+        enpk,
+        acc.publicKey,
+        acc.address.plain(),
+        'PASS',
+        seed
       )
-    }
 
-    if (status === 'NOPASS') {
-      return (
-        <Root>
-          <Spacer margin="8px">
-            <TextField text="Address" inputRef={addressRef} />
-          </Spacer>
-          <Spacer margin="8px">
-            <TextField
-              text="Private Key"
-              inputRef={priKeyRef}
-              type="password"
-            />
-          </Spacer>
-          <Spacer margin="8px">
-            <Right>
-              <Button text="SUBMIT" onClick={submit} />
-            </Right>
-          </Spacer>
-        </Root>
-      )
-    }
-
-    if (status === 'PASS') {
-      return (
-        <Root>
-          <Spacer margin="8px">
-            <TextField text="Address" inputRef={addressRef} />
-          </Spacer>
-          <Spacer margin="8px">
-            <TextField
-              text="Private Key"
-              inputRef={priKeyRef}
-              type="password"
-            />
-          </Spacer>
-          <Spacer margin="8px">
-            <TextField text="Password" inputRef={passRef} type="password" />
-          </Spacer>
-          <Spacer margin="8px">
-            <Right>
-              <Button text="SUBMIT" onClick={submit} />
-            </Right>
-          </Spacer>
-        </Root>
-      )
+      addExtensionAccount(extensionAccount)
+        .then(() => {
+          setSnackbarStatus('success')
+          setMessage(t('accmodal_success_register'))
+          setOpenSB(true)
+          resetInput()
+          closeModal()
+          reload()
+        })
+        .catch(() => {
+          setSnackbarStatus('error')
+          setMessage(t('accmodal_allready_added'))
+          setOpenSB(true)
+        })
     }
   }
 
@@ -186,13 +111,42 @@ const Component: React.VFC<Props> = ({ open, setOpen, reload }) => {
     <>
       <Modal open={open} onClose={closeModal}>
         <Wrapper>
-          <Typography
-            variant="h4"
-            component="div"
-            sx={{ display: 'grid', alignItems: 'center' }}>
-            アカウント登録
-          </Typography>
-          {getBody()}
+          <Title>
+            <Spacer margin="32px 64px">
+              <Typography variant="h4" component="div">
+                {t('accmodal_signup')}
+              </Typography>
+            </Spacer>
+          </Title>
+          <Root>
+            <Spacer margin="8px">
+              <TextField label="Name" setText={setName} />
+            </Spacer>
+            <Spacer margin="8px">
+              <TextField label="Address" setText={setAddress} />
+            </Spacer>
+            <Spacer margin="8px">
+              <PasswordTextField
+                label="Private Key"
+                setPass={setPrikey}
+                isVisible={isVPK}
+                updateIsVisible={() => setIsVPK((prev) => !prev)}
+              />
+            </Spacer>
+            <Spacer margin="8px">
+              <PasswordTextField
+                label="Password"
+                setPass={setPass}
+                isVisible={isVPass}
+                updateIsVisible={() => setIsVPass((prev) => !prev)}
+              />
+            </Spacer>
+            <Spacer margin="32px">
+              <Right>
+                <Button text={t('accmodal_submit')} onClick={submit} />
+              </Right>
+            </Spacer>
+          </Root>
         </Wrapper>
       </Modal>
       <Snackbar open={openSB} autoHideDuration={6000} onClose={closeSB}>
@@ -231,4 +185,8 @@ const Root = styled('div')({
 const Right = styled('div')({
   display: 'flex',
   justifyContent: 'end',
+})
+
+const Title = styled('div')({
+  width: 'calc(100% - 64px)',
 })

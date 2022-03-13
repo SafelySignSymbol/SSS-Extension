@@ -1,13 +1,13 @@
-import React, { Dispatch, useEffect, useRef } from 'react'
+import React, { useEffect, useState } from 'react'
 import styled from '@emotion/styled'
 
 import { ExtensionAccount } from '../../_general/model/ExtensionAccount'
 import Typography from '../../_general/components/Typography'
 import { Address } from 'symbol-sdk'
-import TextField from '../../_general/components/TextField'
 import Spacer from '../../_general/components/Spacer'
 import Button from '../../_general/components/Button'
 import { checkPassword } from '../../_general/lib/validator'
+import PasswordTextField from '../../_general/components/TextField/PasswordTextField'
 
 export interface Props {
   extensionAccount: ExtensionAccount
@@ -15,21 +15,22 @@ export interface Props {
 }
 
 const Login: React.VFC<Props> = ({ extensionAccount, loginSuccess }) => {
+  const [pass, setPass] = useState('default password')
+  const [isVPass, setIsVPass] = useState(false)
+
   const address = Address.createFromRawAddress(
     extensionAccount.address
   ).pretty()
 
-  const passRef = useRef<HTMLInputElement>(null)
-
   const login = () => {
-    if (passRef === null || passRef.current === null) return
     const check = checkPassword(
       extensionAccount.encriptedPrivateKey,
-      passRef.current.value,
-      extensionAccount.address
+      pass,
+      extensionAccount.address,
+      extensionAccount.seed
     )
     if (check) {
-      loginSuccess(passRef.current.value)
+      loginSuccess(pass)
     }
   }
 
@@ -45,14 +46,19 @@ const Login: React.VFC<Props> = ({ extensionAccount, loginSuccess }) => {
       <Spacer margin="16px 8px">
         <Spacer margin="32px 0px">
           <Wrapper>
-            <Typography text="ログイン" variant="h4" />
+            <Typography text="Login" variant="h4" />
           </Wrapper>
         </Spacer>
         <Spacer margin="16px 0px">
           <Typography text={address} variant="h6" />
         </Spacer>
         <Spacer margin="48px 0px">
-          <TextField text="Password" inputRef={passRef} type="password" />
+          <PasswordTextField
+            label="Password"
+            setPass={setPass}
+            isVisible={isVPass}
+            updateIsVisible={() => setIsVPass((prev) => !prev)}
+          />
         </Spacer>
         <Spacer margin="48px 0px">
           <Flex>

@@ -1,4 +1,6 @@
-const version = '0.0.6'
+import { InitSetting } from './Setting'
+
+const version = '1.0.0'
 
 export const setStorage = (data: any) => {
   chrome.storage.local.set(data)
@@ -33,10 +35,17 @@ export const initialize = () => {
         setStorage({
           version: version,
         })
+        chrome.storage.local.get(null, (data) => {
+          if (data.setting === undefined) {
+            setStorage({
+              setting: InitSetting,
+            })
+          }
+        })
       }
     })
     .catch(() => {
-      console.log('catch')
+      // console.log('catch')
       init()
     })
 }
@@ -52,6 +61,7 @@ const init = () => {
     history: [],
     allowList: '',
     version: version,
+    setting: InitSetting,
   })
 }
 
