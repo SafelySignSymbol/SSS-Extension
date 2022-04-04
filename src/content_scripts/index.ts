@@ -27,7 +27,6 @@ const injectStylefile = function (file: string, node: string) {
 const injectSSS = () => {
   getActiveAccount().then((activeAccount) => {
     setTimeout(() => {
-      // console.log('acc', activeAccount.address)
       window.postMessage(
         {
           type: 'INJECT_SSS',
