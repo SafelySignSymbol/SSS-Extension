@@ -48,7 +48,7 @@ const Component: React.VFC<Props> = ({ address }) => {
               mosaicHttp.getMosaic(new MosaicId(m.id.id.toHex())).subscribe(
                 (mosaicInfo) => {
                   if (mosaicInfo.duration.toString() === '0') {
-                    // console.log('mosaic', mosaicInfo)
+                    console.log('mosaic', mosaicInfo)
                     setMosaics((prev) => [
                       ...prev,
                       { mosaicInfo: mosaicInfo, mosaic: m },

@@ -1,8 +1,20 @@
+import { getNetworkTypeByAddress } from './../_general/lib/Symbol/Config'
 import { requestSign, setTransaction } from './signTransaction'
 import { requestSignWithCosignatories } from './signTransactionWithCosignatories'
+import { requestSignCosignatureTransaction } from './signCosignatureTransaction'
 import { showSnackbar, createSnackbar } from './snackbar'
 
 export {}
+
+interface SSSWindow extends Window {
+  SSS: any
+  requestSSS: any
+  isAllowedSSS: any
+  installedSSS: any
+  allowSSS: any
+}
+
+declare const window: SSSWindow
 
 window.requestSSS = () => {
   // console.log('req SSS')
@@ -28,9 +40,7 @@ window.isAllowedSSS = () => {
 window.installedSSS = true
 window.allowSSS = false
 
-const injectSSS = (publicKey: string) => {
-  // console.log('inject sss')
-
+const injectSSS = (publicKey: string, address: string) => {
   createSnackbar()
   showSnackbar('SSSと連携しました。')
 
@@ -39,9 +49,12 @@ const injectSSS = (publicKey: string) => {
     signedFrag: false,
     signedTx: null,
     activePublicKey: publicKey,
+    activeAddress: address,
+    activeNetworkType: getNetworkTypeByAddress(address),
     setTransaction: setTransaction,
     requestSign: requestSign,
     requestSignWithCosignatories: requestSignWithCosignatories,
+    requestSignCosignatureTransaction: requestSignCosignatureTransaction,
   }
 }
 
@@ -51,12 +64,12 @@ window.addEventListener(
     // console.log(event)
     // console.log('event', event)
     if (event.data.type === 'SIGNED_TRANSACTION') {
-      SSS.signedTx = event.data.signedTx
-      SSS.signedFrag = true
-      SSS.isSet = false
+      window.SSS.signedTx = event.data.signedTx
+      window.SSS.signedFrag = true
+      window.SSS.isSet = false
     }
     if (event.data.type === 'INJECT_SSS') {
-      injectSSS(event.data.publicKey)
+      injectSSS(event.data.publicKey, event.data.address)
     }
   },
   true

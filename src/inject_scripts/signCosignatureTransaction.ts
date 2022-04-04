@@ -1,4 +1,4 @@
-import { Account } from 'symbol-sdk'
+import { CosignatureSignedTransaction, UInt64 } from 'symbol-sdk'
 import { showSnackbar } from './snackbar'
 
 interface SSSWindow extends Window {
@@ -11,7 +11,7 @@ interface SSSWindow extends Window {
 
 declare const window: SSSWindow
 
-export const requestSignWithCosignatories = (cosignatories: Account[]) => {
+export const requestSignCosignatureTransaction = () => {
   if (!window.SSS.isSet) {
     console.error('404')
     showSnackbar('トランザクションがセットされていません。')
@@ -19,8 +19,7 @@ export const requestSignWithCosignatories = (cosignatories: Account[]) => {
   }
   window.postMessage(
     {
-      function: 'requestSignWithCosignatories',
-      cosignatories: cosignatories.map((c) => c.privateKey),
+      function: 'requestSignCosignatureTransaction',
     },
     '*'
   )
@@ -36,7 +35,13 @@ export const requestSignWithCosignatories = (cosignatories: Account[]) => {
         window.SSS.signedFrag = false
         clearInterval(timer)
         showSnackbar('トランザクションの署名に成功しました。')
-        resolve(window.SSS.signedTx)
+        const tx = window.SSS.signedTx as CosignatureSignedTransaction
+        resolve({
+          parentHash: tx.parentHash,
+          signature: tx.signature,
+          signerPublicKey: tx.signerPublicKey,
+          version: UInt64.fromNumericString('0'),
+        } as CosignatureSignedTransaction)
       }
       if (600 < count) {
         clearInterval(timer)
