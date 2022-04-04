@@ -14,7 +14,7 @@ declare const window: SSSWindow
 export const requestSignCosignatureTransaction = () => {
   if (!window.SSS.isSet) {
     console.error('404')
-    showSnackbar('トランザクションがセットされていません。')
+    showSnackbar('alert_notfound_tx')
     return
   }
   window.postMessage(
@@ -24,7 +24,7 @@ export const requestSignCosignatureTransaction = () => {
     '*'
   )
 
-  showSnackbar('SSSへ署名が要求されました。')
+  showSnackbar('alert_request_sign')
 
   return new Promise((resolve, reject) => {
     let count = 0
@@ -34,7 +34,7 @@ export const requestSignCosignatureTransaction = () => {
       if (window.SSS.signedFrag) {
         window.SSS.signedFrag = false
         clearInterval(timer)
-        showSnackbar('トランザクションの署名に成功しました。')
+        showSnackbar('alert_succsess_sign')
         const tx = window.SSS.signedTx as CosignatureSignedTransaction
         resolve({
           parentHash: tx.parentHash,
@@ -46,7 +46,7 @@ export const requestSignCosignatureTransaction = () => {
       if (600 < count) {
         clearInterval(timer)
         reject('ERROR: The transaction was not signed.')
-        showSnackbar('トランザクションの署名に失敗しました。')
+        showSnackbar('alert_failed_sign')
       }
       count++
     }, 100)

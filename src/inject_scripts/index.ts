@@ -19,11 +19,11 @@ declare const window: SSSWindow
 window.requestSSS = () => {
   // console.log('req SSS')
   if (window.isAllowedSSS()) {
-    showSnackbar('SSSと連携に成功しました。')
+    showSnackbar('alert_succsess_connect_sss')
     return true
   }
   createSnackbar()
-  showSnackbar('WebアプリケーションとSSSを連携してください。')
+  showSnackbar('alert_requesting_connect_sss')
   window.postMessage(
     {
       function: 'requestSSS',
@@ -42,7 +42,7 @@ window.allowSSS = false
 
 const injectSSS = (publicKey: string, address: string) => {
   createSnackbar()
-  showSnackbar('SSSと連携しました。')
+  showSnackbar('alert_connected_sss')
 
   window.SSS = {
     isSet: false,

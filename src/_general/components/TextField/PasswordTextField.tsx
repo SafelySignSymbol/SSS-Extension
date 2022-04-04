@@ -11,6 +11,7 @@ import { VisibilityOff, Visibility } from '@mui/icons-material'
 interface Props {
   label: string
   isVisible: boolean
+  autoFocus?: boolean
   updateIsVisible: () => void
   setPass: Dispatch<string>
 }
@@ -18,6 +19,7 @@ interface Props {
 const PasswordTextField: React.VFC<Props> = ({
   label,
   isVisible,
+  autoFocus = false,
   updateIsVisible,
   setPass,
   ...props
@@ -28,6 +30,7 @@ const PasswordTextField: React.VFC<Props> = ({
       <OutlinedInput
         type={isVisible ? 'text' : 'password'}
         onChange={(e) => setPass(e.target.value)}
+        autoFocus={autoFocus}
         endAdornment={
           <InputAdornment position="end">
             <IconButton

@@ -18,5 +18,13 @@
   "setting_sign_history_e": "SSS上で行われた署名の情報をファイルに保存する",
   "setting_sign_history_btn": "ダウンロード",
   "setting_change_langage": "言語設定",
-  "setting_change_langage_e": "SSS上で表示されるテキストの言語を変更する"
+  "setting_change_langage_e": "SSS上で表示されるテキストの言語を変更する",
+  "alert_wrong_pass": "パスワードが間違っています",
+  "alert_connected_sss": "SSSと連携しました",
+  "alert_requesting_connect_sss": "WebアプリケーションとSSSを連携してください",
+  "alert_succsess_connect_sss": "SSSと連携に成功しました",
+  "alert_notfound_tx": "トランザクションがセットされていません",
+  "alert_request_sign": "SSSへ署名が要求されました",
+  "alert_succsess_sign": "トランザクションの署名に成功しました",
+  "alert_failed_sign": "トランザクションの署名に失敗しました"
 }
