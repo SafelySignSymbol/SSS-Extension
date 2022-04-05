@@ -18,7 +18,11 @@ import {
 import { ExtensionAccount } from '../_general/model/ExtensionAccount'
 import Login from './pages/Login'
 import Main from './pages/Main'
-import { sign, signWithCosignatories } from '../_general/lib/Sign'
+import {
+  sign,
+  signCosignatureTransaction,
+  signWithCosignatories,
+} from '../_general/lib/Sign'
 
 type PopupStatus = 'LOGIN' | 'MAIN'
 
@@ -43,7 +47,10 @@ const Popup: React.VFC = () => {
     setStatus('MAIN')
   }
 
-  const signTx = (transaction: Transaction | null) => {
+  const signTx = (
+    transaction: Transaction | AggregateTransaction | null,
+    hash = ''
+  ) => {
     if (extensionAccount === null || transaction === null) {
       return
     }
@@ -61,6 +68,9 @@ const Popup: React.VFC = () => {
     getSignStatus().then((status) => {
       if (status === 'requestSign') {
         sign(transaction, priKey, net_type)
+      }
+      if (status === 'requestSignCosignatureTransaction') {
+        signCosignatureTransaction(hash, priKey, net_type)
       }
       if (status === 'requestSignWithCosignatories') {
         getCosignatories().then((accounts) => {

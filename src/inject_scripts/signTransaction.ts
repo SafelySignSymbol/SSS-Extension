@@ -3,6 +3,16 @@ import { TransactionURI } from 'symbol-uri-scheme'
 
 import { showSnackbar } from './snackbar'
 
+interface SSSWindow extends Window {
+  SSS: any
+  requestSSS: any
+  isAllowedSSS: any
+  installedSSS: any
+  allowSSS: any
+}
+
+declare const window: SSSWindow
+
 export const setTransaction = (tx: Transaction) => {
   const serializedTx = tx.serialize()
   const transactionURI = new TransactionURI(
@@ -10,21 +20,46 @@ export const setTransaction = (tx: Transaction) => {
     TransactionMapping.createFromPayload
   ).build()
 
-  SSS.isSet = true
+  window.SSS.isSet = true
 
-  window.postMessage(
-    {
-      function: 'setTransaction',
-      tx: transactionURI,
-    },
-    '*'
-  )
+  console.log('tx', tx)
+
+  if (!!tx.transactionInfo) {
+    window.postMessage(
+      {
+        function: 'setTransaction',
+        hash: tx.transactionInfo.hash,
+        tx: transactionURI,
+      },
+      '*'
+    )
+  } else {
+    window.postMessage(
+      {
+        function: 'setTransaction',
+        tx: transactionURI,
+      },
+      '*'
+    )
+  }
+
+  // const h = !!tx.transactionInfo ? '' : tx.transactionInfo.hash
+  // console.log('h', h)
+
+  // window.postMessage(
+  //   {
+  //     function: 'setTransaction',
+  //     hash: h,
+  //     tx: transactionURI,
+  //   },
+  //   '*'
+  // )
 }
 
 export const requestSign = () => {
-  if (!SSS.isSet) {
+  if (!window.SSS.isSet) {
     console.error('404')
-    showSnackbar('トランザクションがセットされていません。')
+    showSnackbar('alert_notfound_tx')
     return
   }
 
@@ -35,18 +70,18 @@ export const requestSign = () => {
     '*'
   )
 
-  showSnackbar('SSSへ署名が要求されました。')
+  showSnackbar('alert_request_sign')
 
   return new Promise((resolve, reject) => {
     let count = 0
-    SSS.isSet = false
+    window.SSS.isSet = false
 
     const timer = setInterval(() => {
-      if (SSS.signedFrag) {
-        SSS.signedFrag = false
+      if (window.SSS.signedFrag) {
+        window.SSS.signedFrag = false
         clearInterval(timer)
-        showSnackbar('トランザクションの署名に成功しました。')
-        resolve(SSS.signedTx)
+        showSnackbar('alert_succsess_sign')
+        resolve(window.SSS.signedTx)
       }
       if (600 < count) {
         window.postMessage(
@@ -57,7 +92,7 @@ export const requestSign = () => {
         )
         clearInterval(timer)
         reject('ERROR: The transaction was not signed.')
-        showSnackbar('トランザクションの署名に失敗しました。')
+        showSnackbar('alert_failed_sign')
       }
       count++
     }, 100)

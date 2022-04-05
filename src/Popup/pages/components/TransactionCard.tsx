@@ -13,7 +13,7 @@ import {
 import Typography from '../../../_general/components/Typography'
 
 import TransferCard from '../../../_general/components/Transactions/TransferCard'
-import AggregateComplateTransactionCard from '../../../_general/components/Transactions/AggregateComplateCard'
+import AggregateComplateTransactionCard from '../../../_general/components/Transactions/AggregatTransactionCard'
 import AccountMetadataCard from '../../../_general/components/Transactions/AccountMetadataCard'
 import MosaicMetadataCard from '../../../_general/components/Transactions/MosaicMetadataCard'
 import NamespaceMetadataCard from '../../../_general/components/Transactions/NamespaceMetadataCard'
@@ -28,6 +28,13 @@ const TransactionCard: React.VFC<Props> = ({ transaction }) => {
   }
 
   if (transaction.type === TransactionType.AGGREGATE_COMPLETE) {
+    return (
+      <AggregateComplateTransactionCard
+        transaction={transaction as AggregateTransaction}
+      />
+    )
+  }
+  if (transaction.type === TransactionType.AGGREGATE_BONDED) {
     return (
       <AggregateComplateTransactionCard
         transaction={transaction as AggregateTransaction}

@@ -8,6 +8,8 @@ import Spacer from '../../_general/components/Spacer'
 import Button from '../../_general/components/Button'
 import { checkPassword } from '../../_general/lib/validator'
 import PasswordTextField from '../../_general/components/TextField/PasswordTextField'
+import { Snackbar, Alert } from '@mui/material'
+import { useTranslation } from 'react-i18next'
 
 export interface Props {
   extensionAccount: ExtensionAccount
@@ -17,6 +19,9 @@ export interface Props {
 const Login: React.VFC<Props> = ({ extensionAccount, loginSuccess }) => {
   const [pass, setPass] = useState('default password')
   const [isVPass, setIsVPass] = useState(false)
+  const [open, setOpen] = useState(false)
+
+  const [t] = useTranslation()
 
   const address = Address.createFromRawAddress(
     extensionAccount.address
@@ -31,6 +36,8 @@ const Login: React.VFC<Props> = ({ extensionAccount, loginSuccess }) => {
     )
     if (check) {
       loginSuccess(pass)
+    } else {
+      setOpen(true)
     }
   }
 
@@ -55,6 +62,7 @@ const Login: React.VFC<Props> = ({ extensionAccount, loginSuccess }) => {
         <Spacer margin="48px 0px">
           <PasswordTextField
             label="Password"
+            autoFocus
             setPass={setPass}
             isVisible={isVPass}
             updateIsVisible={() => setIsVPass((prev) => !prev)}
@@ -66,6 +74,17 @@ const Login: React.VFC<Props> = ({ extensionAccount, loginSuccess }) => {
           </Flex>
         </Spacer>
       </Spacer>
+      <Snackbar
+        open={open}
+        autoHideDuration={6000}
+        onClose={() => setOpen(false)}>
+        <Alert
+          onClose={() => setOpen(false)}
+          severity="error"
+          sx={{ width: '100%' }}>
+          {t('alert_wrong_pass')}
+        </Alert>
+      </Snackbar>
     </Container>
   )
 }

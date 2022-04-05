@@ -3,6 +3,7 @@ import {
   NetworkType,
   Account,
   AggregateTransaction,
+  CosignatureTransaction,
 } from 'symbol-sdk'
 import { addHistory, removeTransaction } from '../Storage'
 
@@ -20,6 +21,26 @@ export const sign = (
 
   const signedTx = acc.sign(transaction, generationHash)
   addHistory(signedTx)
+  removeTransaction()
+  chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+    if (!tabs[0].id) {
+      console.error('not found tabs')
+      return
+    }
+    chrome.tabs.sendMessage(tabs[0].id, {
+      type: 'SIGNED_TRANSACTION',
+      signedTx: signedTx,
+    })
+  })
+}
+
+export const signCosignatureTransaction = (
+  hash: string,
+  priKey: string,
+  networkType: NetworkType
+) => {
+  const acc = Account.createFromPrivateKey(priKey, networkType)
+  const signedTx = CosignatureTransaction.signTransactionHash(acc, hash)
   removeTransaction()
   chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
     if (!tabs[0].id) {

@@ -18,20 +18,22 @@ import NotFoundTx from './components/NotFoundTx'
 
 export interface Props {
   extensionAccount: ExtensionAccount
-  sign: (tx: Transaction | null) => void
+  sign: (tx: Transaction | null, hash?: string) => void
 }
 
 const Main: React.VFC<Props> = ({ extensionAccount, sign }) => {
   const [transaction, setTransaction] = useState<Transaction | null>(null)
+  const [hash, setHash] = useState<string>()
 
   useEffect(() => {
     getTransaction().then((tx) => {
-      if (tx === null) return
+      if (tx.tx === null) return
       const transaction = TransactionURI.fromURI(
-        tx,
+        tx.tx,
         TransactionMapping.createFromPayload
       ).toTransaction()
       setTransaction(transaction)
+      setHash(tx.hash)
     })
   }, [])
 
@@ -62,7 +64,15 @@ const Main: React.VFC<Props> = ({ extensionAccount, sign }) => {
       </Contents>
       <Footer>
         <Spacer margin="8px">
-          <Button text="SIGN" onClick={() => sign(transaction)} />
+          <Button
+            text="SIGN"
+            onClick={() => {
+              sign(transaction, hash)
+              setTimeout(() => {
+                window.close()
+              }, 100)
+            }}
+          />
         </Spacer>
       </Footer>
     </Container>

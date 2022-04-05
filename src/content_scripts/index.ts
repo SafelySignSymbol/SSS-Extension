@@ -3,6 +3,7 @@ import {
   setCosignatories,
   setSignStatus,
   setTransaction,
+  setTransactionHash,
 } from '../_general/lib/Storage'
 
 export {}
@@ -30,6 +31,7 @@ const injectSSS = () => {
         {
           type: 'INJECT_SSS',
           publicKey: activeAccount.publicKey,
+          address: activeAccount.address,
         },
         window.opener
       )
@@ -59,6 +61,7 @@ isAllowedDoamin()
 window.addEventListener('message', (event) => {
   if (event.data.function === 'setTransaction') {
     setTransaction(event.data.tx)
+    setTransactionHash(event.data.hash)
   }
   if (event.data.function === 'requestSign') {
     setSignStatus(event.data.function)
@@ -67,6 +70,10 @@ window.addEventListener('message', (event) => {
   if (event.data.function === 'requestSignWithCosignatories') {
     setSignStatus(event.data.function)
     setCosignatories(event.data.cosignatories)
+    chrome.runtime.sendMessage({ type: 'removeTransaction' })
+  }
+  if (event.data.function === 'requestSignCosignatureTransaction') {
+    setSignStatus(event.data.function)
     chrome.runtime.sendMessage({ type: 'removeTransaction' })
   }
   if (event.data.function === 'requestSSS') {

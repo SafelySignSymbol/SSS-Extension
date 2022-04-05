@@ -18,5 +18,13 @@
   "setting_sign_history_e": "Keep a file with information about signatures made on the SSS",
   "setting_sign_history_btn": "Download",
   "setting_change_langage": "Language Settings",
-  "setting_change_langage_e": "Change the language of text displayed on the SSS"
+  "setting_change_langage_e": "Change the language of text displayed on the SSS",
+  "alert_wrong_pass": "Password is wrong",
+  "alert_connected_sss": "Linked with SSS",
+  "alert_requesting_connect_sss": "Please Link your web application with SSS",
+  "alert_succsess_connect_sss": "Successfully linked with SSS",
+  "alert_notfound_tx": "Transaction not set",
+  "alert_request_sign": "Sign requested to SSS",
+  "alert_succsess_sign": "Transaction sign succsessed",
+  "alert_failed_sign": "Transaction sign failed"
 }
