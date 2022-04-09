@@ -104,6 +104,7 @@ const Flex = styled('div')({
   display: 'flex',
   flexDirection: 'row',
   justifyContent: 'space-between',
+  marginBottom: '8px',
 })
 
 const Name = styled('div')({

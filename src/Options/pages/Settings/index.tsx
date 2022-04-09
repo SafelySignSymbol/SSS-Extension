@@ -24,7 +24,24 @@ interface Props {
   update: Date
 }
 
-const langs = ['JA', 'EN']
+const langs = [
+  {
+    key: '日本語',
+    value: 'JA',
+  },
+  {
+    key: 'English',
+    value: 'EN',
+  },
+  // {
+  //   key: '中文简体',
+  //   value: 'ZH',
+  // },
+  // {
+  //   key: 'ウクライナ',
+  //   value: 'UK',
+  // },
+]
 
 const Options: React.VFC<Props> = ({ reload, update }) => {
   const [history, setHistory] = useState<SignedTransaction[]>([])
@@ -90,7 +107,7 @@ const Options: React.VFC<Props> = ({ reload, update }) => {
           />
         </Column>
         <Center>
-          <FormControl sx={{ width: 120 }}>
+          <FormControl sx={{ width: 160 }}>
             <InputLabel id="demo-multiple-name-label">Langage</InputLabel>
             <Select
               labelId="demo-multiple-name-label"
@@ -99,8 +116,8 @@ const Options: React.VFC<Props> = ({ reload, update }) => {
               onChange={(e) => changeLang(e.target.value)}
               input={<OutlinedInput label="Name" />}>
               {langs.map((l) => (
-                <MenuItem key={l} value={l}>
-                  {l}
+                <MenuItem key={l.key} value={l.value}>
+                  {l.key}
                 </MenuItem>
               ))}
             </Select>
@@ -121,6 +138,7 @@ const Root = styled('div')({
 const Wrapper = styled('div')({
   display: 'flex',
   justifyContent: 'space-between',
+  alignItems: 'center',
   margin: '8px',
   padding: '16px',
   background: 'white',

@@ -22,7 +22,6 @@ window.requestSSS = () => {
     showSnackbar('alert_succsess_connect_sss')
     return true
   }
-  createSnackbar()
   showSnackbar('alert_requesting_connect_sss')
   window.postMessage(
     {
@@ -40,9 +39,11 @@ window.isAllowedSSS = () => {
 window.installedSSS = true
 window.allowSSS = false
 
-const injectSSS = (publicKey: string, address: string) => {
-  createSnackbar()
-  showSnackbar('alert_connected_sss')
+const injectSSS = (publicKey: string, address: string, lang: string) => {
+  createSnackbar(lang)
+  setTimeout(() => {
+    showSnackbar('alert_connected_sss')
+  }, 100)
 
   window.SSS = {
     isSet: false,
@@ -69,7 +70,7 @@ window.addEventListener(
       window.SSS.isSet = false
     }
     if (event.data.type === 'INJECT_SSS') {
-      injectSSS(event.data.publicKey, event.data.address)
+      injectSSS(event.data.publicKey, event.data.address, event.data.lang)
     }
   },
   true

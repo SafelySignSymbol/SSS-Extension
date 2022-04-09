@@ -18,10 +18,11 @@ const Component: React.VFC<Props> = ({ type, hash, netType, height }) => {
     getTimeStamp(height, netType).then((t) => {
       const formatTime = `${t.getFullYear()}/${
         t.getMonth() + 1
-      }/${t.getDate()} ${t.getHours()}:${t.getMinutes()}`
+      }/${t.getDate()} ${format(t.getHours())}:${format(t.getMinutes())}`
       setTime(formatTime)
     })
   }, [height, netType])
+
   return (
     <Column>
       <Right>
@@ -33,6 +34,10 @@ const Component: React.VFC<Props> = ({ type, hash, netType, height }) => {
       </Wrap>
     </Column>
   )
+}
+
+const format = (time: number) => {
+  return ('00' + String(time)).slice(-2)
 }
 
 export default Component
@@ -54,6 +59,8 @@ const Column = styled('div')({
 const Right = styled('div')({
   display: 'flex',
   justifyContent: 'end',
+  margin: '8px',
+  marginBottom: '0px',
 })
 
 const Text = styled('span')({

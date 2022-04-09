@@ -22,9 +22,11 @@ i18n.use(initReactI18next).init({
   resources: {
     EN: { translation: enJson },
     JA: { translation: jaJson },
+    // ZH: { translation: jaJson },
+    // UK: { translation: enJson },
   },
   lng: 'JA',
-  fallbackLng: 'JA',
+  fallbackLng: 'EN',
   returnEmptyString: false,
 })
 

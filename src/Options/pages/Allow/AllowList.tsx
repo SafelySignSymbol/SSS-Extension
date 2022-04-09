@@ -57,6 +57,7 @@ const Wrapper = styled('div')({
 const Wrap = styled('div')({
   display: 'flex',
   justifyContent: 'space-between',
+  alignItems: 'center',
   background: 'white',
   padding: '16px',
   margin: '8px',
