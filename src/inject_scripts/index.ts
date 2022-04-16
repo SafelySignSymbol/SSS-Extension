@@ -32,9 +32,9 @@ window.requestSSS = () => {
   return false
 }
 
-window.isAllowedSSS = () => {
+window.isAllowedSSS = (() => {
   return !!window.SSS
-}
+})()
 
 window.installedSSS = true
 window.allowSSS = false
@@ -53,9 +53,11 @@ const injectSSS = (publicKey: string, address: string, lang: string) => {
     activeAddress: address,
     activeNetworkType: getNetworkTypeByAddress(address),
     setTransaction: setTransaction,
+    setTransactionByPayload: setTransactionByPayload,
     requestSign: requestSign,
     requestSignWithCosignatories: requestSignWithCosignatories,
     requestSignCosignatureTransaction: requestSignCosignatureTransaction,
+    requestSignCosignatureTransaction2: requestSignCosignatureTransaction2,
   }
 }
 

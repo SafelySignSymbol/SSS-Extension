@@ -1,4 +1,4 @@
-import { Account } from 'symbol-sdk'
+import { Account, SignedTransaction } from 'symbol-sdk'
 import { showSnackbar } from './snackbar'
 
 interface SSSWindow extends Window {
@@ -11,7 +11,9 @@ interface SSSWindow extends Window {
 
 declare const window: SSSWindow
 
-export const requestSignWithCosignatories = (cosignatories: Account[]) => {
+export const requestSignWithCosignatories = (
+  cosignatories: Account[]
+): Promise<SignedTransaction> => {
   if (!window.SSS.isSet) {
     console.error('404')
     showSnackbar('alert_notfound_tx')
@@ -36,7 +38,15 @@ export const requestSignWithCosignatories = (cosignatories: Account[]) => {
         window.SSS.signedFrag = false
         clearInterval(timer)
         showSnackbar('alert_succsess_sign')
-        resolve(window.SSS.signedTx)
+        resolve(
+          new SignedTransaction(
+            window.SSS.signedTx.payload,
+            window.SSS.signedTx.hash,
+            window.SSS.signedTx.signerPublicKey,
+            window.SSS.signedTx.type,
+            window.SSS.signedTx.NetworkType
+          )
+        )
       }
       if (600 < count) {
         clearInterval(timer)
