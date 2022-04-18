@@ -1,7 +1,10 @@
 import { getNetworkTypeByAddress } from './../_general/lib/Symbol/Config'
 import { requestSign, setTransaction } from './signTransaction'
 import { requestSignWithCosignatories } from './signTransactionWithCosignatories'
-import { requestSignCosignatureTransaction } from './signCosignatureTransaction'
+import {
+  requestSignCosignatureTransaction,
+  setTransactionByPayload,
+} from './signCosignatureTransaction'
 import { showSnackbar, createSnackbar } from './snackbar'
 
 export {}
@@ -57,7 +60,6 @@ const injectSSS = (publicKey: string, address: string, lang: string) => {
     requestSign: requestSign,
     requestSignWithCosignatories: requestSignWithCosignatories,
     requestSignCosignatureTransaction: requestSignCosignatureTransaction,
-    requestSignCosignatureTransaction2: requestSignCosignatureTransaction2,
   }
 }
 
