@@ -70,10 +70,7 @@ const Popup: React.VFC = () => {
         sign(transaction, priKey, net_type)
       }
       if (status === 'requestSignCosignatureTransaction') {
-        signCosignatureTransaction2(transaction.serialize(), priKey, net_type)
-      }
-      if (status === 'requestSignCosignatureTransaction2') {
-        signCosignatureTransaction2(transaction.serialize(), priKey, net_type)
+        signCosignatureTransaction(transaction.serialize(), priKey, net_type)
       }
       if (status === 'requestSignWithCosignatories') {
         getCosignatories().then((accounts) => {
