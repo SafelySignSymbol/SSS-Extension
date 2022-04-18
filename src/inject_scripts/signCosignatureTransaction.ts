@@ -60,3 +60,20 @@ export const requestSignCosignatureTransaction =
       }, 100)
     })
   }
+
+export const setTransactionByPayload = (serializedTx: string) => {
+  const transactionURI = new TransactionURI(
+    serializedTx,
+    TransactionMapping.createFromPayload
+  ).build()
+
+  window.SSS.isSet = true
+
+  window.postMessage(
+    {
+      function: 'setTransaction',
+      tx: transactionURI,
+    },
+    '*'
+  )
+}
