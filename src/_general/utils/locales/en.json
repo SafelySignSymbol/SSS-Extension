@@ -1,6 +1,6 @@
 {
-  "accmodal_signup": "Add Account",
-  "accmodal_submit": "Registration",
+  "accmodal_signup": "Add account",
+  "accmodal_submit": "Done",
   "accmodal_wrong_address_format": "Invalid address format",
   "accmodal_wrong_prikey_format": "Invalid private key format",
   "accmodal_wrong_keypair": "Private key does not match does not match this address",
