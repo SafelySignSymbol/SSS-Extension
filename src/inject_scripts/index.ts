@@ -35,9 +35,9 @@ window.requestSSS = () => {
   return false
 }
 
-window.isAllowedSSS = (() => {
+window.isAllowedSSS = () => {
   return !!window.SSS
-})()
+}
 
 window.installedSSS = true
 window.allowSSS = false
