@@ -5,7 +5,7 @@ import i18n from 'i18next'
 import Typography from '../../../_general/components/Typography'
 import Button from '../../../_general/components/Button'
 import { SignedTransaction } from 'symbol-sdk'
-import { getHistory } from '../../../_general/lib/Storage'
+import { getHistory, version } from '../../../_general/lib/Storage'
 import {
   getSetting,
   InitSetting,
@@ -122,6 +122,14 @@ const Options: React.VFC<Props> = ({ reload, update }) => {
               ))}
             </Select>
           </FormControl>
+        </Center>
+      </Wrapper>
+      <Wrapper>
+        <Column>
+          <Typography text="Version" variant="h5" />
+        </Column>
+        <Center>
+          <Typography text={version} variant="subtitle1" />
         </Center>
       </Wrapper>
     </Root>
