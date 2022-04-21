@@ -2,7 +2,7 @@ import React from 'react'
 import styled from '@emotion/styled'
 
 import { Button } from '@mui/material'
-import Color, { addAlpha } from '../../utils/Color'
+import { addAlpha } from '../../utils/Color'
 
 export interface Props {
   text: string

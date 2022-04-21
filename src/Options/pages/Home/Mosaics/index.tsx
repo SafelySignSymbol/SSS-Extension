@@ -124,6 +124,7 @@ const Root = styled('div')({
 const MosaicViewer = styled('div')({
   display: 'flex',
   justifyContent: 'space-between',
+  alignItems: 'center',
   width: '100%',
   margin: '2px',
 })

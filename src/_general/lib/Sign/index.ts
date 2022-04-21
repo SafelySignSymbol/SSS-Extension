@@ -1,3 +1,4 @@
+import { getGenerationHash } from './../Symbol/Config'
 import {
   Transaction,
   NetworkType,
@@ -35,12 +36,16 @@ export const sign = (
 }
 
 export const signCosignatureTransaction = (
-  hash: string,
+  payload: string,
   priKey: string,
   networkType: NetworkType
 ) => {
   const acc = Account.createFromPrivateKey(priKey, networkType)
-  const signedTx = CosignatureTransaction.signTransactionHash(acc, hash)
+  const signedTx = CosignatureTransaction.signTransactionPayload(
+    acc,
+    payload,
+    getGenerationHash(networkType)
+  )
   removeTransaction()
   chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
     if (!tabs[0].id) {

@@ -1,4 +1,4 @@
-import { Transaction, TransactionMapping } from 'symbol-sdk'
+import { SignedTransaction, Transaction, TransactionMapping } from 'symbol-sdk'
 import { TransactionURI } from 'symbol-uri-scheme'
 
 import { showSnackbar } from './snackbar'
@@ -42,21 +42,9 @@ export const setTransaction = (tx: Transaction) => {
       '*'
     )
   }
-
-  // const h = !!tx.transactionInfo ? '' : tx.transactionInfo.hash
-  // console.log('h', h)
-
-  // window.postMessage(
-  //   {
-  //     function: 'setTransaction',
-  //     hash: h,
-  //     tx: transactionURI,
-  //   },
-  //   '*'
-  // )
 }
 
-export const requestSign = () => {
+export const requestSign = (): Promise<SignedTransaction> => {
   if (!window.SSS.isSet) {
     console.error('404')
     showSnackbar('alert_notfound_tx')
@@ -81,7 +69,15 @@ export const requestSign = () => {
         window.SSS.signedFrag = false
         clearInterval(timer)
         showSnackbar('alert_succsess_sign')
-        resolve(window.SSS.signedTx)
+        resolve(
+          new SignedTransaction(
+            window.SSS.signedTx.payload,
+            window.SSS.signedTx.hash,
+            window.SSS.signedTx.signerPublicKey,
+            window.SSS.signedTx.type,
+            window.SSS.signedTx.NetworkType
+          )
+        )
       }
       if (600 < count) {
         window.postMessage(

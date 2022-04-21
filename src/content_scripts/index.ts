@@ -5,6 +5,7 @@ import {
   setTransaction,
   setTransactionHash,
 } from '../_general/lib/Storage'
+import { getSetting } from '../_general/lib/Storage/Setting'
 
 export {}
 const injectScript = function (file: string, node: any) {
@@ -26,16 +27,19 @@ const injectStylefile = function (file: string, node: string) {
 
 const injectSSS = () => {
   getActiveAccount().then((activeAccount) => {
-    setTimeout(() => {
-      window.postMessage(
-        {
-          type: 'INJECT_SSS',
-          publicKey: activeAccount.publicKey,
-          address: activeAccount.address,
-        },
-        window.opener
-      )
-    }, 50)
+    getSetting().then((setting) => {
+      setTimeout(() => {
+        window.postMessage(
+          {
+            type: 'INJECT_SSS',
+            publicKey: activeAccount.publicKey,
+            address: activeAccount.address,
+            lang: setting.lang,
+          },
+          window.opener
+        )
+      }, 50)
+    })
   })
 }
 
