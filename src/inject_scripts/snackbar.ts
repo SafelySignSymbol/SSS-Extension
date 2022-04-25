@@ -1,14 +1,17 @@
 import i18next from 'i18next'
 import enJson from '../_general/utils/locales/en.json'
 import jaJson from '../_general/utils/locales/ja.json'
+import krJson from '../_general/utils/locales/kr.json'
 
 const getLang = (lang?: string) => {
   const l = lang === undefined ? window.navigator.language : lang
 
   if (l.toUpperCase() === 'JA') {
     return 'JA'
-  } else {
+  } else if (l.toUpperCase() === 'EN') {
     return 'EN'
+  } else if (l.toUpperCase() === 'KR') {
+    return 'KR'
   }
 }
 
@@ -41,6 +44,7 @@ export const createSnackbar = (lang?: string) => {
     resources: {
       EN: { translation: enJson },
       JA: { translation: jaJson },
+      KR: { translation: krJson },
     },
     lng: getLang(lang),
     fallbackLng: 'JA',
