@@ -3,7 +3,7 @@
   "accmodal_submit": "Done",
   "accmodal_wrong_address_format": "Invalid address format",
   "accmodal_wrong_prikey_format": "Invalid private key format",
-  "accmodal_wrong_keypair": "Private key does not match does not match this address",
+  "accmodal_wrong_keypair": "Private key does not match given address",
   "accmodal_success_register": "The encrypted private key is saved",
   "accmodal_allready_added": "Entered wallet address already added",
   "accounts_change_active": "Change to Primary Account",
@@ -24,7 +24,7 @@
   "alert_requesting_connect_sss": "Please Link your web application with SSS",
   "alert_succsess_connect_sss": "Successfully linked with SSS",
   "alert_notfound_tx": "Transaction not set",
-  "alert_request_sign": "Sign requested to SSS",
-  "alert_succsess_sign": "Transaction sign succsessed",
-  "alert_failed_sign": "Transaction sign failed"
+  "alert_request_sign": "Sign request to SSS",
+  "alert_succsess_sign": "The signing of the transaction was successful",
+  "alert_failed_sign": "Transaction signing failed"
 }
