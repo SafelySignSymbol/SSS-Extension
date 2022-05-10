@@ -6,6 +6,9 @@ import { initReactI18next } from 'react-i18next'
 
 import enJson from '../_general/utils/locales/en.json'
 import jaJson from '../_general/utils/locales/ja.json'
+import krJson from '../_general/utils/locales/kr.json'
+import ruJson from '../_general/utils/locales/ru.json'
+import itJson from '../_general/utils/locales/it.json'
 
 import Home from './pages/Home'
 import Header from './components/Header'
@@ -14,6 +17,11 @@ import { getActiveAccount } from '../_general/lib/Storage'
 import Settings from './pages/Settings'
 import Allow from './pages/Allow'
 import Accounts from './pages/Accounts'
+import {
+  Setting,
+  InitSetting,
+  getSetting,
+} from '../_general/lib/Storage/Setting'
 
 export type Page = 'SETTING' | 'ALLOW' | 'HOME' | 'ACCOUNTS'
 
@@ -22,10 +30,13 @@ i18n.use(initReactI18next).init({
   resources: {
     EN: { translation: enJson },
     JA: { translation: jaJson },
+    KR: { translation: krJson },
+    RU: { translation: ruJson },
+    IT: { translation: itJson },
     // ZH: { translation: jaJson },
     // UK: { translation: enJson },
   },
-  lng: 'JA',
+  lng: 'EN',
   fallbackLng: 'EN',
   returnEmptyString: false,
 })
@@ -37,6 +48,8 @@ const Options: React.VFC = () => {
 
   const [update, setUpdate] = useState(new Date())
 
+  const [setting, setSetting] = useState<Setting>(InitSetting)
+
   useEffect(() => {
     getActiveAccount().then((acc) => {
       if (acc === null) setOpenModal(true)
@@ -44,13 +57,27 @@ const Options: React.VFC = () => {
     })
   }, [])
 
+  useEffect(() => {
+    getSetting().then((s) => {
+      setSetting(s)
+      i18n.changeLanguage(s.lang)
+    })
+  }, [update])
+
   const reload = () => {
     setUpdate(new Date())
   }
 
   const getBody = () => {
     if (page === 'SETTING') {
-      return <Settings reload={reload} update={update} />
+      return (
+        <Settings
+          reload={reload}
+          update={update}
+          setting={setting}
+          setSetting={setSetting}
+        />
+      )
     }
 
     if (page === 'ALLOW') {

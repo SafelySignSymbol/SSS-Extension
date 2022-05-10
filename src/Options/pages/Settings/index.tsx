@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { Dispatch, useEffect, useState } from 'react'
 import styled from '@emotion/styled'
 import { useTranslation } from 'react-i18next'
 import i18n from 'i18next'
@@ -7,8 +7,6 @@ import Button from '../../../_general/components/Button'
 import { SignedTransaction } from 'symbol-sdk'
 import { getHistory, version } from '../../../_general/lib/Storage'
 import {
-  getSetting,
-  InitSetting,
   Setting,
   setSetting as setExtensionSetting,
 } from '../../../_general/lib/Storage/Setting'
@@ -22,6 +20,8 @@ import {
 interface Props {
   reload: () => void
   update: Date
+  setting: Setting
+  setSetting: Dispatch<Setting>
 }
 
 const langs = [
@@ -33,6 +33,18 @@ const langs = [
     key: 'English',
     value: 'EN',
   },
+  {
+    key: '한국어',
+    value: 'KR',
+  },
+  {
+    key: 'Русский',
+    value: 'RU',
+  },
+  {
+    key: 'Italian',
+    value: 'IT',
+  },
   // {
   //   key: '中文简体',
   //   value: 'ZH',
@@ -43,20 +55,14 @@ const langs = [
   // },
 ]
 
-const Options: React.VFC<Props> = ({ reload, update }) => {
+const Options: React.VFC<Props> = ({ reload, update, setting, setSetting }) => {
   const [history, setHistory] = useState<SignedTransaction[]>([])
-  const [setting, setSetting] = useState<Setting>(InitSetting)
 
   const [t] = useTranslation()
 
   useEffect(() => {
     getHistory().then((h) => {
       setHistory(h)
-    })
-
-    getSetting().then((s) => {
-      setSetting(s)
-      i18n.changeLanguage(s.lang)
     })
   }, [update])
 
