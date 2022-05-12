@@ -12,9 +12,8 @@ chrome.runtime.onInstalled.addListener(() => {
   chrome.contextMenus.create({
     type: 'normal',
     id: 'contextmenu',
-    title: 'SSSと連携する',
+    title: 'Link to SSS',
   })
-
   initialize()
 })
 

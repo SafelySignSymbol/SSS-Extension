@@ -6,7 +6,7 @@ export type Setting = {
 }
 
 export const InitSetting: Setting = {
-  lang: 'JA',
+  lang: 'INIT',
   session: 0,
 }
 

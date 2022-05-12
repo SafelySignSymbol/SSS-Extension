@@ -6,7 +6,7 @@ import { initReactI18next } from 'react-i18next'
 
 import enJson from '../_general/utils/locales/en.json'
 import jaJson from '../_general/utils/locales/ja.json'
-import krJson from '../_general/utils/locales/kr.json'
+import koJson from '../_general/utils/locales/ko.json'
 import ruJson from '../_general/utils/locales/ru.json'
 import itJson from '../_general/utils/locales/it.json'
 
@@ -21,6 +21,7 @@ import {
   Setting,
   InitSetting,
   getSetting,
+  setSetting as setExtensionSetting,
 } from '../_general/lib/Storage/Setting'
 
 export type Page = 'SETTING' | 'ALLOW' | 'HOME' | 'ACCOUNTS'
@@ -30,7 +31,7 @@ i18n.use(initReactI18next).init({
   resources: {
     EN: { translation: enJson },
     JA: { translation: jaJson },
-    KR: { translation: krJson },
+    KO: { translation: koJson },
     RU: { translation: ruJson },
     IT: { translation: itJson },
     // ZH: { translation: jaJson },
@@ -53,14 +54,31 @@ const Options: React.VFC = () => {
   useEffect(() => {
     getActiveAccount().then((acc) => {
       if (acc === null) setOpenModal(true)
-      // setUpdate(new Date())
     })
   }, [])
 
   useEffect(() => {
     getSetting().then((s) => {
-      setSetting(s)
-      i18n.changeLanguage(s.lang)
+      // const lang = (
+      //   s.lang === 'INIT' ? window.navigator.language : s.lang
+      // ).toUpperCase()
+
+      const lang = (() => {
+        if (s.lang === 'INIT') return window.navigator.language.toUpperCase()
+        if (s.lang.toUpperCase() === 'KR') return 'KO'
+        return s.lang.toUpperCase()
+      })()
+
+      const st = {
+        lang: lang,
+        session: s.session,
+      }
+      setSetting(st)
+      if (s.lang !== lang) {
+        setExtensionSetting(st)
+        reload()
+      }
+      i18n.changeLanguage(lang)
     })
   }, [update])
 

@@ -26,18 +26,33 @@ const Component: React.VFC<Props> = ({ allowlist, reload }) => {
       reload()
     })
   }
-  if (allowlist.length === 0)
-    return (
-      <div>
-        <div>{t('allowlist_howuse_e')}</div>
-      </div>
-    )
 
   const allow = () => {
     addAllowList(domainName).then(() => {
       reload()
     })
   }
+
+  if (allowlist.length === 0)
+    return (
+      <div>
+        <div>{t('allowlist_howuse_e')}</div>
+        <Spacer MBottom="40px" MTop="20px">
+          <Wrap>
+            <TextField
+              label="Domain Name"
+              setText={setDomainName}
+              variant="text"
+            />
+            <IconButton size="small" onClick={allow}>
+              <IconContext.Provider value={{ size: '24px' }}>
+                <RiAddFill style={{ margin: '6px' }} />
+              </IconContext.Provider>
+            </IconButton>
+          </Wrap>
+        </Spacer>
+      </div>
+    )
 
   return (
     <Wrapper>

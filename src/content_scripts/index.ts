@@ -95,6 +95,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
       window.opener
     )
   }
+
   return true
   // if (message.type === 'SIGN_HARDWARE') {
   //   window.postMessage({
