@@ -1,7 +1,7 @@
 import i18next from 'i18next'
 import enJson from '../_general/utils/locales/en.json'
 import jaJson from '../_general/utils/locales/ja.json'
-import krJson from '../_general/utils/locales/kr.json'
+import koJson from '../_general/utils/locales/ko.json'
 import ruJson from '../_general/utils/locales/ru.json'
 import itJson from '../_general/utils/locales/it.json'
 
@@ -12,8 +12,8 @@ const getLang = (lang?: string) => {
     return 'JA'
   } else if (l.toUpperCase() === 'EN') {
     return 'EN'
-  } else if (l.toUpperCase() === 'KR') {
-    return 'KR'
+  } else if (l.toUpperCase() === 'KO') {
+    return 'KO'
   } else if (l.toUpperCase() === 'RU') {
     return 'RU'
   } else if (l.toUpperCase() === 'IT') {
@@ -50,12 +50,12 @@ export const createSnackbar = (lang?: string) => {
     resources: {
       EN: { translation: enJson },
       JA: { translation: jaJson },
-      KR: { translation: krJson },
+      KO: { translation: koJson },
       RU: { translation: ruJson },
       IT: { translation: itJson },
     },
     lng: getLang(lang),
-    fallbackLng: 'JA',
+    fallbackLng: 'EN',
     returnEmptyString: false,
   })
   const sn = document.getElementById('SSS_snackbar')

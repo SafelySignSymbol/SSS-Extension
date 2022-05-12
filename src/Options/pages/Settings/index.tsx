@@ -35,7 +35,7 @@ const langs = [
   },
   {
     key: '한국어',
-    value: 'KR',
+    value: 'KO',
   },
   {
     key: 'Русский',
