@@ -5,8 +5,22 @@ import {
   Account,
   AggregateTransaction,
   CosignatureTransaction,
+  PublicAccount,
 } from 'symbol-sdk'
 import { addHistory, removeTransaction } from '../Storage'
+
+export const encription = (
+  message: string,
+  pubKey: string,
+  priKey: string,
+  networkType: NetworkType
+) => {
+  const acc = Account.createFromPrivateKey(priKey, networkType)
+  return acc.encryptMessage(
+    message,
+    PublicAccount.createFromPublicKey(pubKey, networkType)
+  )
+}
 
 export const sign = (
   transaction: Transaction,

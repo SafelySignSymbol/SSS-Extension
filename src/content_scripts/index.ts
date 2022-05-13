@@ -82,6 +82,10 @@ window.addEventListener('message', (event) => {
     setSignStatus(event.data.function)
     chrome.runtime.sendMessage({ type: 'removeTransaction' })
   }
+  if (event.data.function === 'requestEncriptMessage') {
+    setSignStatus(event.data.function)
+    chrome.runtime.sendMessage({ type: 'requestEncriptMessage' })
+  }
   if (event.data.function === 'requestSSS') {
     isAllowedDoamin()
   }

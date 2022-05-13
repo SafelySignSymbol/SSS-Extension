@@ -19,6 +19,7 @@ import { ExtensionAccount } from '../_general/model/ExtensionAccount'
 import Login from './pages/Login'
 import Main from './pages/Main'
 import {
+  encription,
   sign,
   signCosignatureTransaction,
   signWithCosignatories,
@@ -47,10 +48,25 @@ const Popup: React.VFC = () => {
     setStatus('MAIN')
   }
 
-  const signTx = (
-    transaction: Transaction | AggregateTransaction | null,
-    hash = ''
-  ) => {
+  const encriptMessage = (message: string, pubkey: string) => {
+    if (extensionAccount === null) {
+      return
+    }
+    const priKey = decrypt(
+      extensionAccount.encriptedPrivateKey,
+      pass,
+      extensionAccount.seed
+    )
+
+    const net_type =
+      extensionAccount.address.charAt(0) === 'T'
+        ? NetworkType.TEST_NET
+        : NetworkType.MAIN_NET
+
+    encription('', '', priKey, net_type)
+  }
+
+  const signTx = (transaction: Transaction | AggregateTransaction | null) => {
     if (extensionAccount === null || transaction === null) {
       return
     }
@@ -102,7 +118,14 @@ const Popup: React.VFC = () => {
     }
 
     if (status === 'MAIN') {
-      return <Main extensionAccount={extensionAccount} sign={signTx} />
+      return (
+        <Main
+          extensionAccount={extensionAccount}
+          signTx={signTx}
+          encriptMessage={encriptMessage}
+          type={status}
+        />
+      )
     }
   }
   return <Root>{getBody()}</Root>

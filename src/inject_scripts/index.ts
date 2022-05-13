@@ -6,6 +6,7 @@ import {
   setTransactionByPayload,
 } from './signCosignatureTransaction'
 import { showSnackbar, createSnackbar } from './snackbar'
+import { requestEncriptMessage } from './signEncription'
 
 export {}
 
@@ -57,6 +58,7 @@ const injectSSS = (
     isSet: false,
     signedFrag: false,
     signedTx: null,
+    encryptMessage: null,
     activePublicKey: publicKey,
     activeAddress: address,
     activeName: name,
@@ -66,6 +68,7 @@ const injectSSS = (
     requestSign: requestSign,
     requestSignWithCosignatories: requestSignWithCosignatories,
     requestSignCosignatureTransaction: requestSignCosignatureTransaction,
+    requestSignEncription: requestEncriptMessage,
   }
 }
 

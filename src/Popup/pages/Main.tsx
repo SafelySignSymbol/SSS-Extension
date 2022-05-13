@@ -15,15 +15,24 @@ import { getTransaction } from '../../_general/lib/Storage'
 import { TransactionURI } from 'symbol-uri-scheme'
 import { Transaction, TransactionMapping } from 'symbol-sdk'
 import NotFoundTx from './components/NotFoundTx'
+import { EncriptionMessage } from '../../_general/model/EncriptionMessage'
 
 export interface Props {
   extensionAccount: ExtensionAccount
-  sign: (tx: Transaction | null, hash?: string) => void
+  type: string
+  signTx: (tx: Transaction | null) => void
+  encriptMessage: (message: string, pubkey: string) => void
 }
 
-const Main: React.VFC<Props> = ({ extensionAccount, sign }) => {
+const Main: React.VFC<Props> = ({
+  extensionAccount,
+  type,
+  signTx,
+  encriptMessage,
+}) => {
   const [transaction, setTransaction] = useState<Transaction | null>(null)
-  const [hash, setHash] = useState<string>()
+  const [enMsg, setEnMsg] = useState<EncriptionMessage | null>(null)
+  // const [hash, setHash] = useState<string>()
 
   useEffect(() => {
     getTransaction().then((tx) => {
@@ -33,9 +42,20 @@ const Main: React.VFC<Props> = ({ extensionAccount, sign }) => {
         TransactionMapping.createFromPayload
       ).toTransaction()
       setTransaction(transaction)
-      setHash(tx.hash)
+      // setHash(tx.hash)
     })
   }, [])
+
+  const hundleClick = () => {
+    if (type === 'requestEncriptMessage' && enMsg !== null) {
+      encriptMessage(enMsg.message, enMsg.pubkey)
+    } else {
+      signTx(transaction)
+    }
+    setTimeout(() => {
+      window.close()
+    }, 100)
+  }
 
   return (
     <Container>
@@ -64,15 +84,7 @@ const Main: React.VFC<Props> = ({ extensionAccount, sign }) => {
       </Contents>
       <Footer>
         <Spacer margin="8px">
-          <Button
-            text="SIGN"
-            onClick={() => {
-              sign(transaction, hash)
-              setTimeout(() => {
-                window.close()
-              }, 100)
-            }}
-          />
+          <Button text="SIGN" onClick={hundleClick} />
         </Spacer>
       </Footer>
     </Container>
