@@ -13,7 +13,6 @@ export const getTransaction = (): Promise<{
         const txHash = hash as {
           transactionHash: string
         }
-        console.log('gt', hash)
         resolve({ tx: tx.transaction, hash: txHash.transactionHash })
       })
     })

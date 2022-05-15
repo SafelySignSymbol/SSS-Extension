@@ -31,6 +31,7 @@ const Popup: React.VFC = () => {
   const [extensionAccount, setExtensionAccount] =
     useState<ExtensionAccount | null>(null)
   const [status, setStatus] = useState<PopupStatus>('LOGIN')
+  const [signStatus, setSignStatus] = useState<string>('')
 
   const [pass, setPass] = useState('')
   useEffect(() => {
@@ -40,6 +41,10 @@ const Popup: React.VFC = () => {
       } else {
         setExtensionAccount(acc)
       }
+    })
+
+    getSignStatus().then((status) => {
+      setSignStatus(status)
     })
   }, [])
 
@@ -63,7 +68,7 @@ const Popup: React.VFC = () => {
         ? NetworkType.TEST_NET
         : NetworkType.MAIN_NET
 
-    encription('', '', priKey, net_type)
+    encription(message, pubkey, priKey, net_type)
   }
 
   const signTx = (transaction: Transaction | AggregateTransaction | null) => {
@@ -81,27 +86,25 @@ const Popup: React.VFC = () => {
         ? NetworkType.TEST_NET
         : NetworkType.MAIN_NET
 
-    getSignStatus().then((status) => {
-      if (status === 'requestSign') {
-        sign(transaction, priKey, net_type)
-      }
-      if (status === 'requestSignCosignatureTransaction') {
-        signCosignatureTransaction(transaction.serialize(), priKey, net_type)
-      }
-      if (status === 'requestSignWithCosignatories') {
-        getCosignatories().then((accounts) => {
-          const accs = accounts.map((acc) =>
-            Account.createFromPrivateKey(acc, net_type)
-          )
-          signWithCosignatories(
-            transaction as AggregateTransaction,
-            accs,
-            priKey,
-            net_type
-          )
-        })
-      }
-    })
+    if (signStatus === 'requestSign') {
+      sign(transaction, priKey, net_type)
+    }
+    if (signStatus === 'requestSignCosignatureTransaction') {
+      signCosignatureTransaction(transaction.serialize(), priKey, net_type)
+    }
+    if (signStatus === 'requestSignWithCosignatories') {
+      getCosignatories().then((accounts) => {
+        const accs = accounts.map((acc) =>
+          Account.createFromPrivateKey(acc, net_type)
+        )
+        signWithCosignatories(
+          transaction as AggregateTransaction,
+          accs,
+          priKey,
+          net_type
+        )
+      })
+    }
   }
 
   const getBody = () => {
@@ -123,7 +126,7 @@ const Popup: React.VFC = () => {
           extensionAccount={extensionAccount}
           signTx={signTx}
           encriptMessage={encriptMessage}
-          type={status}
+          type={signStatus}
         />
       )
     }

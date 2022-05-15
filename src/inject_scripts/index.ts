@@ -6,7 +6,7 @@ import {
   setTransactionByPayload,
 } from './signCosignatureTransaction'
 import { showSnackbar, createSnackbar } from './snackbar'
-import { requestEncriptMessage } from './signEncription'
+import { requestEncriptMessage, setEncriptionMessage } from './signEncription'
 
 export {}
 
@@ -63,6 +63,7 @@ const injectSSS = (
     activeAddress: address,
     activeName: name,
     activeNetworkType: getNetworkTypeByAddress(address),
+    setMessage: setEncriptionMessage,
     setTransaction: setTransaction,
     setTransactionByPayload: setTransactionByPayload,
     requestSign: requestSign,
@@ -76,9 +77,15 @@ window.addEventListener(
   'message',
   async (event) => {
     // console.log(event)
-    // console.log('event', event)
+    console.log('event', event)
     if (event.data.type === 'SIGNED_TRANSACTION') {
       window.SSS.signedTx = event.data.signedTx
+      window.SSS.signedFrag = true
+      window.SSS.isSet = false
+    }
+    if (event.data.type === 'SIGNED_MESSAGE') {
+      console.log('ret data', event.data)
+      window.SSS.encryptMessage = event.data.encryptMessage
       window.SSS.signedFrag = true
       window.SSS.isSet = false
     }

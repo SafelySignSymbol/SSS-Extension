@@ -11,7 +11,10 @@ import Button from '../../_general/components/Button'
 import Color, { addAlpha } from '../../_general/utils/Color'
 import Spacer from '../../_general/components/Spacer'
 import TransactionInfo from './components/TransactionInfo'
-import { getTransaction } from '../../_general/lib/Storage'
+import {
+  getEncriptionMessage,
+  getTransaction,
+} from '../../_general/lib/Storage'
 import { TransactionURI } from 'symbol-uri-scheme'
 import { Transaction, TransactionMapping } from 'symbol-sdk'
 import NotFoundTx from './components/NotFoundTx'
@@ -44,17 +47,24 @@ const Main: React.VFC<Props> = ({
       setTransaction(transaction)
       // setHash(tx.hash)
     })
+
+    getEncriptionMessage().then((msg) => {
+      console.log('msg', msg)
+      setEnMsg(msg)
+    })
   }, [])
 
   const hundleClick = () => {
+    console.log('type', type)
     if (type === 'requestEncriptMessage' && enMsg !== null) {
+      console.log('enmsg', enMsg)
       encriptMessage(enMsg.message, enMsg.pubkey)
     } else {
       signTx(transaction)
     }
     setTimeout(() => {
       window.close()
-    }, 100)
+    }, 10000)
   }
 
   return (

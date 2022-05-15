@@ -1,3 +1,4 @@
+import { EncryptedMessage } from 'symbol-sdk'
 import { showSnackbar } from './snackbar'
 
 interface SSSWindow extends Window {
@@ -9,18 +10,19 @@ interface SSSWindow extends Window {
 }
 declare const window: SSSWindow
 
-export const setEncriptionMessage = (message: string, publicKey: string) => {
+export const setEncriptionMessage = (message: string, pubkey: string) => {
+  window.SSS.isSet = true
   window.postMessage(
     {
       function: 'setEncriptionMessage',
       message: message,
-      publicKey: publicKey,
+      pubkey: pubkey,
     },
     '*'
   )
 }
 
-export const requestEncriptMessage = () => {
+export const requestEncriptMessage = (): Promise<EncryptedMessage> => {
   if (!window.SSS.isSet) {
     console.error('404')
     showSnackbar('alert_notfound_tx')
@@ -45,7 +47,7 @@ export const requestEncriptMessage = () => {
         window.SSS.signedFrag = false
         clearInterval(timer)
         showSnackbar('alert_succsess_sign')
-        resolve({ message: window.SSS.encryptMessage })
+        resolve(window.SSS.encryptMessage as EncryptedMessage)
       }
       if (600 < count) {
         window.postMessage(

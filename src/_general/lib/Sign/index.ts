@@ -16,10 +16,20 @@ export const encription = (
   networkType: NetworkType
 ) => {
   const acc = Account.createFromPrivateKey(priKey, networkType)
-  return acc.encryptMessage(
+  const msg = acc.encryptMessage(
     message,
     PublicAccount.createFromPublicKey(pubKey, networkType)
   )
+  chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+    if (!tabs[0].id) {
+      console.error('not found tabs')
+      return
+    }
+    chrome.tabs.sendMessage(tabs[0].id, {
+      type: 'SIGNED_MESSAGE',
+      encryptMessage: msg,
+    })
+  })
 }
 
 export const sign = (
