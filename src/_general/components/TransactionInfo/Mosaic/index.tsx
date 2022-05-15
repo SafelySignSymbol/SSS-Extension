@@ -38,7 +38,7 @@ const TxMosaic: React.VFC<Props> = ({ mosaic }) => {
                 (mosaicInfo) => {
                   setDiv(mosaicInfo.divisibility)
                 },
-                (err) => console.error(err)
+                (err) => console.error('transaction info', err)
               )
             }
           },
@@ -57,7 +57,7 @@ const TxMosaic: React.VFC<Props> = ({ mosaic }) => {
             // )
             setDiv(mosaicInfo.divisibility)
           },
-          (err) => console.error(err)
+          (err) => console.error('mosaic info div', err)
         )
       }
     })

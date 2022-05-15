@@ -1,6 +1,6 @@
 import { InitSetting } from './Setting'
 
-export const version = '1.1.2'
+export const version = '1.1.3'
 
 export const setStorage = (data: any) => {
   chrome.storage.local.set(data)
