@@ -19,9 +19,8 @@ import Allow from './pages/Allow'
 import Accounts from './pages/Accounts'
 import {
   Setting,
-  InitSetting,
   getSetting,
-  setSetting as setExtensionSetting,
+  setSetting,
 } from '../_general/lib/Storage/Setting'
 
 export type Page = 'SETTING' | 'ALLOW' | 'HOME' | 'ACCOUNTS'
@@ -49,7 +48,7 @@ const Options: React.VFC = () => {
 
   const [update, setUpdate] = useState(new Date())
 
-  const [setting, setSetting] = useState<Setting>(InitSetting)
+  const [pageSetting, setPageSetting] = useState<Setting>({} as Setting)
 
   useEffect(() => {
     getActiveAccount().then((acc) => {
@@ -59,23 +58,20 @@ const Options: React.VFC = () => {
 
   useEffect(() => {
     getSetting().then((s) => {
-      // const lang = (
-      //   s.lang === 'INIT' ? window.navigator.language : s.lang
-      // ).toUpperCase()
-
       const lang = (() => {
         if (s.lang === 'INIT') return window.navigator.language.toUpperCase()
         if (s.lang.toUpperCase() === 'KR') return 'KO'
         return s.lang.toUpperCase()
       })()
-
-      const st = {
-        lang: lang,
-        session: s.session,
-      }
-      setSetting(st)
+      console.log('s', s.lang)
+      console.log('l', lang)
       if (s.lang !== lang) {
-        setExtensionSetting(st)
+        const st = {
+          lang: lang,
+          session: s.session,
+        }
+        setPageSetting(st)
+        setSetting(st)
         reload()
       }
       i18n.changeLanguage(lang)
@@ -92,8 +88,8 @@ const Options: React.VFC = () => {
         <Settings
           reload={reload}
           update={update}
-          setting={setting}
-          setSetting={setSetting}
+          setting={pageSetting}
+          setSetting={setPageSetting}
         />
       )
     }

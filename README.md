@@ -4,14 +4,43 @@ Symbol Blockchain SSS Extension is a browser extension that works with web appli
 
 This SSS application is designed to sign transactions on the Symbol blockchain, without the need to process a private key.
 
-# Install
+# Installation
+
+SSS Extension available for Chromium Browser
+
+Please install from the link below
 
 <https://chrome.google.com/webstore/detail/sss-extension/llildiojemakefgnhhkmiiffonembcan>
 
 # Build
 
+1. Clone this project
+
+```
+$ git clone https://github.com/inatatsu-tatsuhiro/SSS-Extension.git
+```
+
+2. Install the dependencies
+
+```
+$ cd SSS-Extension
+$ yarn
+```
+
+3. Create Environment file
+
 ```
 $ mv .env.sample .env
-$ yarn
+```
+
+4. Build SSS Extension
+
+```
 $ yarn build
 ```
+
+# Licence
+
+Copyright 2022 inatatsu
+
+Licensed under the [Apache License 2.0](LICENSE)
