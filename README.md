@@ -1,5 +1,7 @@
 # SSS Extension
 
+<img src="./images/logo_type_c.png" alt="SSS Extension Logo"/>
+
 Symbol Blockchain SSS Extension is a browser extension that works with web applications that use the Symbol blockchain.
 
 This SSS application is designed to sign transactions on the Symbol blockchain, without the need to process a private key.

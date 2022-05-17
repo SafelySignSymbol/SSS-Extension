@@ -42,7 +42,12 @@ window.isAllowedSSS = () => {
 window.installedSSS = true
 window.allowSSS = false
 
-const injectSSS = (publicKey: string, address: string, lang: string) => {
+const injectSSS = (
+  publicKey: string,
+  address: string,
+  name: string,
+  lang: string
+) => {
   createSnackbar(lang)
   setTimeout(() => {
     showSnackbar('alert_connected_sss')
@@ -54,6 +59,7 @@ const injectSSS = (publicKey: string, address: string, lang: string) => {
     signedTx: null,
     activePublicKey: publicKey,
     activeAddress: address,
+    activeName: name,
     activeNetworkType: getNetworkTypeByAddress(address),
     setTransaction: setTransaction,
     setTransactionByPayload: setTransactionByPayload,
@@ -74,7 +80,12 @@ window.addEventListener(
       window.SSS.isSet = false
     }
     if (event.data.type === 'INJECT_SSS') {
-      injectSSS(event.data.publicKey, event.data.address, event.data.lang)
+      injectSSS(
+        event.data.publicKey,
+        event.data.address,
+        event.data.name,
+        event.data.lang
+      )
     }
   },
   true
