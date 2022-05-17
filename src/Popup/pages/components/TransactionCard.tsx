@@ -4,7 +4,9 @@ import styled from '@emotion/styled'
 import {
   AccountMetadataTransaction,
   AggregateTransaction,
+  MosaicDefinitionTransaction,
   MosaicMetadataTransaction,
+  MosaicSupplyChangeTransaction,
   NamespaceMetadataTransaction,
   Transaction,
   TransactionType,
@@ -17,6 +19,8 @@ import AggregateComplateTransactionCard from '../../../_general/components/Trans
 import AccountMetadataCard from '../../../_general/components/Transactions/AccountMetadataCard'
 import MosaicMetadataCard from '../../../_general/components/Transactions/MosaicMetadataCard'
 import NamespaceMetadataCard from '../../../_general/components/Transactions/NamespaceMetadataCard'
+import MosaicDefinitionCard from '../../../_general/components/Transactions/MosaicDefinitionCard'
+import MosaicSupplyChangeCard from '../../../_general/components/Transactions/MosaicSupplyChangeCard'
 
 export type Props = {
   transaction: Transaction
@@ -62,6 +66,22 @@ const TransactionCard: React.VFC<Props> = ({ transaction }) => {
     return (
       <NamespaceMetadataCard
         transaction={transaction as NamespaceMetadataTransaction}
+      />
+    )
+  }
+
+  if (transaction.type === TransactionType.MOSAIC_DEFINITION) {
+    return (
+      <MosaicDefinitionCard
+        transaction={transaction as MosaicDefinitionTransaction}
+      />
+    )
+  }
+
+  if (transaction.type === TransactionType.MOSAIC_SUPPLY_CHANGE) {
+    return (
+      <MosaicSupplyChangeCard
+        transaction={transaction as MosaicSupplyChangeTransaction}
       />
     )
   }
