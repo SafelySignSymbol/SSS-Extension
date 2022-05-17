@@ -34,6 +34,7 @@ const injectSSS = () => {
             type: 'INJECT_SSS',
             publicKey: activeAccount.publicKey,
             address: activeAccount.address,
+            name: activeAccount.name,
             lang: setting.lang,
           },
           window.opener
