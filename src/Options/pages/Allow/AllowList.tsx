@@ -6,7 +6,8 @@ import Typography from '../../../_general/components/Typography'
 
 import { IconButton } from '@mui/material'
 import { IconContext } from 'react-icons'
-import { RiDeleteBin2Line, RiAddFill } from 'react-icons/ri'
+import { RiAddFill } from 'react-icons/ri'
+import { BsBoxArrowUpRight, BsXSquare } from 'react-icons/bs'
 import { addAllowList, deleteAllowList } from '../../../_general/lib/Storage'
 
 import Spacer from '../../../_general/components/Spacer'
@@ -74,11 +75,18 @@ const Component: React.VFC<Props> = ({ allowlist, reload }) => {
         return (
           <Wrap key={i}>
             <Typography text={e} variant="h5" />
-            <IconButton size="small" onClick={() => deny(i)}>
-              <IconContext.Provider value={{ size: '24px' }}>
-                <RiDeleteBin2Line style={{ margin: '6px' }} />
-              </IconContext.Provider>
-            </IconButton>
+            <IconWrapper>
+              <IconButton size="small" onClick={() => window.open(e, '_blank')}>
+                <IconContext.Provider value={{ size: '24px' }}>
+                  <BsBoxArrowUpRight style={{ margin: '6px' }} />
+                </IconContext.Provider>
+              </IconButton>
+              <IconButton size="small" onClick={() => deny(i)}>
+                <IconContext.Provider value={{ size: '24px' }}>
+                  <BsXSquare style={{ margin: '6px' }} />
+                </IconContext.Provider>
+              </IconButton>
+            </IconWrapper>
           </Wrap>
         )
       })}
@@ -99,5 +107,8 @@ const Wrap = styled('div')({
   alignItems: 'center',
   background: 'white',
   padding: '16px',
+  margin: '8px',
+})
+const IconWrapper = styled('div')({
   margin: '8px',
 })

@@ -45,10 +45,11 @@ const injectSSS = () => {
 }
 
 const isAllowedDoamin = () => {
+  const domain = document.URL.split('://')[1].split('/')[0]
   chrome.runtime.sendMessage(
     {
       type: 'isAllowDoamin',
-      domain: document.URL.split('://')[1].split('/')[0],
+      domain: domain,
     },
     (res) => {
       // console.log('res', res)
