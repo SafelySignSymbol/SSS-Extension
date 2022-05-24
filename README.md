@@ -14,6 +14,11 @@ Please install from the link below
 
 <https://chrome.google.com/webstore/detail/sss-extension/llildiojemakefgnhhkmiiffonembcan>
 
+## Links
+
+- [SSS DEMO](https://inatatsu-tatsuhiro.github.io/SSS-Demo/)
+- [SSS Wiki](https://github.com/inatatsu-tatsuhiro/SSS-Extension/wiki)
+
 # Build
 
 1. Clone this project
