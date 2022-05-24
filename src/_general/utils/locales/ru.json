@@ -26,5 +26,15 @@
   "alert_notfound_tx": "Транзакция не установлена",
   "alert_request_sign": "Подписать запрос в SSS",
   "alert_succsess_sign": "Подпись транзакции прошла успешно",
-  "alert_failed_sign": "Не удалось подписать транзакцию"
+  "alert_failed_sign": "Не удалось подписать транзакцию",
+  "home": " Главная",
+  "account": "Аккаунты",
+  "allowlist": "Разрешенный Список",
+  "settings": "Список",
+  "add_account": "Добавить Аккаунт",
+  "recent_transaction": "Недавние транзакции",
+  "active_account_infomation": "Информация об аккаунте",
+  "address": "Адрес",
+  "xym_balance": "Баланс XYM",
+  "mosaics": "Мозаики"
 }

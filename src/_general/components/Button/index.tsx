@@ -22,6 +22,7 @@ export default Component
 const SButton = styled(Button)`
   color: black !important;
   border-color: black !important;
+  font-family: Times New Roman, Noto Sans JP;
 
   :hover {
     border-color: black !important;

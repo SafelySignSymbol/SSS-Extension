@@ -9,11 +9,15 @@ import { getAddressXym } from '../../../../_general/lib/Symbol/SymbolService'
 import Color from '../../../../_general/utils/Color'
 import { Chip } from '@mui/material'
 
+import { useTranslation } from 'react-i18next'
+
 export type Props = {
   address: Address
 }
 
 const Component: React.VFC<Props> = ({ address }) => {
+  const [t] = useTranslation()
+
   const [amount, setAmount] = useState(['0', '0'])
   useEffect(() => {
     getAddressXym(address).then((xym) => {
@@ -35,7 +39,7 @@ const Component: React.VFC<Props> = ({ address }) => {
       <Spacer margin="0px 32px 16px">
         <Title>
           <Typography
-            text="ActiveAccount Infomation"
+            text={t('active_account_infomation')}
             variant="h5"
             color={Color.grayscale}
           />
@@ -43,13 +47,13 @@ const Component: React.VFC<Props> = ({ address }) => {
       </Spacer>
       <Spacer margin="8px 0px 16px">
         <Addr>
-          <Typography text="Address" variant="h5" />
+          <Typography text={t('address')} variant="h5" />
           <SChip label={net_type} clr={color} />
         </Addr>
         <Typography text={address.pretty()} variant="subtitle1" />
       </Spacer>
       <Spacer margin="8px 0px">
-        <Typography text="XYM Balance" variant="h5" />
+        <Typography text={t('xym_balance')} variant="h5" />
         <Wrap>
           <Amount color="black" float={false}>
             {amount[0]}

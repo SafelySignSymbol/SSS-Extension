@@ -6,6 +6,8 @@ import Spacer from '../../_general/components/Spacer'
 import Button from '../../_general/components/Button'
 import { Page } from '../index'
 
+import { useTranslation } from 'react-i18next'
+
 export interface Props {
   page: Page
   setPage: Dispatch<Page>
@@ -13,6 +15,8 @@ export interface Props {
 }
 
 const Component: React.VFC<Props> = ({ page, setPage, handleOpen }) => {
+  const [t] = useTranslation()
+
   return (
     <Container>
       <Spacer margin="0px 64px">
@@ -22,26 +26,26 @@ const Component: React.VFC<Props> = ({ page, setPage, handleOpen }) => {
       <Spacer margin="0px 16px">
         <Flex>
           <Item isOpen={page === 'HOME'} onClick={() => setPage('HOME')}>
-            HOME
+            {t('home')}
           </Item>
           <Divider orientation="vertical" flexItem />
           <Item
             isOpen={page === 'ACCOUNTS'}
             onClick={() => setPage('ACCOUNTS')}>
-            ACCOUNTS
+            {t('account')}
           </Item>
           <Divider orientation="vertical" flexItem />
           <Item isOpen={page === 'ALLOW'} onClick={() => setPage('ALLOW')}>
-            ALLOW LIST
+            {t('allowlist')}
           </Item>
           <Divider orientation="vertical" flexItem />
           <Item isOpen={page === 'SETTING'} onClick={() => setPage('SETTING')}>
-            SETTINGS
+            {t('settings')}
           </Item>
         </Flex>
       </Spacer>
       <Spacer margin="0px 64px">
-        <Button text="ADD ACCOUNT" onClick={handleOpen} />
+        <Button text={t('add_account')} onClick={handleOpen} />
       </Spacer>
     </Container>
   )

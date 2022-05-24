@@ -17,6 +17,8 @@ import {
 } from '../../../../_general/lib/Symbol/Config'
 import Color from '../../../../_general/utils/Color'
 
+import { useTranslation } from 'react-i18next'
+
 export type Props = {
   address: Address
 }
@@ -27,6 +29,8 @@ type MosaicData = {
 }
 
 const Component: React.VFC<Props> = ({ address }) => {
+  const [t] = useTranslation()
+
   const net_type = getNetworkTypeByAddress(address.plain())
 
   const NODE_URL = getNodeUrl(net_type)
@@ -90,7 +94,11 @@ const Component: React.VFC<Props> = ({ address }) => {
       <Wrapper>
         <Spacer margin="0px 32px 16px">
           <Title>
-            <Typography text="Mosaics" variant="h5" color={Color.grayscale} />
+            <Typography
+              text={t('mosaics')}
+              variant="h5"
+              color={Color.grayscale}
+            />
           </Title>
         </Spacer>
         <Divider />

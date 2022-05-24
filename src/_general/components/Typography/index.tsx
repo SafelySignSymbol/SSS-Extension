@@ -30,7 +30,7 @@ const STypography = styled(Typography)<{
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  font-family: Noto Sans JP;
+  font-family: Times New Roman, Noto Sans JP;
   ${(props) => props.variant === 'h4' && 'font-size: 1.75rem;'}
 `
 

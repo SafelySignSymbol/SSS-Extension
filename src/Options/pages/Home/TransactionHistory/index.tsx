@@ -10,11 +10,15 @@ import Spacer from '../../../../_general/components/Spacer'
 import Typography from '../../../../_general/components/Typography'
 import Color from '../../../../_general/utils/Color'
 
+import { useTranslation } from 'react-i18next'
+
 export type Props = {
   address: Address
 }
 
 const Component: React.VFC<Props> = ({ address }) => {
+  const [t] = useTranslation()
+
   const [transactions, setTransactions] = useState<Transaction[]>([])
   useEffect(() => {
     getTransactions(address, 1).then((txs) => {
@@ -27,7 +31,7 @@ const Component: React.VFC<Props> = ({ address }) => {
       <Spacer margin="0px 32px 16px">
         <Title>
           <Typography
-            text="Recent Transaction"
+            text={t('recent_transaction')}
             variant="h5"
             color={Color.grayscale}
           />

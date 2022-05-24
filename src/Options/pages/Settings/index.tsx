@@ -1,7 +1,6 @@
 import React, { Dispatch, useEffect, useState } from 'react'
 import styled from '@emotion/styled'
 import { useTranslation } from 'react-i18next'
-import i18n from 'i18next'
 import Typography from '../../../_general/components/Typography'
 import Button from '../../../_general/components/Button'
 import { SignedTransaction } from 'symbol-sdk'
