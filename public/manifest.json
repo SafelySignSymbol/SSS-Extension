@@ -1,6 +1,6 @@
 {
   "manifest_version": 3,
-  "name": "SSS Extension dev beta",
+  "name": "SSS Extension",
   "version": "1.2.0",
   "icons": {
     "16": "./sss16.png",
