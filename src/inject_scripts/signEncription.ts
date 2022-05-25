@@ -24,7 +24,7 @@ export const getActiveAccountToken = (
     netWork: window.SSS.activeNetworkType,
   }
 
-  const p = payload === undefined ? defaultPayload : payload
+  const p = Object.assign(payload === undefined ? {} : payload, defaultPayload)
   window.SSS.isSet = true
   window.postMessage(
     {
@@ -43,7 +43,7 @@ export const getActiveAccountToken = (
 
   window.postMessage(
     {
-      function: 'requestEncriptMessage',
+      function: 'requestGetToken',
     },
     '*'
   )

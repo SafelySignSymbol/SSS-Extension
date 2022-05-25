@@ -66,7 +66,7 @@ injectStylefile('snackbar.css', 'body')
 isAllowedDoamin()
 
 window.addEventListener('message', (event) => {
-  console.log('data', event.data)
+  // console.log('data', event.data)
   if (event.data.function === 'setTransaction') {
     setTransaction(event.data.tx)
     setTransactionHash(event.data.hash)
@@ -75,6 +75,10 @@ window.addEventListener('message', (event) => {
     setEncriptionMessage(event.data.message, event.data.pubkey)
   }
   if (event.data.function === 'requestEncriptMessage') {
+    setSignStatus(event.data.function)
+    chrome.runtime.sendMessage({ type: 'removeMessage' })
+  }
+  if (event.data.function === 'requestGetToken') {
     setSignStatus(event.data.function)
     chrome.runtime.sendMessage({ type: 'removeMessage' })
   }

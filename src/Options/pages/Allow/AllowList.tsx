@@ -4,10 +4,10 @@ import styled from '@emotion/styled'
 
 import Typography from '../../../_general/components/Typography'
 
-import { IconButton } from '@mui/material'
+import { Alert, AlertColor, IconButton, Snackbar } from '@mui/material'
 import { IconContext } from 'react-icons'
 import { RiAddFill } from 'react-icons/ri'
-import { BsBoxArrowUpRight, BsXSquare } from 'react-icons/bs'
+import { BsClipboardCheck, BsXSquare } from 'react-icons/bs'
 import { addAllowList, deleteAllowList } from '../../../_general/lib/Storage'
 
 import Spacer from '../../../_general/components/Spacer'
@@ -22,6 +22,11 @@ export type Props = {
 const Component: React.VFC<Props> = ({ allowlist, reload }) => {
   const [t] = useTranslation()
   const [domainName, setDomainName] = useState('')
+
+  const [message, setMessage] = useState('')
+  const [openSB, setOpenSB] = useState(false)
+  const [snackbarStatus, setSnackbarStatus] = useState<AlertColor>('success')
+
   const deny = (num: number) => {
     deleteAllowList(num).then(() => {
       reload()
@@ -32,6 +37,10 @@ const Component: React.VFC<Props> = ({ allowlist, reload }) => {
     addAllowList(domainName).then(() => {
       reload()
     })
+  }
+
+  const closeSB = () => {
+    setOpenSB(false)
   }
 
   if (allowlist.length === 0)
@@ -71,14 +80,30 @@ const Component: React.VFC<Props> = ({ allowlist, reload }) => {
           </IconButton>
         </Wrap>
       </Spacer>
+      <Snackbar open={openSB} autoHideDuration={6000} onClose={closeSB}>
+        <Alert
+          onClose={closeSB}
+          severity={snackbarStatus}
+          sx={{ width: '100%' }}>
+          {message}
+        </Alert>
+      </Snackbar>
       {allowlist.map((e, i) => {
         return (
           <Wrap key={i}>
             <Typography text={e} variant="h5" />
             <IconWrapper>
-              <IconButton size="small" onClick={() => window.open(e, '_blank')}>
+              <IconButton
+                size="small"
+                onClick={() => {
+                  navigator.clipboard.writeText(e).then(() => {
+                    setMessage(t('alert_copy_success'))
+                    setOpenSB(true)
+                    setSnackbarStatus('success')
+                  })
+                }}>
                 <IconContext.Provider value={{ size: '24px' }}>
-                  <BsBoxArrowUpRight style={{ margin: '6px' }} />
+                  <BsClipboardCheck style={{ margin: '6px' }} />
                 </IconContext.Provider>
               </IconButton>
               <IconButton size="small" onClick={() => deny(i)}>

@@ -19,6 +19,7 @@
   "setting_sign_history_btn": "Download",
   "setting_change_langage": "Language Settings",
   "setting_change_langage_e": "Change the language of text displayed on the SSS",
+  "alert_copy_success": "Successfully copied",
   "alert_wrong_pass": "Incorrect password",
   "alert_connected_sss": "Linked with SSS",
   "alert_requesting_connect_sss": "Please Link your web application with SSS",

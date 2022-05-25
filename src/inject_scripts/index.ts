@@ -82,14 +82,12 @@ window.addEventListener(
   'message',
   async (event) => {
     // console.log(event)
-    console.log('event', event)
     if (event.data.type === 'SIGNED_TRANSACTION') {
       window.SSS.signedTx = event.data.signedTx
       window.SSS.signedFrag = true
       window.SSS.isSet = false
     }
     if (event.data.type === 'SIGNED_MESSAGE') {
-      console.log('ret data', event.data)
       window.SSS.encryptMessage = event.data.encryptMessage
       window.SSS.signedFrag = true
       window.SSS.isSet = false
