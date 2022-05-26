@@ -11,19 +11,31 @@ import Button from '../../_general/components/Button'
 import Color, { addAlpha } from '../../_general/utils/Color'
 import Spacer from '../../_general/components/Spacer'
 import TransactionInfo from './components/TransactionInfo'
-import { getTransaction } from '../../_general/lib/Storage'
+import {
+  getEncriptionMessage,
+  getTransaction,
+} from '../../_general/lib/Storage'
 import { TransactionURI } from 'symbol-uri-scheme'
 import { Transaction, TransactionMapping } from 'symbol-sdk'
 import NotFoundTx from './components/NotFoundTx'
+import { EncriptionMessage } from '../../_general/model/EncriptionMessage'
 
 export interface Props {
   extensionAccount: ExtensionAccount
-  sign: (tx: Transaction | null, hash?: string) => void
+  type: string
+  signTx: (tx: Transaction | null) => void
+  encriptMessage: (message: string, pubkey: string) => void
 }
 
-const Main: React.VFC<Props> = ({ extensionAccount, sign }) => {
+const Main: React.VFC<Props> = ({
+  extensionAccount,
+  type,
+  signTx,
+  encriptMessage,
+}) => {
   const [transaction, setTransaction] = useState<Transaction | null>(null)
-  const [hash, setHash] = useState<string>()
+  const [enMsg, setEnMsg] = useState<EncriptionMessage | null>(null)
+  // const [hash, setHash] = useState<string>()
 
   useEffect(() => {
     getTransaction().then((tx) => {
@@ -33,9 +45,63 @@ const Main: React.VFC<Props> = ({ extensionAccount, sign }) => {
         TransactionMapping.createFromPayload
       ).toTransaction()
       setTransaction(transaction)
-      setHash(tx.hash)
+      // setHash(tx.hash)
+    })
+
+    getEncriptionMessage().then((msg) => {
+      setEnMsg(msg)
     })
   }, [])
+
+  const hundleClick = () => {
+    if (
+      (type === 'requestEncriptMessage' || type === 'requestGetToken') &&
+      enMsg !== null
+    ) {
+      encriptMessage(enMsg.message, enMsg.pubkey)
+    } else {
+      signTx(transaction)
+    }
+    setTimeout(() => {
+      window.close()
+    }, 1000)
+  }
+
+  const contents = () => {
+    console.log({ type })
+    if (type === 'requestEncriptMessage' && enMsg !== null) {
+      return (
+        <Contents>
+          <Typography text="MessageEncription" variant="h6" />
+          <Typography text={enMsg.pubkey} variant="h6" />
+          <Typography text={enMsg.message} variant="h6" />
+        </Contents>
+      )
+    }
+    if (type === 'requestGetToken' && enMsg !== null) {
+      return (
+        <Contents>
+          <Center>
+            <Typography text="Authentication Token" variant="h3" />
+          </Center>
+        </Contents>
+      )
+    }
+    return (
+      <Contents>
+        {transaction !== null ? (
+          <TransactionInfo
+            transaction={new TransactionURI(
+              transaction.serialize(),
+              TransactionMapping.createFromPayload
+            ).build()}
+          />
+        ) : (
+          <NotFoundTx />
+        )}
+      </Contents>
+    )
+  }
 
   return (
     <Container>
@@ -50,29 +116,10 @@ const Main: React.VFC<Props> = ({ extensionAccount, sign }) => {
           </IconContext.Provider>
         </IconButton>
       </Header>
-      <Contents>
-        {transaction !== null ? (
-          <TransactionInfo
-            transaction={new TransactionURI(
-              transaction.serialize(),
-              TransactionMapping.createFromPayload
-            ).build()}
-          />
-        ) : (
-          <NotFoundTx />
-        )}
-      </Contents>
+      {contents()}
       <Footer>
         <Spacer margin="8px">
-          <Button
-            text="SIGN"
-            onClick={() => {
-              sign(transaction, hash)
-              setTimeout(() => {
-                window.close()
-              }, 100)
-            }}
-          />
+          <Button text="SIGN" onClick={hundleClick} />
         </Spacer>
       </Footer>
     </Container>
@@ -80,6 +127,13 @@ const Main: React.VFC<Props> = ({ extensionAccount, sign }) => {
 }
 
 export default Main
+
+const Center = styled('div')({
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+  height: '100%',
+})
 
 const Container = styled('div')({
   display: 'flex',

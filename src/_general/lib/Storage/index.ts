@@ -1,6 +1,6 @@
 import { InitSetting } from './Setting'
 
-export const version = '1.1.4'
+export const version = '1.2.0'
 
 export const setStorage = (data: any) => {
   chrome.storage.local.set(data)
@@ -71,3 +71,4 @@ export * from './Transaction'
 export * from './Sign'
 export * from './History'
 export * from './AllowList'
+export * from './EncriptionMessage'

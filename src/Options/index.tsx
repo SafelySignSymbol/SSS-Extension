@@ -63,8 +63,6 @@ const Options: React.VFC = () => {
         if (s.lang.toUpperCase() === 'KR') return 'KO'
         return s.lang.toUpperCase()
       })()
-      console.log('s', s.lang)
-      console.log('l', lang)
       if (s.lang !== lang) {
         const st = {
           lang: lang,

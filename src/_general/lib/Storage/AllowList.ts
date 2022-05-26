@@ -34,11 +34,8 @@ export const isAllowDomain = (domain: string): Promise<boolean> => {
     getAllowList().then((list) => {
       const len = list.filter((l) => {
         const d = l.indexOf('://') !== -1 ? l.split('://')[1] : l
-        console.log('d', d)
-        console.log('do', domain)
         return d.indexOf(domain) !== -1
       }).length
-      console.log('len', len)
       resolve(!!len)
     })
   })

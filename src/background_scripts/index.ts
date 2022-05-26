@@ -21,7 +21,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (message.type === 'removeTransaction') {
     setTimeout(() => {
       getTransaction().then((tx) => {
-        console.log('tx', tx)
+        // console.log('tx', tx)
         if (tx !== null) {
           removeTransaction()
         }
@@ -32,7 +32,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   }
 
   if (message.type === 'requestSSS') {
-    console.log('requestSSS')
+    // console.log('requestSSS')
     getAllowList().then((list) => {
       // console.log('list', list)
     })

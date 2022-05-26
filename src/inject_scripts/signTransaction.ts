@@ -22,7 +22,7 @@ export const setTransaction = (tx: Transaction) => {
 
   window.SSS.isSet = true
 
-  console.log('tx', tx)
+  // console.log('tx', tx)
 
   if (!!tx.transactionInfo) {
     window.postMessage(

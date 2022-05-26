@@ -4,6 +4,7 @@ import {
   setSignStatus,
   setTransaction,
   setTransactionHash,
+  setEncriptionMessage,
 } from '../_general/lib/Storage'
 import { getSetting } from '../_general/lib/Storage/Setting'
 
@@ -65,9 +66,21 @@ injectStylefile('snackbar.css', 'body')
 isAllowedDoamin()
 
 window.addEventListener('message', (event) => {
+  // console.log('data', event.data)
   if (event.data.function === 'setTransaction') {
     setTransaction(event.data.tx)
     setTransactionHash(event.data.hash)
+  }
+  if (event.data.function === 'setEncriptionMessage') {
+    setEncriptionMessage(event.data.message, event.data.pubkey)
+  }
+  if (event.data.function === 'requestEncriptMessage') {
+    setSignStatus(event.data.function)
+    chrome.runtime.sendMessage({ type: 'removeMessage' })
+  }
+  if (event.data.function === 'requestGetToken') {
+    setSignStatus(event.data.function)
+    chrome.runtime.sendMessage({ type: 'removeMessage' })
   }
   if (event.data.function === 'requestSign') {
     setSignStatus(event.data.function)
@@ -93,6 +106,15 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
       {
         type: 'SIGNED_TRANSACTION',
         signedTx: message.signedTx,
+      },
+      window.opener
+    )
+  }
+  if (message.type === 'SIGNED_MESSAGE') {
+    window.postMessage(
+      {
+        type: 'SIGNED_MESSAGE',
+        encryptMessage: message.encryptMessage,
       },
       window.opener
     )

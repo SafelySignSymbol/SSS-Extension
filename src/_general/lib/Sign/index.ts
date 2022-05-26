@@ -5,8 +5,32 @@ import {
   Account,
   AggregateTransaction,
   CosignatureTransaction,
+  PublicAccount,
 } from 'symbol-sdk'
 import { addHistory, removeTransaction } from '../Storage'
+
+export const encription = (
+  message: string,
+  pubKey: string,
+  priKey: string,
+  networkType: NetworkType
+) => {
+  const acc = Account.createFromPrivateKey(priKey, networkType)
+  const msg = acc.encryptMessage(
+    message,
+    PublicAccount.createFromPublicKey(pubKey, networkType)
+  )
+  chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+    if (!tabs[0].id) {
+      console.error('not found tabs')
+      return
+    }
+    chrome.tabs.sendMessage(tabs[0].id, {
+      type: 'SIGNED_MESSAGE',
+      encryptMessage: msg,
+    })
+  })
+}
 
 export const sign = (
   transaction: Transaction,
