@@ -32,7 +32,6 @@
   ],
   "permissions": [
     "storage",
-    "contextMenus",
-    "scripting"
+    "contextMenus"
   ]
 }
