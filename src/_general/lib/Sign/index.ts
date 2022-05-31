@@ -47,15 +47,9 @@ export const sign = (
   const signedTx = acc.sign(transaction, generationHash)
   addHistory(signedTx)
   removeTransaction()
-  chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-    if (!tabs[0].id) {
-      console.error('not found tabs')
-      return
-    }
-    chrome.tabs.sendMessage(tabs[0].id, {
-      type: 'SIGNED_TRANSACTION',
-      signedTx: signedTx,
-    })
+  chrome.runtime.sendMessage({
+    type: 'SIGN_TRANSACTION',
+    signedTx: signedTx,
   })
 }
 

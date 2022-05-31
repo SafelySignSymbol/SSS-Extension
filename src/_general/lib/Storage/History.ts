@@ -4,10 +4,7 @@ import { getStorage, setStorage } from '.'
 export const getHistory = (): Promise<SignedTransaction[]> => {
   return new Promise((resolve) => {
     getStorage('history').then((history) => {
-      const h = history as {
-        history: SignedTransaction[]
-      }
-      resolve(h.history)
+      resolve(history as SignedTransaction[])
     })
   })
 }

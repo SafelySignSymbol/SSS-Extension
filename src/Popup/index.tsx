@@ -24,6 +24,7 @@ import {
   signCosignatureTransaction,
   signWithCosignatories,
 } from '../_general/lib/Sign'
+import { REQUEST_SIGN } from '../_general/model/MessageType'
 
 type PopupStatus = 'LOGIN' | 'MAIN'
 
@@ -86,7 +87,7 @@ const Popup: React.VFC = () => {
         ? NetworkType.TEST_NET
         : NetworkType.MAIN_NET
 
-    if (signStatus === 'requestSign') {
+    if (signStatus === REQUEST_SIGN) {
       sign(transaction, priKey, net_type)
     }
     if (signStatus === 'requestSignCosignatureTransaction') {

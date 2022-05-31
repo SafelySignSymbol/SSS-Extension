@@ -1,6 +1,6 @@
 import { InitSetting } from './Setting'
 
-export const version = '1.2.0'
+export const version = '1.1.3'
 
 export const setStorage = (data: any) => {
   chrome.storage.local.set(data)
@@ -8,7 +8,11 @@ export const setStorage = (data: any) => {
 
 export const getStorage = (key: string) => {
   return new Promise((resolve) => {
-    chrome.storage.local.get(key, (data) => resolve(data))
+    chrome.storage.local.get(key, (data) => {
+      console.log('getstrage', data[key])
+      resolve(data[key])
+      // resolve(data)
+    })
   })
 }
 
@@ -34,6 +38,7 @@ export const initialize = () => {
       } else {
         setStorage({
           version: version,
+          data: {},
         })
         chrome.storage.local.get(null, (data) => {
           if (data.setting === undefined) {
@@ -66,9 +71,10 @@ const init = () => {
 }
 
 export * from './ExtensionAccount'
+export * from './EncriptionMessage'
 export * from './ActiveAccount'
+export * from './Data'
 export * from './Transaction'
 export * from './Sign'
 export * from './History'
 export * from './AllowList'
-export * from './EncriptionMessage'

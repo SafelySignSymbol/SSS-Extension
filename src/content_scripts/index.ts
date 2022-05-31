@@ -1,12 +1,22 @@
 import {
+  INJECT_SSS,
+  REMOVE_DATA,
+  REQUEST_SIGN,
+  SET_TRANSACTION,
+  SIGN_TRANSACTION,
+} from './../_general/model/MessageType'
+import {
   getActiveAccount,
   setCosignatories,
   setSignStatus,
   setTransaction,
   setTransactionHash,
   setEncriptionMessage,
+  setTransactionV2,
 } from '../_general/lib/Storage'
 import { getSetting } from '../_general/lib/Storage/Setting'
+
+import { OPEN_POPUP } from '../_general/model/MessageType'
 
 export {}
 const injectScript = function (file: string, node: any) {
@@ -32,7 +42,7 @@ const injectSSS = () => {
       setTimeout(() => {
         window.postMessage(
           {
-            type: 'INJECT_SSS',
+            type: INJECT_SSS,
             publicKey: activeAccount.publicKey,
             address: activeAccount.address,
             name: activeAccount.name,
@@ -65,11 +75,11 @@ injectScript('inject_script.js', 'body')
 injectStylefile('snackbar.css', 'body')
 isAllowedDoamin()
 
-window.addEventListener('message', (event) => {
-  // console.log('data', event.data)
-  if (event.data.function === 'setTransaction') {
-    setTransaction(event.data.tx)
-    setTransactionHash(event.data.hash)
+// receive message
+window.addEventListener('message', async (event) => {
+  console.log('data', event.data)
+  if (event.data.to === 'CONTENT') {
+    console.log('signed data receiced!!!')
   }
   if (event.data.function === 'setEncriptionMessage') {
     setEncriptionMessage(event.data.message, event.data.pubkey)
@@ -98,13 +108,28 @@ window.addEventListener('message', (event) => {
   if (event.data.function === 'requestSSS') {
     isAllowedDoamin()
   }
+
+  // ==========================================
+
+  if (event.data.function === SET_TRANSACTION) {
+    chrome.runtime.sendMessage({
+      type: SET_TRANSACTION,
+      transaction: event.data.tx,
+    })
+    chrome.runtime.sendMessage({ type: OPEN_POPUP })
+  }
+  if (event.data.function === REQUEST_SIGN) {
+    setSignStatus(event.data.function)
+    chrome.runtime.sendMessage({ type: REMOVE_DATA })
+  }
 })
 
+// send message
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-  if (message.type === 'SIGNED_TRANSACTION') {
+  if (message.type === SIGN_TRANSACTION) {
     window.postMessage(
       {
-        type: 'SIGNED_TRANSACTION',
+        type: SIGN_TRANSACTION,
         signedTx: message.signedTx,
       },
       window.opener

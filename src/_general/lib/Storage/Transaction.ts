@@ -7,13 +7,7 @@ export const getTransaction = (): Promise<{
   return new Promise((resolve) => {
     getStorage('transaction').then((transaction) => {
       getStorage('transactionHash').then((hash) => {
-        const tx = transaction as {
-          transaction: string
-        }
-        const txHash = hash as {
-          transactionHash: string
-        }
-        resolve({ tx: tx.transaction, hash: txHash.transactionHash })
+        resolve({ tx: transaction as string, hash: hash as string })
       })
     })
   })

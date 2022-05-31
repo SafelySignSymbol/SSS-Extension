@@ -8,11 +8,6 @@
     "64": "./sss64.png",
     "128": "./sss128.png"
   },
-
-  "action": {
-    "default_title": "SSS Extension",
-    "default_popup": "popup.html"
-  },
   "content_scripts": [
     {
       "matches": ["http://*/*", "https://*/*"],
@@ -32,6 +27,7 @@
   ],
   "permissions": [
     "storage",
-    "contextMenus"
+    "contextMenus",
+    "tabs"
   ]
 }

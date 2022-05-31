@@ -1,3 +1,4 @@
+import { INJECT_SSS, SIGN_TRANSACTION } from './../_general/model/MessageType'
 import { getNetworkTypeByAddress } from './../_general/lib/Symbol/Config'
 import { requestSign, setTransaction } from './signTransaction'
 import { requestSignWithCosignatories } from './signTransactionWithCosignatories'
@@ -92,7 +93,16 @@ window.addEventListener(
       window.SSS.signedFrag = true
       window.SSS.isSet = false
     }
-    if (event.data.type === 'INJECT_SSS') {
+
+    // =========================
+
+    if (event.data.type === SIGN_TRANSACTION) {
+      window.SSS.signedTx = event.data.signedTx
+      window.SSS.signedFrag = true
+      window.SSS.isSet = false
+    }
+
+    if (event.data.type === INJECT_SSS) {
       injectSSS(
         event.data.publicKey,
         event.data.address,

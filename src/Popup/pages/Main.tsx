@@ -12,6 +12,7 @@ import Color, { addAlpha } from '../../_general/utils/Color'
 import Spacer from '../../_general/components/Spacer'
 import TransactionInfo from './components/TransactionInfo'
 import {
+  getData,
   getEncriptionMessage,
   getTransaction,
 } from '../../_general/lib/Storage'
@@ -19,6 +20,7 @@ import { TransactionURI } from 'symbol-uri-scheme'
 import { Transaction, TransactionMapping } from 'symbol-sdk'
 import NotFoundTx from './components/NotFoundTx'
 import { EncriptionMessage } from '../../_general/model/EncriptionMessage'
+import { TRANSACTION } from '../../_general/model/Data'
 
 export interface Props {
   extensionAccount: ExtensionAccount
@@ -33,25 +35,32 @@ const Main: React.VFC<Props> = ({
   signTx,
   encriptMessage,
 }) => {
-  const [transaction, setTransaction] = useState<Transaction | null>(null)
+  const [transaction, setTransaction] = useState<string>('')
   const [enMsg, setEnMsg] = useState<EncriptionMessage | null>(null)
-  // const [hash, setHash] = useState<string>()
+  const [update, setUpdate] = useState(new Date().getTime())
 
   useEffect(() => {
-    getTransaction().then((tx) => {
-      if (tx.tx === null) return
-      const transaction = TransactionURI.fromURI(
-        tx.tx,
-        TransactionMapping.createFromPayload
-      ).toTransaction()
-      setTransaction(transaction)
-      // setHash(tx.hash)
-    })
+    // getTransaction().then((tx) => {
+    //   if (tx.tx === null) return
+    //   const transaction = TransactionURI.fromURI(
+    //     tx.tx,
+    //     TransactionMapping.createFromPayload
+    //   ).toTransaction()
+    //   setTransaction(transaction)
+    // })
 
-    getEncriptionMessage().then((msg) => {
-      setEnMsg(msg)
+    // getEncriptionMessage().then((msg) => {
+    //   setEnMsg(msg)
+    // })
+
+    getData().then((data) => {
+      console.log({ data })
+      console.log({ update })
+      if (data.dataType === TRANSACTION && !!data.transaction) {
+        setTransaction(data.transaction)
+      }
     })
-  }, [])
+  }, [update])
 
   const hundleClick = () => {
     if (
@@ -60,7 +69,11 @@ const Main: React.VFC<Props> = ({
     ) {
       encriptMessage(enMsg.message, enMsg.pubkey)
     } else {
-      signTx(transaction)
+      const tx = TransactionURI.fromURI(
+        transaction,
+        TransactionMapping.createFromPayload
+      ).toTransaction()
+      signTx(tx)
     }
     setTimeout(() => {
       window.close()
@@ -89,13 +102,8 @@ const Main: React.VFC<Props> = ({
     }
     return (
       <Contents>
-        {transaction !== null ? (
-          <TransactionInfo
-            transaction={new TransactionURI(
-              transaction.serialize(),
-              TransactionMapping.createFromPayload
-            ).build()}
-          />
+        {transaction !== '' ? (
+          <TransactionInfo setUpdate={setUpdate} transaction={transaction} />
         ) : (
           <NotFoundTx />
         )}

@@ -3,10 +3,7 @@ import { getStorage, setStorage } from '.'
 export const getAllowList = (): Promise<string[]> => {
   return new Promise((resolve) => {
     getStorage('allowList').then((allowList) => {
-      const list = allowList as {
-        allowList: string[]
-      }
-      resolve(list.allowList as string[])
+      resolve(allowList as string[])
     })
   })
 }
@@ -32,11 +29,7 @@ export const addAllowList = (domain: string) => {
 export const isAllowDomain = (domain: string): Promise<boolean> => {
   return new Promise((resolve) => {
     getAllowList().then((list) => {
-      const len = list.filter((l) => {
-        const d = l.indexOf('://') !== -1 ? l.split('://')[1] : l
-        return d.indexOf(domain) !== -1
-      }).length
-      resolve(!!len)
+      resolve(list.filter((l) => l.includes(domain)).length !== 0)
     })
   })
 }

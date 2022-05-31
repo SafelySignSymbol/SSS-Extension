@@ -1,5 +1,7 @@
+import { REMOVE_DATA } from './../_general/model/MessageType'
 import { SignedTransaction, Transaction, TransactionMapping } from 'symbol-sdk'
 import { TransactionURI } from 'symbol-uri-scheme'
+import { REQUEST_SIGN, SET_TRANSACTION } from '../_general/model/MessageType'
 
 import { showSnackbar } from './snackbar'
 
@@ -27,7 +29,7 @@ export const setTransaction = (tx: Transaction) => {
   if (!!tx.transactionInfo) {
     window.postMessage(
       {
-        function: 'setTransaction',
+        function: REQUEST_SIGN,
         hash: tx.transactionInfo.hash,
         tx: transactionURI,
       },
@@ -36,7 +38,7 @@ export const setTransaction = (tx: Transaction) => {
   } else {
     window.postMessage(
       {
-        function: 'setTransaction',
+        function: SET_TRANSACTION,
         tx: transactionURI,
       },
       '*'
@@ -53,7 +55,7 @@ export const requestSign = (): Promise<SignedTransaction> => {
 
   window.postMessage(
     {
-      function: 'requestSign',
+      function: REQUEST_SIGN,
     },
     '*'
   )
@@ -82,7 +84,7 @@ export const requestSign = (): Promise<SignedTransaction> => {
       if (600 < count) {
         window.postMessage(
           {
-            function: 'removeTransaction',
+            function: REMOVE_DATA,
           },
           '*'
         )

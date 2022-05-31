@@ -1,0 +1,8 @@
+export const OPEN_POPUP = 'OPEN_POPUP'
+export const REMOVE_DATA = 'REMOVE_DATA'
+export const SIGN_TRANSACTION = 'SIGN_TRANSACTION'
+export const SET_TRANSACTION = 'SET_TRANSACTION'
+export const SET_DATA = 'SET_DATA'
+export const REQUEST_SIGN = 'REQUEST_SIGN'
+export const INJECT_SSS = 'INJECT_SSS'
+export const SIGNED_MESSAGE = 'SIGNED_MESSAGE'
