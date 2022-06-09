@@ -26,24 +26,30 @@ export const setTransaction = (tx: Transaction) => {
 
   // console.log('tx', tx)
 
-  if (!!tx.transactionInfo) {
-    window.postMessage(
-      {
-        function: REQUEST_SIGN,
-        hash: tx.transactionInfo.hash,
-        tx: transactionURI,
-      },
-      '*'
-    )
-  } else {
-    window.postMessage(
-      {
-        function: SET_TRANSACTION,
-        tx: transactionURI,
-      },
-      '*'
-    )
-  }
+  window.postMessage(
+    {
+      function: SET_TRANSACTION,
+      tx: transactionURI,
+    },
+    '*'
+  )
+}
+
+export const setTransactionByPayload = (serializedTx: string) => {
+  const transactionURI = new TransactionURI(
+    serializedTx,
+    TransactionMapping.createFromPayload
+  ).build()
+
+  window.SSS.isSet = true
+
+  window.postMessage(
+    {
+      function: SET_TRANSACTION,
+      tx: transactionURI,
+    },
+    '*'
+  )
 }
 
 export const requestSign = (): Promise<SignedTransaction> => {

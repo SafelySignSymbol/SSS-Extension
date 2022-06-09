@@ -1,8 +1,12 @@
-import { getData } from './../_general/lib/Storage/Data'
+import { getData, setMessageV2 } from './../_general/lib/Storage/Data'
 import {
+  IS_ALLOW_DOMAIN,
   OPEN_POPUP,
   REMOVE_DATA,
+  REQUEST_SSS,
+  SET_MESSAGE,
   SET_TRANSACTION,
+  SIGN_MESSAGE,
   SIGN_TRANSACTION,
 } from './../_general/model/MessageType'
 import {
@@ -42,15 +46,14 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     return true
   }
 
-  if (message.type === 'requestSSS') {
-    // console.log('requestSSS')
+  if (message.type === REQUEST_SSS) {
     getAllowList().then((list) => {
       // console.log('list', list)
     })
     return true
   }
 
-  if (message.type === 'isAllowDoamin') {
+  if (message.type === IS_ALLOW_DOMAIN) {
     isAllowDomain(message.domain).then((isAllow) => {
       console.log({ isAllow })
       sendResponse({ status: isAllow })
@@ -69,7 +72,6 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   }
 
   if (message.type === SIGN_TRANSACTION) {
-    console.log('sign transaction')
     getData().then((data) => {
       chrome.tabs.sendMessage(data.tabId, {
         data,
@@ -78,11 +80,26 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
       })
     })
   }
+  if (message.type === SIGN_MESSAGE) {
+    getData().then((data) => {
+      chrome.tabs.sendMessage(data.tabId, {
+        data,
+        type: SIGN_MESSAGE,
+        encryptMessage: message.encryptMessage,
+      })
+    })
+  }
 
   if (message.type === SET_TRANSACTION) {
     chrome.tabs.query({ active: true, currentWindow: true }).then((data) => {
       const [tab] = data
       setTransactionV2(message.transaction, tab.id)
+    })
+  }
+  if (message.type === SET_MESSAGE) {
+    chrome.tabs.query({ active: true, currentWindow: true }).then((data) => {
+      const [tab] = data
+      setMessageV2(message.message, message.publicKey, tab.id)
     })
   }
 

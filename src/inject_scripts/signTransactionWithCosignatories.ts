@@ -1,4 +1,5 @@
 import { Account, SignedTransaction } from 'symbol-sdk'
+import { REQUEST_SIGN_WITH_COSIGNATORIES } from '../_general/model/MessageType'
 import { showSnackbar } from './snackbar'
 
 interface SSSWindow extends Window {
@@ -21,7 +22,7 @@ export const requestSignWithCosignatories = (
   }
   window.postMessage(
     {
-      function: 'requestSignWithCosignatories',
+      function: REQUEST_SIGN_WITH_COSIGNATORIES,
       cosignatories: cosignatories.map((c) => c.privateKey),
     },
     '*'

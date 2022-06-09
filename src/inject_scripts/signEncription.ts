@@ -1,4 +1,12 @@
+import {
+  REMOVE_DATA,
+  REQUEST_MESSAGE_ENCODE,
+} from './../_general/model/MessageType'
 import { EncryptedMessage, PublicAccount } from 'symbol-sdk'
+import {
+  REQUEST_ACTIVE_ACCOUNT_TOKEN,
+  SET_MESSAGE,
+} from '../_general/model/MessageType'
 import { showSnackbar } from './snackbar'
 
 interface SSSWindow extends Window {
@@ -28,7 +36,7 @@ export const getActiveAccountToken = (
   window.SSS.isSet = true
   window.postMessage(
     {
-      function: 'setEncriptionMessage',
+      function: SET_MESSAGE,
       message: JSON.stringify(p),
       pubkey: publicKey,
     },
@@ -43,7 +51,7 @@ export const getActiveAccountToken = (
 
   window.postMessage(
     {
-      function: 'requestGetToken',
+      function: REQUEST_ACTIVE_ACCOUNT_TOKEN,
     },
     '*'
   )
@@ -51,6 +59,7 @@ export const getActiveAccountToken = (
   showSnackbar('alert_request_sign')
 
   return new Promise((resolve, reject) => {
+    console.log('promise getActiveAuthAccount')
     let count = 0
     window.SSS.isSet = false
 
@@ -65,7 +74,7 @@ export const getActiveAccountToken = (
       if (600 < count) {
         window.postMessage(
           {
-            function: 'removeMessage',
+            function: REMOVE_DATA,
           },
           '*'
         )
@@ -82,7 +91,7 @@ export const setEncriptionMessage = (message: string, pubkey: string) => {
   window.SSS.isSet = true
   window.postMessage(
     {
-      function: 'setEncriptionMessage',
+      function: SET_MESSAGE,
       message: message,
       pubkey: pubkey,
     },
@@ -99,7 +108,7 @@ export const requestEncriptMessage = (): Promise<EncryptedMessage> => {
 
   window.postMessage(
     {
-      function: 'requestEncriptMessage',
+      function: REQUEST_MESSAGE_ENCODE,
     },
     '*'
   )
@@ -107,6 +116,7 @@ export const requestEncriptMessage = (): Promise<EncryptedMessage> => {
   showSnackbar('alert_request_sign')
 
   return new Promise((resolve, reject) => {
+    console.log('promise requestEncriptMessage')
     let count = 0
     window.SSS.isSet = false
 
@@ -120,7 +130,7 @@ export const requestEncriptMessage = (): Promise<EncryptedMessage> => {
       if (600 < count) {
         window.postMessage(
           {
-            function: 'removeMessage',
+            function: REMOVE_DATA,
           },
           '*'
         )

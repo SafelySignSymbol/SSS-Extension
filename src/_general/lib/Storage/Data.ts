@@ -1,5 +1,5 @@
 import { getStorage, setStorage } from '.'
-import { Data, TRANSACTION } from '../../model/Data'
+import { Data, MESSAGE, TRANSACTION } from '../../model/Data'
 
 export const getData = (): Promise<Data> => {
   return new Promise((resolve) => {
@@ -16,6 +16,23 @@ export const setTransactionV2 = (tx: string, tabId: number) => {
     tabId,
     dataType: TRANSACTION,
     transaction: tx,
+    createdAt: new Date().getTime(),
+  }
+  setStorage({ data })
+}
+
+export const setMessageV2 = (
+  message: string,
+  publicKey: string,
+  tabId: number
+) => {
+  const data: Data = {
+    tabId,
+    dataType: MESSAGE,
+    message: {
+      msg: message,
+      publicKey,
+    },
     createdAt: new Date().getTime(),
   }
   setStorage({ data })

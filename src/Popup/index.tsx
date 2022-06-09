@@ -3,12 +3,7 @@ import styled from '@emotion/styled'
 import { decrypt } from '../_general/lib/Crypto'
 
 import './global.css'
-import {
-  Account,
-  AggregateTransaction,
-  NetworkType,
-  Transaction,
-} from 'symbol-sdk'
+import { Account, AggregateTransaction, Transaction } from 'symbol-sdk'
 
 import {
   getActiveAccount,
@@ -24,14 +19,22 @@ import {
   signCosignatureTransaction,
   signWithCosignatories,
 } from '../_general/lib/Sign'
-import { REQUEST_SIGN } from '../_general/model/MessageType'
+import {
+  REQUEST_SIGN,
+  REQUEST_SIGN_COSIGNATURE,
+  REQUEST_SIGN_WITH_COSIGNATORIES,
+} from '../_general/model/MessageType'
+import { getNetworkTypeByAddress } from '../_general/lib/Symbol/Config'
+
+const LOGIN = 'LOGIN'
+const MAIN = 'MAIN'
 
 type PopupStatus = 'LOGIN' | 'MAIN'
 
 const Popup: React.VFC = () => {
   const [extensionAccount, setExtensionAccount] =
     useState<ExtensionAccount | null>(null)
-  const [status, setStatus] = useState<PopupStatus>('LOGIN')
+  const [status, setStatus] = useState<PopupStatus>(LOGIN)
   const [signStatus, setSignStatus] = useState<string>('')
 
   const [pass, setPass] = useState('')
@@ -64,15 +67,13 @@ const Popup: React.VFC = () => {
       extensionAccount.seed
     )
 
-    const net_type =
-      extensionAccount.address.charAt(0) === 'T'
-        ? NetworkType.TEST_NET
-        : NetworkType.MAIN_NET
+    const net_type = getNetworkTypeByAddress(extensionAccount.address)
 
     encription(message, pubkey, priKey, net_type)
   }
 
   const signTx = (transaction: Transaction | AggregateTransaction | null) => {
+    console.log({ signStatus })
     if (extensionAccount === null || transaction === null) {
       return
     }
@@ -82,19 +83,17 @@ const Popup: React.VFC = () => {
       extensionAccount.seed
     )
 
-    const net_type =
-      extensionAccount.address.charAt(0) === 'T'
-        ? NetworkType.TEST_NET
-        : NetworkType.MAIN_NET
+    const net_type = getNetworkTypeByAddress(extensionAccount.address)
 
     if (signStatus === REQUEST_SIGN) {
       sign(transaction, priKey, net_type)
     }
-    if (signStatus === 'requestSignCosignatureTransaction') {
+    if (signStatus === REQUEST_SIGN_COSIGNATURE) {
       signCosignatureTransaction(transaction.serialize(), priKey, net_type)
     }
-    if (signStatus === 'requestSignWithCosignatories') {
+    if (signStatus === REQUEST_SIGN_WITH_COSIGNATORIES) {
       getCosignatories().then((accounts) => {
+        console.log('cosignatories')
         const accs = accounts.map((acc) =>
           Account.createFromPrivateKey(acc, net_type)
         )
@@ -112,7 +111,8 @@ const Popup: React.VFC = () => {
     if (extensionAccount === null) {
       return
     }
-    if (status === 'LOGIN') {
+
+    if (status === LOGIN) {
       return (
         <Login
           extensionAccount={extensionAccount}
@@ -121,7 +121,7 @@ const Popup: React.VFC = () => {
       )
     }
 
-    if (status === 'MAIN') {
+    if (status === MAIN) {
       return (
         <Main
           extensionAccount={extensionAccount}
@@ -132,6 +132,7 @@ const Popup: React.VFC = () => {
       )
     }
   }
+
   return <Root>{getBody()}</Root>
 }
 

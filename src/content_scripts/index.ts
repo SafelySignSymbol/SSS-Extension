@@ -1,22 +1,30 @@
 import {
   INJECT_SSS,
+  IS_ALLOW_DOMAIN,
   REMOVE_DATA,
+  REQUEST_ACTIVE_ACCOUNT_TOKEN,
+  REQUEST_MESSAGE_ENCODE,
   REQUEST_SIGN,
+  REQUEST_SIGN_COSIGNATURE,
+  REQUEST_SIGN_WITH_COSIGNATORIES,
+  REQUEST_SSS,
+  SET_MESSAGE,
   SET_TRANSACTION,
+  SIGN_MESSAGE,
   SIGN_TRANSACTION,
 } from './../_general/model/MessageType'
 import {
   getActiveAccount,
   setCosignatories,
   setSignStatus,
-  setTransaction,
-  setTransactionHash,
-  setEncriptionMessage,
-  setTransactionV2,
 } from '../_general/lib/Storage'
 import { getSetting } from '../_general/lib/Storage/Setting'
 
 import { OPEN_POPUP } from '../_general/model/MessageType'
+
+const INJECT_SCRIPT = 'inject_script.js'
+const SNACKBAR = 'snackbar.css'
+const BODY = 'body'
 
 export {}
 const injectScript = function (file: string, node: any) {
@@ -59,7 +67,7 @@ const isAllowedDoamin = () => {
   const domain = document.URL.split('://')[1].split('/')[0]
   chrome.runtime.sendMessage(
     {
-      type: 'isAllowDoamin',
+      type: IS_ALLOW_DOMAIN,
       domain: domain,
     },
     (res) => {
@@ -71,45 +79,40 @@ const isAllowedDoamin = () => {
   )
 }
 
-injectScript('inject_script.js', 'body')
-injectStylefile('snackbar.css', 'body')
+injectScript(INJECT_SCRIPT, BODY)
+injectStylefile(SNACKBAR, BODY)
 isAllowedDoamin()
 
 // receive message
 window.addEventListener('message', async (event) => {
   console.log('data', event.data)
-  if (event.data.to === 'CONTENT') {
-    console.log('signed data receiced!!!')
-  }
-  if (event.data.function === 'setEncriptionMessage') {
-    setEncriptionMessage(event.data.message, event.data.pubkey)
-  }
-  if (event.data.function === 'requestEncriptMessage') {
+  if (event.data.function === REQUEST_MESSAGE_ENCODE) {
     setSignStatus(event.data.function)
-    chrome.runtime.sendMessage({ type: 'removeMessage' })
+    chrome.runtime.sendMessage({ type: REMOVE_DATA })
   }
-  if (event.data.function === 'requestGetToken') {
+  if (event.data.function === REQUEST_ACTIVE_ACCOUNT_TOKEN) {
     setSignStatus(event.data.function)
-    chrome.runtime.sendMessage({ type: 'removeMessage' })
+    chrome.runtime.sendMessage({ type: REMOVE_DATA })
   }
-  if (event.data.function === 'requestSign') {
-    setSignStatus(event.data.function)
-    chrome.runtime.sendMessage({ type: 'removeTransaction' })
-  }
-  if (event.data.function === 'requestSignWithCosignatories') {
-    setSignStatus(event.data.function)
-    setCosignatories(event.data.cosignatories)
-    chrome.runtime.sendMessage({ type: 'removeTransaction' })
-  }
-  if (event.data.function === 'requestSignCosignatureTransaction') {
-    setSignStatus(event.data.function)
-    chrome.runtime.sendMessage({ type: 'removeTransaction' })
-  }
-  if (event.data.function === 'requestSSS') {
+  // if (event.data.function === 'requestSign') {
+  //   setSignStatus(event.data.function)
+  //   chrome.runtime.sendMessage({ type: REMOVE_DATA })
+  // }
+
+  // ==========================================
+
+  if (event.data.function === REQUEST_SSS) {
     isAllowedDoamin()
   }
 
-  // ==========================================
+  if (event.data.function === SET_MESSAGE) {
+    chrome.runtime.sendMessage({
+      type: SET_MESSAGE,
+      message: event.data.message,
+      publicKey: event.data.pubkey,
+    })
+    chrome.runtime.sendMessage({ type: OPEN_POPUP })
+  }
 
   if (event.data.function === SET_TRANSACTION) {
     chrome.runtime.sendMessage({
@@ -118,7 +121,19 @@ window.addEventListener('message', async (event) => {
     })
     chrome.runtime.sendMessage({ type: OPEN_POPUP })
   }
+
   if (event.data.function === REQUEST_SIGN) {
+    setSignStatus(event.data.function)
+    chrome.runtime.sendMessage({ type: REMOVE_DATA })
+  }
+
+  if (event.data.function === REQUEST_SIGN_WITH_COSIGNATORIES) {
+    setSignStatus(event.data.function)
+    setCosignatories(event.data.cosignatories)
+    chrome.runtime.sendMessage({ type: REMOVE_DATA })
+  }
+
+  if (event.data.function === REQUEST_SIGN_COSIGNATURE) {
     setSignStatus(event.data.function)
     chrome.runtime.sendMessage({ type: REMOVE_DATA })
   }
@@ -126,6 +141,7 @@ window.addEventListener('message', async (event) => {
 
 // send message
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+  console.log({ message })
   if (message.type === SIGN_TRANSACTION) {
     window.postMessage(
       {
@@ -135,10 +151,10 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
       window.opener
     )
   }
-  if (message.type === 'SIGNED_MESSAGE') {
+  if (message.type === SIGN_MESSAGE) {
     window.postMessage(
       {
-        type: 'SIGNED_MESSAGE',
+        type: SIGN_MESSAGE,
         encryptMessage: message.encryptMessage,
       },
       window.opener

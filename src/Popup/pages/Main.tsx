@@ -11,16 +11,16 @@ import Button from '../../_general/components/Button'
 import Color, { addAlpha } from '../../_general/utils/Color'
 import Spacer from '../../_general/components/Spacer'
 import TransactionInfo from './components/TransactionInfo'
-import {
-  getData,
-  getEncriptionMessage,
-  getTransaction,
-} from '../../_general/lib/Storage'
+import { getData } from '../../_general/lib/Storage'
 import { TransactionURI } from 'symbol-uri-scheme'
 import { Transaction, TransactionMapping } from 'symbol-sdk'
 import NotFoundTx from './components/NotFoundTx'
 import { EncriptionMessage } from '../../_general/model/EncriptionMessage'
-import { TRANSACTION } from '../../_general/model/Data'
+import { MESSAGE, TRANSACTION } from '../../_general/model/Data'
+import {
+  REQUEST_ACTIVE_ACCOUNT_TOKEN,
+  REQUEST_MESSAGE_ENCODE,
+} from '../../_general/model/MessageType'
 
 export interface Props {
   extensionAccount: ExtensionAccount
@@ -55,18 +55,24 @@ const Main: React.VFC<Props> = ({
 
     getData().then((data) => {
       console.log({ data })
-      console.log({ update })
       if (data.dataType === TRANSACTION && !!data.transaction) {
         setTransaction(data.transaction)
+      }
+      if (data.dataType === MESSAGE && !!data.message) {
+        setEnMsg(
+          new EncriptionMessage(data.message.msg, data.message.publicKey)
+        )
       }
     })
   }, [update])
 
   const hundleClick = () => {
     if (
-      (type === 'requestEncriptMessage' || type === 'requestGetToken') &&
+      (type === REQUEST_MESSAGE_ENCODE ||
+        type === REQUEST_ACTIVE_ACCOUNT_TOKEN) &&
       enMsg !== null
     ) {
+      console.log('handle click encriptMessage')
       encriptMessage(enMsg.message, enMsg.pubkey)
     } else {
       const tx = TransactionURI.fromURI(
@@ -77,12 +83,12 @@ const Main: React.VFC<Props> = ({
     }
     setTimeout(() => {
       window.close()
-    }, 1000)
+    }, 10000)
   }
 
   const contents = () => {
     console.log({ type })
-    if (type === 'requestEncriptMessage' && enMsg !== null) {
+    if (type === REQUEST_MESSAGE_ENCODE && enMsg !== null) {
       return (
         <Contents>
           <Typography text="MessageEncription" variant="h6" />
@@ -91,7 +97,7 @@ const Main: React.VFC<Props> = ({
         </Contents>
       )
     }
-    if (type === 'requestGetToken' && enMsg !== null) {
+    if (type === REQUEST_ACTIVE_ACCOUNT_TOKEN && enMsg !== null) {
       return (
         <Contents>
           <Center>
