@@ -1,4 +1,5 @@
 import {
+  FOCUS_PAGE,
   INJECT_SSS,
   REQUEST_SSS,
   SIGN_MESSAGE,
@@ -50,6 +51,17 @@ window.requestSSS = () => {
 window.isAllowedSSS = () => {
   return !!window.SSS
 }
+
+window.addEventListener('focus', function () {
+  console.log('change focus')
+
+  window.postMessage(
+    {
+      function: FOCUS_PAGE,
+    },
+    '*'
+  )
+})
 
 window.installedSSS = true
 window.allowSSS = false

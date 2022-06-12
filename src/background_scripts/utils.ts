@@ -1,8 +1,15 @@
+import { setPopup } from './../_general/lib/Storage/Popup'
 export const openPopup = () => {
-  chrome.windows.create({
-    url: '/popup.html',
-    type: 'popup',
-    width: 800,
-    height: 600,
-  })
+  setTimeout(() => {
+    chrome.windows
+      .create({
+        url: '/popup.html',
+        type: 'popup',
+        width: 814, // 800
+        height: 637, // 600
+      })
+      .then((popup) => {
+        setPopup(popup.id)
+      })
+  }, 100)
 }

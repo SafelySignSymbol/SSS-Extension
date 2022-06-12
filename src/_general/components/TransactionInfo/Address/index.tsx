@@ -9,13 +9,11 @@ import {
   UnresolvedAddress,
 } from 'symbol-sdk'
 import { getActiveAccount } from '../../../lib/Storage'
+import { getNetworkTypeByAddress, getNodeUrl } from '../../../lib/Symbol/Config'
 
 export type Props = {
   address: UnresolvedAddress
 }
-
-const test_net = 'https://sym-test.opening-line.jp:3001'
-const main_net = 'https://sym-main.opening-line.jp:3001'
 
 const TxAddress: React.VFC<Props> = ({ address }) => {
   const [addr, setAddr] = useState('')
@@ -23,20 +21,17 @@ const TxAddress: React.VFC<Props> = ({ address }) => {
     getActiveAccount().then((extensionAccount) => {
       if (address instanceof NamespaceId) {
         const addr = extensionAccount.address
-        const url = addr.charAt(0) === 'T' ? test_net : main_net
+        const url = getNodeUrl(getNetworkTypeByAddress(addr))
         const rep = new RepositoryFactoryHttp(url)
         const nsRep = rep.createNamespaceRepository()
         const nsService = new NamespaceService(nsRep)
-        // console.log('address', address)
 
         const nsId = NamespaceId.createFromEncoded(address.toHex())
         nsService.namespace(nsId).subscribe(
           (x) => {
-            // console.log(x)
             setAddr(x.name)
           },
           (err) => {
-            // console.log('err', err)
             setAddr('NameSpace Not Found')
           }
         )

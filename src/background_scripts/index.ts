@@ -1,3 +1,4 @@
+import { getPopup, removePopup } from './../_general/lib/Storage/Popup'
 import { getData, setMessageV2 } from './../_general/lib/Storage/Data'
 import {
   IS_ALLOW_DOMAIN,
@@ -12,11 +13,9 @@ import {
 import {
   addAllowList,
   getAllowList,
-  getTransaction,
   initialize,
   isAllowDomain,
   removeData,
-  removeTransaction,
   setTransactionV2,
 } from '../_general/lib/Storage'
 
@@ -32,43 +31,38 @@ chrome.runtime.onInstalled.addListener(() => {
   initialize()
 })
 
+chrome.action.onClicked.addListener(() => {
+  chrome.runtime.openOptionsPage()
+})
+
+// chrome.action.onClicked.addListener(function (tab) {
+//   chrome.runtime.openOptionsPage()
+// })
+
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-  if (message.type === 'removeTransaction') {
-    setTimeout(() => {
-      getTransaction().then((tx) => {
-        // console.log('tx', tx)
-        if (tx !== null) {
-          removeTransaction()
-        }
-        sendResponse({ status: 200 })
-      })
-    }, 60 * 1000)
-    return true
-  }
-
-  if (message.type === REQUEST_SSS) {
-    getAllowList().then((list) => {
-      // console.log('list', list)
-    })
-    return true
-  }
-
   if (message.type === IS_ALLOW_DOMAIN) {
     isAllowDomain(message.domain).then((isAllow) => {
-      console.log({ isAllow })
+      if (isAllow) {
+        chrome.action.setIcon({ path: 'sss64.png' })
+      } else {
+        chrome.action.setIcon({ path: 'sss64_gray.png' })
+      }
       sendResponse({ status: isAllow })
     })
     return true
   }
 
-  // +++++++++++++++++++++++++++++++++++++++
-
   if (message.type === OPEN_POPUP) {
     openPopup()
   }
-
   if (message.type === REMOVE_DATA) {
-    removeData()
+    getPopup().then((id) => {
+      removeData()
+      removePopup()
+      try {
+        chrome.windows.remove(id)
+      } catch {}
+    })
   }
 
   if (message.type === SIGN_TRANSACTION) {

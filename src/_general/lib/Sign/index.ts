@@ -7,7 +7,7 @@ import {
   CosignatureTransaction,
   PublicAccount,
 } from 'symbol-sdk'
-import { addHistory, removeTransaction } from '../Storage'
+import { addHistory } from '../Storage'
 import { SIGN_MESSAGE, SIGN_TRANSACTION } from '../../model/MessageType'
 
 export const encription = (
@@ -25,16 +25,6 @@ export const encription = (
     type: SIGN_MESSAGE,
     encryptMessage: msg,
   })
-  // chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-  //   if (!tabs[0].id) {
-  //     console.error('not found tabs')
-  //     return
-  //   }
-  //   chrome.tabs.sendMessage(tabs[0].id, {
-  //     type: SIGN_MESSAGE,
-  //     encryptMessage: msg,
-  //   })
-  // })
 }
 
 export const sign = (
@@ -48,7 +38,6 @@ export const sign = (
 
   const signedTx = acc.sign(transaction, generationHash)
   addHistory(signedTx)
-  removeTransaction()
   chrome.runtime.sendMessage({
     type: SIGN_TRANSACTION,
     signedTx: signedTx,
@@ -66,7 +55,7 @@ export const signCosignatureTransaction = (
     payload,
     getGenerationHash(networkType)
   )
-  removeTransaction()
+  // removeTransaction()
   chrome.runtime.sendMessage({
     type: SIGN_TRANSACTION,
     signedTx: signedTx,
@@ -89,7 +78,7 @@ export const signWithCosignatories = (
     generationHash
   )
   addHistory(signedTx)
-  removeTransaction()
+  // removeTransaction()
   chrome.runtime.sendMessage({
     type: SIGN_TRANSACTION,
     signedTx: signedTx,

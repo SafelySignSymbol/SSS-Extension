@@ -20,6 +20,7 @@ import {
   signWithCosignatories,
 } from '../_general/lib/Sign'
 import {
+  REMOVE_DATA,
   REQUEST_SIGN,
   REQUEST_SIGN_COSIGNATURE,
   REQUEST_SIGN_WITH_COSIGNATORIES,
@@ -36,6 +37,12 @@ const Popup: React.VFC = () => {
     useState<ExtensionAccount | null>(null)
   const [status, setStatus] = useState<PopupStatus>(LOGIN)
   const [signStatus, setSignStatus] = useState<string>('')
+
+  window.onbeforeunload = () => {
+    chrome.runtime.sendMessage({
+      type: REMOVE_DATA,
+    })
+  }
 
   const [pass, setPass] = useState('')
   useEffect(() => {
@@ -73,7 +80,6 @@ const Popup: React.VFC = () => {
   }
 
   const signTx = (transaction: Transaction | AggregateTransaction | null) => {
-    console.log({ signStatus })
     if (extensionAccount === null || transaction === null) {
       return
     }
@@ -93,7 +99,6 @@ const Popup: React.VFC = () => {
     }
     if (signStatus === REQUEST_SIGN_WITH_COSIGNATORIES) {
       getCosignatories().then((accounts) => {
-        console.log('cosignatories')
         const accs = accounts.map((acc) =>
           Account.createFromPrivateKey(acc, net_type)
         )

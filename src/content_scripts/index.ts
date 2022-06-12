@@ -1,4 +1,5 @@
 import {
+  FOCUS_PAGE,
   INJECT_SSS,
   IS_ALLOW_DOMAIN,
   REMOVE_DATA,
@@ -85,21 +86,29 @@ isAllowedDoamin()
 
 // receive message
 window.addEventListener('message', async (event) => {
-  console.log('data', event.data)
   if (event.data.function === REQUEST_MESSAGE_ENCODE) {
     setSignStatus(event.data.function)
-    chrome.runtime.sendMessage({ type: REMOVE_DATA })
+    // chrome.runtime.sendMessage({ type: REMOVE_DATA })
   }
   if (event.data.function === REQUEST_ACTIVE_ACCOUNT_TOKEN) {
     setSignStatus(event.data.function)
-    chrome.runtime.sendMessage({ type: REMOVE_DATA })
+    // chrome.runtime.sendMessage({ type: REMOVE_DATA })
   }
+  if (event.data.function === FOCUS_PAGE) {
+    isAllowedDoamin()
+    // chrome.runtime.sendMessage({ type: REMOVE_DATA })
+  }
+
   // if (event.data.function === 'requestSign') {
   //   setSignStatus(event.data.function)
   //   chrome.runtime.sendMessage({ type: REMOVE_DATA })
   // }
 
   // ==========================================
+
+  if (event.data.function === REMOVE_DATA) {
+    chrome.runtime.sendMessage({ type: REMOVE_DATA })
+  }
 
   if (event.data.function === REQUEST_SSS) {
     isAllowedDoamin()

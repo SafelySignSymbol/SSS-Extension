@@ -9,13 +9,11 @@ import {
   RepositoryFactoryHttp,
 } from 'symbol-sdk'
 import { getActiveAccount } from '../../../lib/Storage'
+import { getNodeUrl, getNetworkTypeByAddress } from '../../../lib/Symbol/Config'
 
 export type Props = {
   mosaic: Mosaic
 }
-
-const test_net = 'https://sym-test.opening-line.jp:3001'
-const main_net = 'https://sym-main.opening-line.jp:3001'
 
 const TxMosaic: React.VFC<Props> = ({ mosaic }) => {
   const [id, setId] = useState('')
@@ -23,7 +21,7 @@ const TxMosaic: React.VFC<Props> = ({ mosaic }) => {
   useEffect(() => {
     getActiveAccount().then((extensionAccount) => {
       const addr = extensionAccount.address
-      const url = addr.charAt(0) === 'T' ? test_net : main_net
+      const url = getNodeUrl(getNetworkTypeByAddress(addr))
       const rep = new RepositoryFactoryHttp(url)
       const nsRep = rep.createNamespaceRepository()
       const nsService = new NamespaceService(nsRep)
@@ -43,7 +41,6 @@ const TxMosaic: React.VFC<Props> = ({ mosaic }) => {
             }
           },
           (err) => {
-            // console.log('err', err)
             setId('NameSpace Not Found')
           }
         )
@@ -51,10 +48,6 @@ const TxMosaic: React.VFC<Props> = ({ mosaic }) => {
         setId(mosaic.id.toHex())
         mosaicHttp.getMosaic(mosaic.id).subscribe(
           (mosaicInfo) => {
-            // console.log(
-            //   'amount',
-            //   mosaic.amount.compact() / Math.pow(10, mosaicInfo.divisibility)
-            // )
             setDiv(mosaicInfo.divisibility)
           },
           (err) => console.error('mosaic info div', err)

@@ -21,6 +21,7 @@ import {
   REQUEST_ACTIVE_ACCOUNT_TOKEN,
   REQUEST_MESSAGE_ENCODE,
 } from '../../_general/model/MessageType'
+import MessageEncription from './components/MessageEncription'
 
 export interface Props {
   extensionAccount: ExtensionAccount
@@ -37,24 +38,9 @@ const Main: React.VFC<Props> = ({
 }) => {
   const [transaction, setTransaction] = useState<string>('')
   const [enMsg, setEnMsg] = useState<EncriptionMessage | null>(null)
-  const [update, setUpdate] = useState(new Date().getTime())
 
   useEffect(() => {
-    // getTransaction().then((tx) => {
-    //   if (tx.tx === null) return
-    //   const transaction = TransactionURI.fromURI(
-    //     tx.tx,
-    //     TransactionMapping.createFromPayload
-    //   ).toTransaction()
-    //   setTransaction(transaction)
-    // })
-
-    // getEncriptionMessage().then((msg) => {
-    //   setEnMsg(msg)
-    // })
-
     getData().then((data) => {
-      console.log({ data })
       if (data.dataType === TRANSACTION && !!data.transaction) {
         setTransaction(data.transaction)
       }
@@ -64,7 +50,7 @@ const Main: React.VFC<Props> = ({
         )
       }
     })
-  }, [update])
+  }, [])
 
   const hundleClick = () => {
     if (
@@ -72,7 +58,6 @@ const Main: React.VFC<Props> = ({
         type === REQUEST_ACTIVE_ACCOUNT_TOKEN) &&
       enMsg !== null
     ) {
-      console.log('handle click encriptMessage')
       encriptMessage(enMsg.message, enMsg.pubkey)
     } else {
       const tx = TransactionURI.fromURI(
@@ -83,17 +68,14 @@ const Main: React.VFC<Props> = ({
     }
     setTimeout(() => {
       window.close()
-    }, 10000)
+    }, 1000)
   }
 
   const contents = () => {
-    console.log({ type })
     if (type === REQUEST_MESSAGE_ENCODE && enMsg !== null) {
       return (
         <Contents>
-          <Typography text="MessageEncription" variant="h6" />
-          <Typography text={enMsg.pubkey} variant="h6" />
-          <Typography text={enMsg.message} variant="h6" />
+          <MessageEncription message={enMsg.message} />
         </Contents>
       )
     }
@@ -109,7 +91,7 @@ const Main: React.VFC<Props> = ({
     return (
       <Contents>
         {transaction !== '' ? (
-          <TransactionInfo setUpdate={setUpdate} transaction={transaction} />
+          <TransactionInfo transaction={transaction} />
         ) : (
           <NotFoundTx />
         )}
@@ -163,6 +145,7 @@ const Header = styled('div')({
 
 const Contents = styled('div')({
   margin: '16px 32px',
+  width: 'calc(100vw - 64px)',
   height: 'calc(100vh - 32px - 80px - 80px)',
   border: 'solid ' + addAlpha(Color.sky, 0.4),
   borderWidth: '4px 0px 4px 4px',

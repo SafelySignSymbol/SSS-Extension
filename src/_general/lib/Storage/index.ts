@@ -9,9 +9,7 @@ export const setStorage = (data: any) => {
 export const getStorage = (key: string) => {
   return new Promise((resolve) => {
     chrome.storage.local.get(key, (data) => {
-      console.log('getstrage', data[key])
       resolve(data[key])
-      // resolve(data)
     })
   })
 }

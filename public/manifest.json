@@ -14,8 +14,17 @@
       "js": ["content_script.js"]
     }
   ],
-    "background": {
+  "background": {
     "service_worker": "background_script.js"
+  },
+  "action": {
+    "default_title": "SSS Extension",
+    "default_icon": {
+    "16": "./sss16.png",
+    "32": "./sss32.png",
+    "64": "./sss64.png",
+    "128": "./sss128.png"
+  }
   },
   "description": "Symbolブロックチェーンのトランザクションへと安全に署名を行うブラウザ拡張機能",
   "options_page": "options.html",
