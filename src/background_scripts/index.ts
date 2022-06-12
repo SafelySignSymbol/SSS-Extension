@@ -4,7 +4,6 @@ import {
   IS_ALLOW_DOMAIN,
   OPEN_POPUP,
   REMOVE_DATA,
-  REQUEST_SSS,
   SET_MESSAGE,
   SET_TRANSACTION,
   SIGN_MESSAGE,
@@ -12,7 +11,6 @@ import {
 } from './../_general/model/MessageType'
 import {
   addAllowList,
-  getAllowList,
   initialize,
   isAllowDomain,
   removeData,
