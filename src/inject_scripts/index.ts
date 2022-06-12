@@ -33,7 +33,6 @@ interface SSSWindow extends Window {
 declare const window: SSSWindow
 
 window.requestSSS = () => {
-  // console.log('req SSS')
   if (window.isAllowedSSS()) {
     showSnackbar('alert_succsess_connect_sss')
     return true
@@ -53,8 +52,6 @@ window.isAllowedSSS = () => {
 }
 
 window.addEventListener('focus', function () {
-  console.log('change focus')
-
   window.postMessage(
     {
       function: FOCUS_PAGE,
