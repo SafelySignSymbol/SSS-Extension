@@ -1,6 +1,6 @@
 import { InitSetting } from './Setting'
 
-export const version = '2.0.0'
+export const version = chrome.runtime.getManifest().version
 
 export const setStorage = (data: any) => {
   chrome.storage.local.set(data)
