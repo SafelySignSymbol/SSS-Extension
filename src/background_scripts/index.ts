@@ -33,10 +33,6 @@ chrome.action.onClicked.addListener(() => {
   chrome.runtime.openOptionsPage()
 })
 
-// chrome.action.onClicked.addListener(function (tab) {
-//   chrome.runtime.openOptionsPage()
-// })
-
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (message.type === IS_ALLOW_DOMAIN) {
     isAllowDomain(message.domain).then((isAllow) => {
