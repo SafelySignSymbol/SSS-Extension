@@ -24,8 +24,6 @@ export const setTransaction = (tx: Transaction) => {
 
   window.SSS.isSet = true
 
-  // console.log('tx', tx)
-
   window.postMessage(
     {
       function: SET_TRANSACTION,

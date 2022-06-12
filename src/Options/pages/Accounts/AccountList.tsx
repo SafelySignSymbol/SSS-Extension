@@ -41,7 +41,6 @@ const Component: React.VFC<Props> = ({ extensionAccounts, reload }) => {
           }
         })()
         const copy = (value: string) => {
-          // console.log('val', value)
           navigator.clipboard.writeText(value)
         }
 

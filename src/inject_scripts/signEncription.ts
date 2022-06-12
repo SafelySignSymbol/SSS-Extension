@@ -59,7 +59,6 @@ export const getActiveAccountToken = (
   showSnackbar('alert_request_sign')
 
   return new Promise((resolve, reject) => {
-    console.log('promise getActiveAuthAccount')
     let count = 0
     window.SSS.isSet = false
 
@@ -116,7 +115,6 @@ export const requestEncriptMessage = (): Promise<EncryptedMessage> => {
   showSnackbar('alert_request_sign')
 
   return new Promise((resolve, reject) => {
-    console.log('promise requestEncriptMessage')
     let count = 0
     window.SSS.isSet = false
 

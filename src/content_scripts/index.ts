@@ -72,7 +72,6 @@ const isAllowedDoamin = () => {
       domain: domain,
     },
     (res) => {
-      // console.log('res', res)
       if (res.status) {
         injectSSS()
       }
@@ -150,7 +149,6 @@ window.addEventListener('message', async (event) => {
 
 // send message
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-  console.log({ message })
   if (message.type === SIGN_TRANSACTION) {
     window.postMessage(
       {

@@ -12,7 +12,6 @@ export const addExtensionAccount = (account: IExtensionAccount) => {
       )
 
       if (test.length !== 0) {
-        // console.log('reject')
         return reject('allready added')
       } else {
         const newExtensionAccounts: ExtensionAccount[] = [
