@@ -1,10 +1,18 @@
-import { getNetworkTypeByAddress } from './../_general/lib/Symbol/Config'
-import { requestSign, setTransaction } from './signTransaction'
-import { requestSignWithCosignatories } from './signTransactionWithCosignatories'
 import {
-  requestSignCosignatureTransaction,
+  FOCUS_PAGE,
+  INJECT_SSS,
+  REQUEST_SSS,
+  SIGN_MESSAGE,
+  SIGN_TRANSACTION,
+} from './../_general/model/MessageType'
+import { getNetworkTypeByAddress } from './../_general/lib/Symbol/Config'
+import {
+  requestSign,
+  setTransaction,
   setTransactionByPayload,
-} from './signCosignatureTransaction'
+} from './signTransaction'
+import { requestSignWithCosignatories } from './signTransactionWithCosignatories'
+import { requestSignCosignatureTransaction } from './signCosignatureTransaction'
 import { showSnackbar, createSnackbar } from './snackbar'
 import {
   getActiveAccountToken,
@@ -25,7 +33,6 @@ interface SSSWindow extends Window {
 declare const window: SSSWindow
 
 window.requestSSS = () => {
-  // console.log('req SSS')
   if (window.isAllowedSSS()) {
     showSnackbar('alert_succsess_connect_sss')
     return true
@@ -33,7 +40,7 @@ window.requestSSS = () => {
   showSnackbar('alert_requesting_connect_sss')
   window.postMessage(
     {
-      function: 'requestSSS',
+      function: REQUEST_SSS,
     },
     '*'
   )
@@ -43,6 +50,15 @@ window.requestSSS = () => {
 window.isAllowedSSS = () => {
   return !!window.SSS
 }
+
+window.addEventListener('focus', function () {
+  window.postMessage(
+    {
+      function: FOCUS_PAGE,
+    },
+    '*'
+  )
+})
 
 window.installedSSS = true
 window.allowSSS = false
@@ -81,24 +97,27 @@ const injectSSS = (
 window.addEventListener(
   'message',
   async (event) => {
-    // console.log(event)
-    if (event.data.type === 'SIGNED_TRANSACTION') {
-      window.SSS.signedTx = event.data.signedTx
-      window.SSS.signedFrag = true
-      window.SSS.isSet = false
-    }
-    if (event.data.type === 'SIGNED_MESSAGE') {
+    if (event.data.type === SIGN_MESSAGE) {
       window.SSS.encryptMessage = event.data.encryptMessage
       window.SSS.signedFrag = true
       window.SSS.isSet = false
     }
-    if (event.data.type === 'INJECT_SSS') {
-      injectSSS(
-        event.data.publicKey,
-        event.data.address,
-        event.data.name,
-        event.data.lang
-      )
+
+    if (event.data.type === SIGN_TRANSACTION) {
+      window.SSS.signedTx = event.data.signedTx
+      window.SSS.signedFrag = true
+      window.SSS.isSet = false
+    }
+
+    if (event.data.type === INJECT_SSS) {
+      if (window.SSS === undefined) {
+        injectSSS(
+          event.data.publicKey,
+          event.data.address,
+          event.data.name,
+          event.data.lang
+        )
+      }
     }
   },
   true

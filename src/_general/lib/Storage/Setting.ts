@@ -13,10 +13,7 @@ export const InitSetting: Setting = {
 export const getSetting = (): Promise<Setting> => {
   return new Promise((resolve) => {
     getStorage('setting').then((setting) => {
-      const s = setting as {
-        setting: Setting
-      }
-      resolve(s.setting as Setting)
+      resolve(setting as Setting)
     })
   })
 }

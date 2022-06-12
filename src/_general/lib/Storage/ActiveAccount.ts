@@ -4,10 +4,7 @@ import { ExtensionAccount } from '../../model/ExtensionAccount'
 export const getActiveAccount = (): Promise<ExtensionAccount> => {
   return new Promise((resolve) => {
     getStorage('activeAccount').then((activeAccount) => {
-      const a = activeAccount as {
-        activeAccount: ExtensionAccount
-      }
-      resolve(a.activeAccount as ExtensionAccount)
+      resolve(activeAccount as ExtensionAccount)
     })
   })
 }

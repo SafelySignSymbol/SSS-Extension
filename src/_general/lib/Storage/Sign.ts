@@ -6,10 +6,7 @@ export const setSignStatus = (status: string) => {
 export const getSignStatus = (): Promise<string> => {
   return new Promise((resolve) => {
     getStorage('signStatus').then((status) => {
-      const st = status as {
-        signStatus: string
-      }
-      resolve(st.signStatus as string)
+      resolve(status as string)
     })
   })
 }
@@ -21,10 +18,7 @@ export const setCosignatories = (accounts: string[]) => {
 export const getCosignatories = (): Promise<string[]> => {
   return new Promise((resolve) => {
     getStorage('cosignatories').then((cosignatories) => {
-      const c = cosignatories as {
-        cosignatories: string[]
-      }
-      resolve(c.cosignatories as string[])
+      resolve(cosignatories as string[])
     })
   })
 }

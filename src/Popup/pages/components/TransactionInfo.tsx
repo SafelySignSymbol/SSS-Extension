@@ -3,9 +3,6 @@ import React from 'react'
 import styled from '@emotion/styled'
 
 import { Box } from '@mui/system'
-import { IconButton } from '@mui/material'
-import { IconContext } from 'react-icons'
-import { MdUpdate } from 'react-icons/md'
 import TransactionCard from './TransactionCard'
 import { TransactionMapping } from 'symbol-sdk'
 import { TransactionURI } from 'symbol-uri-scheme'
@@ -29,11 +26,6 @@ const Component: React.VFC<Props> = ({ transaction }) => {
           <Typography text={getTransactionType(tx.type)} variant="h5" />
         </TxType>
         <Box sx={{ flexGrow: 1 }} />
-        <IconButton onClick={() => console.log('click')}>
-          <IconContext.Provider value={{ size: '24px' }}>
-            <MdUpdate />
-          </IconContext.Provider>
-        </IconButton>
       </Header>
       <Content>
         <TransactionCard transaction={tx} />

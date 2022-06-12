@@ -1,6 +1,6 @@
 import { InitSetting } from './Setting'
 
-export const version = '1.2.0'
+export const version = chrome.runtime.getManifest().version
 
 export const setStorage = (data: any) => {
   chrome.storage.local.set(data)
@@ -8,7 +8,9 @@ export const setStorage = (data: any) => {
 
 export const getStorage = (key: string) => {
   return new Promise((resolve) => {
-    chrome.storage.local.get(key, (data) => resolve(data))
+    chrome.storage.local.get(key, (data) => {
+      resolve(data[key])
+    })
   })
 }
 
@@ -45,7 +47,6 @@ export const initialize = () => {
       }
     })
     .catch(() => {
-      // console.log('catch')
       init()
     })
 }
@@ -55,20 +56,21 @@ const init = () => {
     extensionAccounts: [],
     accountsCount: 0,
     activeAccount: null,
-    transaction: null,
     signStatus: '',
     cosignatories: [],
     history: [],
     allowList: '',
     version: version,
     setting: InitSetting,
+    data: null,
   })
 }
 
 export * from './ExtensionAccount'
+// export * from './EncriptionMessage'
 export * from './ActiveAccount'
-export * from './Transaction'
+export * from './Data'
+// export * from './Transaction'
 export * from './Sign'
 export * from './History'
 export * from './AllowList'
-export * from './EncriptionMessage'

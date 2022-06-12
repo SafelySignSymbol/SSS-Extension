@@ -43,29 +43,14 @@ const Component: React.VFC<Props> = ({ address }) => {
   useEffect(() => {
     accountHttp.getAccountInfo(address).subscribe(
       (accountInfo) => {
-        // const mids = accountInfo.mosaics
-        //   .map((m) => m.id)
-        //   .filter((m) => m instanceof MosaicId) as MosaicId[]
         repositoryFactory
           .createChainRepository()
           .getChainInfo()
           .subscribe((chainInfo) => {
-            // console.log('chain', chainInfo)
-            // mosaicHttp.getMosaics(mids).subscribe(
-            //   (mosaicsInfo) => {
-            //     console.log('ms', mosaicsInfo)
-            //     mosaicsInfo.forEach((m) => {
-            //       console.log('m', m)
-            //       setMosaics((prev) => [...prev, {mosaicInfo: m, mosaic: }])
-            //     })
-            //   },
-            //   (err) => console.log('mosaicsInfo error', err)
-            // )
             for (let m of accountInfo.mosaics) {
               mosaicHttp.getMosaic(new MosaicId(m.id.id.toHex())).subscribe(
                 (mosaicInfo) => {
                   if (mosaicInfo.duration.toString() === '0') {
-                    console.log('mosaic', mosaicInfo)
                     setMosaics((prev) => [
                       ...prev,
                       { mosaicInfo: mosaicInfo, mosaic: m },

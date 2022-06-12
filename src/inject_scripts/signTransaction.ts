@@ -1,5 +1,7 @@
+import { REMOVE_DATA } from './../_general/model/MessageType'
 import { SignedTransaction, Transaction, TransactionMapping } from 'symbol-sdk'
 import { TransactionURI } from 'symbol-uri-scheme'
+import { REQUEST_SIGN, SET_TRANSACTION } from '../_general/model/MessageType'
 
 import { showSnackbar } from './snackbar'
 
@@ -22,26 +24,30 @@ export const setTransaction = (tx: Transaction) => {
 
   window.SSS.isSet = true
 
-  // console.log('tx', tx)
+  window.postMessage(
+    {
+      function: SET_TRANSACTION,
+      tx: transactionURI,
+    },
+    '*'
+  )
+}
 
-  if (!!tx.transactionInfo) {
-    window.postMessage(
-      {
-        function: 'setTransaction',
-        hash: tx.transactionInfo.hash,
-        tx: transactionURI,
-      },
-      '*'
-    )
-  } else {
-    window.postMessage(
-      {
-        function: 'setTransaction',
-        tx: transactionURI,
-      },
-      '*'
-    )
-  }
+export const setTransactionByPayload = (serializedTx: string) => {
+  const transactionURI = new TransactionURI(
+    serializedTx,
+    TransactionMapping.createFromPayload
+  ).build()
+
+  window.SSS.isSet = true
+
+  window.postMessage(
+    {
+      function: SET_TRANSACTION,
+      tx: transactionURI,
+    },
+    '*'
+  )
 }
 
 export const requestSign = (): Promise<SignedTransaction> => {
@@ -53,7 +59,7 @@ export const requestSign = (): Promise<SignedTransaction> => {
 
   window.postMessage(
     {
-      function: 'requestSign',
+      function: REQUEST_SIGN,
     },
     '*'
   )
@@ -82,7 +88,7 @@ export const requestSign = (): Promise<SignedTransaction> => {
       if (600 < count) {
         window.postMessage(
           {
-            function: 'removeTransaction',
+            function: REMOVE_DATA,
           },
           '*'
         )

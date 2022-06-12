@@ -12,7 +12,6 @@ export const addExtensionAccount = (account: IExtensionAccount) => {
       )
 
       if (test.length !== 0) {
-        // console.log('reject')
         return reject('allready added')
       } else {
         const newExtensionAccounts: ExtensionAccount[] = [
@@ -40,10 +39,7 @@ export const addExtensionAccount = (account: IExtensionAccount) => {
 export const getExtensionAccounts = (): Promise<ExtensionAccount[]> => {
   return new Promise((resolve) => {
     getStorage('extensionAccounts').then((extensionAccounts) => {
-      const a = extensionAccounts as {
-        extensionAccounts: ExtensionAccount[]
-      }
-      resolve(a.extensionAccounts)
+      resolve(extensionAccounts as ExtensionAccount[])
     })
   })
 }

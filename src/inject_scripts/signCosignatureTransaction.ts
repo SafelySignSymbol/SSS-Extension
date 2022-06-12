@@ -4,6 +4,7 @@ import {
   UInt64,
 } from 'symbol-sdk'
 import { TransactionURI } from 'symbol-uri-scheme'
+import { REQUEST_SIGN_COSIGNATURE } from '../_general/model/MessageType'
 import { showSnackbar } from './snackbar'
 
 interface SSSWindow extends Window {
@@ -25,7 +26,7 @@ export const requestSignCosignatureTransaction =
     }
     window.postMessage(
       {
-        function: 'requestSignCosignatureTransaction',
+        function: REQUEST_SIGN_COSIGNATURE,
       },
       '*'
     )
@@ -60,20 +61,3 @@ export const requestSignCosignatureTransaction =
       }, 100)
     })
   }
-
-export const setTransactionByPayload = (serializedTx: string) => {
-  const transactionURI = new TransactionURI(
-    serializedTx,
-    TransactionMapping.createFromPayload
-  ).build()
-
-  window.SSS.isSet = true
-
-  window.postMessage(
-    {
-      function: 'setTransaction',
-      tx: transactionURI,
-    },
-    '*'
-  )
-}

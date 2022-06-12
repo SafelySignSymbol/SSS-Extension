@@ -7,7 +7,8 @@ import {
   CosignatureTransaction,
   PublicAccount,
 } from 'symbol-sdk'
-import { addHistory, removeTransaction } from '../Storage'
+import { addHistory } from '../Storage'
+import { SIGN_MESSAGE, SIGN_TRANSACTION } from '../../model/MessageType'
 
 export const encription = (
   message: string,
@@ -20,15 +21,9 @@ export const encription = (
     message,
     PublicAccount.createFromPublicKey(pubKey, networkType)
   )
-  chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-    if (!tabs[0].id) {
-      console.error('not found tabs')
-      return
-    }
-    chrome.tabs.sendMessage(tabs[0].id, {
-      type: 'SIGNED_MESSAGE',
-      encryptMessage: msg,
-    })
+  chrome.runtime.sendMessage({
+    type: SIGN_MESSAGE,
+    encryptMessage: msg,
   })
 }
 
@@ -39,23 +34,13 @@ export const sign = (
 ) => {
   const acc = Account.createFromPrivateKey(priKey, networkType)
 
-  const generationHash =
-    networkType === NetworkType.TEST_NET
-      ? '7FCCD304802016BEBBCD342A332F91FF1F3BB5E902988B352697BE245F48E836' // TEST_NET
-      : '57F7DA205008026C776CB6AED843393F04CD458E0AA2D9F1D5F31A402072B2D6' // MAIN_NET
+  const generationHash = getGenerationHash(networkType)
 
   const signedTx = acc.sign(transaction, generationHash)
   addHistory(signedTx)
-  removeTransaction()
-  chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-    if (!tabs[0].id) {
-      console.error('not found tabs')
-      return
-    }
-    chrome.tabs.sendMessage(tabs[0].id, {
-      type: 'SIGNED_TRANSACTION',
-      signedTx: signedTx,
-    })
+  chrome.runtime.sendMessage({
+    type: SIGN_TRANSACTION,
+    signedTx: signedTx,
   })
 }
 
@@ -70,16 +55,10 @@ export const signCosignatureTransaction = (
     payload,
     getGenerationHash(networkType)
   )
-  removeTransaction()
-  chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-    if (!tabs[0].id) {
-      console.error('not found tabs')
-      return
-    }
-    chrome.tabs.sendMessage(tabs[0].id, {
-      type: 'SIGNED_TRANSACTION',
-      signedTx: signedTx,
-    })
+  // removeTransaction()
+  chrome.runtime.sendMessage({
+    type: SIGN_TRANSACTION,
+    signedTx: signedTx,
   })
 }
 
@@ -91,10 +70,7 @@ export const signWithCosignatories = (
 ) => {
   const acc = Account.createFromPrivateKey(priKey, networkType)
 
-  const generationHash =
-    networkType === NetworkType.TEST_NET
-      ? '7FCCD304802016BEBBCD342A332F91FF1F3BB5E902988B352697BE245F48E836' // TEST_NET
-      : '57F7DA205008026C776CB6AED843393F04CD458E0AA2D9F1D5F31A402072B2D6' // MAIN_NET
+  const generationHash = getGenerationHash(networkType)
 
   const signedTx = acc.signTransactionWithCosignatories(
     transaction,
@@ -102,15 +78,9 @@ export const signWithCosignatories = (
     generationHash
   )
   addHistory(signedTx)
-  removeTransaction()
-  chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-    if (!tabs[0].id) {
-      console.error('not found tabs')
-      return
-    }
-    chrome.tabs.sendMessage(tabs[0].id, {
-      type: 'SIGNED_TRANSACTION',
-      signedTx: signedTx,
-    })
+  // removeTransaction()
+  chrome.runtime.sendMessage({
+    type: SIGN_TRANSACTION,
+    signedTx: signedTx,
   })
 }
