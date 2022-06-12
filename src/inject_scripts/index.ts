@@ -110,12 +110,14 @@ window.addEventListener(
     }
 
     if (event.data.type === INJECT_SSS) {
-      injectSSS(
-        event.data.publicKey,
-        event.data.address,
-        event.data.name,
-        event.data.lang
-      )
+      if (window.SSS === undefined) {
+        injectSSS(
+          event.data.publicKey,
+          event.data.address,
+          event.data.name,
+          event.data.lang
+        )
+      }
     }
   },
   true
