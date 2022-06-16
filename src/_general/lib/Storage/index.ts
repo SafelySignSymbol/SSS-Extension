@@ -66,6 +66,10 @@ const init = () => {
   })
 }
 
+export const initializeSetting = () => {
+  init()
+}
+
 export * from './ExtensionAccount'
 // export * from './EncriptionMessage'
 export * from './ActiveAccount'
