@@ -1,9 +1,4 @@
-import {
-  CosignatureSignedTransaction,
-  TransactionMapping,
-  UInt64,
-} from 'symbol-sdk'
-import { TransactionURI } from 'symbol-uri-scheme'
+import { CosignatureSignedTransaction, UInt64 } from 'symbol-sdk'
 import { REQUEST_SIGN_COSIGNATURE } from '../_general/model/MessageType'
 import { showSnackbar } from './snackbar'
 
@@ -22,7 +17,6 @@ export const requestSignCosignatureTransaction =
     if (!window.SSS.isSet) {
       console.error('404')
       showSnackbar('alert_notfound_tx')
-      return
     }
     window.postMessage(
       {

@@ -102,7 +102,6 @@ export const requestEncriptMessage = (): Promise<EncryptedMessage> => {
   if (!window.SSS.isSet) {
     console.error('404')
     showSnackbar('alert_notfound_tx')
-    return
   }
 
   window.postMessage(

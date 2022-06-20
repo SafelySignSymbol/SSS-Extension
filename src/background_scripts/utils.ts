@@ -5,8 +5,8 @@ export const openPopup = () => {
       .create({
         url: '/popup.html',
         type: 'popup',
-        width: 814, // 800
-        height: 637, // 600
+        width: 816, // 800
+        height: 639, // 600
       })
       .then((popup) => {
         setPopup(popup.id)

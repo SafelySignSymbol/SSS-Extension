@@ -4,7 +4,11 @@ import { useTranslation } from 'react-i18next'
 import Typography from '../../../_general/components/Typography'
 import Button from '../../../_general/components/Button'
 import { SignedTransaction } from 'symbol-sdk'
-import { getHistory, version } from '../../../_general/lib/Storage'
+import {
+  getHistory,
+  initializeSetting,
+  version,
+} from '../../../_general/lib/Storage'
 import {
   Setting,
   setSetting as setExtensionSetting,
@@ -15,6 +19,7 @@ import {
   Select,
   OutlinedInput,
   MenuItem,
+  Divider,
 } from '@mui/material'
 interface Props {
   reload: () => void
@@ -92,6 +97,11 @@ const Options: React.VFC<Props> = ({ reload, update, setting, setSetting }) => {
     reload()
   }
 
+  const init = () => {
+    console.log('init')
+    initializeSetting()
+  }
+
   return (
     <Root>
       <Wrapper>
@@ -137,6 +147,15 @@ const Options: React.VFC<Props> = ({ reload, update, setting, setSetting }) => {
           <Typography text={version} variant="subtitle1" />
         </Center>
       </Wrapper>
+      {/* <SDivider />
+      <Wrapper>
+        <Column>
+          <Typography text="Initialize" variant="h5" />
+        </Column>
+        <Center>
+          <Button text="Initialize" onClick={init} />
+        </Center>
+      </Wrapper> */}
     </Root>
   )
 }
@@ -165,4 +184,8 @@ const Center = styled('div')({
   display: 'flex',
   justifyContent: 'start',
   flexDirection: 'column',
+})
+
+const SDivider = styled(Divider)({
+  margin: '64px 0px',
 })
