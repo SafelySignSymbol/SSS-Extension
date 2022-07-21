@@ -179,40 +179,31 @@ const Options: React.VFC<Props> = ({ reload, update, setting, setSetting }) => {
             }
             aria-controls="panel1a-content"
             id="panel1a-header">
-            <Typography text="データ削除" variant="h5" />
+            <Typography text={t('setting_delete')} variant="h5" />
           </AccordionSummary>
           <AccordionDetails>
             <Wrapper>
               <Column>
-                <Typography
-                  text="すべてのアカウントの登録を解除する"
-                  variant="h5"
-                />
+                <Typography text={t('setting_delete_account')} variant="h5" />
               </Column>
               <Center>
-                <Button text="DELETE" onClick={initAccount} />
+                <Button text="RESET" onClick={initAccount} />
               </Center>
             </Wrapper>
             <Wrapper>
               <Column>
-                <Typography
-                  text="すべてのアプリケーションとの連携を解除する"
-                  variant="h5"
-                />
+                <Typography text={t('setting_delete_domain')} variant="h5" />
               </Column>
               <Center>
-                <Button text="DELETE" onClick={initDomain} />
+                <Button text="RESET" onClick={initDomain} />
               </Center>
             </Wrapper>
             <Wrapper>
               <Column>
-                <Typography
-                  text="SSS_Extension上のすべてのデータを削除する"
-                  variant="h5"
-                />
+                <Typography text={t('setting_delete_all')} variant="h5" />
               </Column>
               <Center>
-                <Button text="DELETE" onClick={init} />
+                <Button text="RESET" onClick={init} />
               </Center>
             </Wrapper>
           </AccordionDetails>
