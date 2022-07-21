@@ -5,6 +5,8 @@ import Typography from '../../../_general/components/Typography'
 import Button from '../../../_general/components/Button'
 import { SignedTransaction } from 'symbol-sdk'
 import {
+  deleteAllAccount,
+  deleteAllDomain,
   getHistory,
   initializeSetting,
   version,
@@ -20,7 +22,13 @@ import {
   OutlinedInput,
   MenuItem,
   Divider,
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
 } from '@mui/material'
+
+import { MdExpandMore } from 'react-icons/md'
+import { IconContext } from 'react-icons'
 interface Props {
   reload: () => void
   update: Date
@@ -99,7 +107,21 @@ const Options: React.VFC<Props> = ({ reload, update, setting, setSetting }) => {
 
   const init = () => {
     console.log('init')
-    initializeSetting()
+    if (window.confirm('realy?')) {
+      initializeSetting()
+    }
+  }
+  const initAccount = () => {
+    console.log('init')
+    if (window.confirm('realy?')) {
+      deleteAllAccount()
+    }
+  }
+  const initDomain = () => {
+    console.log('init')
+    if (window.confirm('realy?')) {
+      deleteAllDomain()
+    }
   }
 
   return (
@@ -147,15 +169,55 @@ const Options: React.VFC<Props> = ({ reload, update, setting, setSetting }) => {
           <Typography text={version} variant="subtitle1" />
         </Center>
       </Wrapper>
-      {/* <SDivider />
       <Wrapper>
-        <Column>
-          <Typography text="Initialize" variant="h5" />
-        </Column>
-        <Center>
-          <Button text="Initialize" onClick={init} />
-        </Center>
-      </Wrapper> */}
+        <SAccordion>
+          <AccordionSummary
+            expandIcon={
+              <IconContext.Provider value={{ size: '24px' }}>
+                <MdExpandMore style={{ margin: '6px' }} />
+              </IconContext.Provider>
+            }
+            aria-controls="panel1a-content"
+            id="panel1a-header">
+            <Typography text="データ削除" variant="h5" />
+          </AccordionSummary>
+          <AccordionDetails>
+            <Wrapper>
+              <Column>
+                <Typography
+                  text="すべてのアカウントの登録を解除する"
+                  variant="h5"
+                />
+              </Column>
+              <Center>
+                <Button text="DELETE" onClick={initAccount} />
+              </Center>
+            </Wrapper>
+            <Wrapper>
+              <Column>
+                <Typography
+                  text="すべてのアプリケーションとの連携を解除する"
+                  variant="h5"
+                />
+              </Column>
+              <Center>
+                <Button text="DELETE" onClick={initDomain} />
+              </Center>
+            </Wrapper>
+            <Wrapper>
+              <Column>
+                <Typography
+                  text="SSS_Extension上のすべてのデータを削除する"
+                  variant="h5"
+                />
+              </Column>
+              <Center>
+                <Button text="DELETE" onClick={init} />
+              </Center>
+            </Wrapper>
+          </AccordionDetails>
+        </SAccordion>
+      </Wrapper>
     </Root>
   )
 }
@@ -186,6 +248,15 @@ const Center = styled('div')({
   flexDirection: 'column',
 })
 
-const SDivider = styled(Divider)({
-  margin: '64px 0px',
+const SAccordion = styled(Accordion)({
+  boxShadow: 'none',
+  background: 'white',
+  width: '100%',
+  '> div': {
+    padding: '0px',
+    paddingRight: '16px',
+  },
+  ':before': {
+    opacity: '0 !important',
+  },
 })

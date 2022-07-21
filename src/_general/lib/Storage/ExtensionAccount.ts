@@ -86,3 +86,7 @@ export const deleteExtensionAccount = (arrayNum: number) => {
     })
   })
 }
+
+export const deleteAllAccount = () => {
+  setStorage({ activeAccount: null, extensionAccounts: [] })
+}
