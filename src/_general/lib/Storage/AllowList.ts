@@ -52,3 +52,7 @@ export const deleteAllowList = (arrayNum: number) => {
     })
   })
 }
+
+export const deleteAllDomain = () => {
+  setStorage({ allowList: [] })
+}
