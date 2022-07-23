@@ -22,6 +22,7 @@ import {
   getSetting,
   setSetting,
 } from '../_general/lib/Storage/Setting'
+import Footer from './components/Footer'
 
 export type Page = 'SETTING' | 'ALLOW' | 'HOME' | 'ACCOUNTS'
 
@@ -113,6 +114,7 @@ const Options: React.VFC = () => {
       <Header page={page} setPage={setPage} handleOpen={handleOpen} />
       <AccountModal open={openModal} setOpen={setOpenModal} reload={reload} />
       <Contents>{getBody()}</Contents>
+      <Footer />
     </Root>
   )
 }
@@ -125,4 +127,5 @@ const Root = styled('div')({
 
 const Contents = styled('div')({
   display: 'flex',
+  minHeight: 'calc(100% - 320px)',
 })

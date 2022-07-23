@@ -9,7 +9,6 @@ import {
   deleteAllDomain,
   getHistory,
   initializeSetting,
-  version,
 } from '../../../_general/lib/Storage'
 import {
   Setting,
@@ -21,7 +20,6 @@ import {
   Select,
   OutlinedInput,
   MenuItem,
-  Divider,
   Accordion,
   AccordionDetails,
   AccordionSummary,
@@ -106,20 +104,17 @@ const Options: React.VFC<Props> = ({ reload, update, setting, setSetting }) => {
   }
 
   const init = () => {
-    console.log('init')
-    if (window.confirm('realy?')) {
+    if (window.confirm(`${t('setting_delete_all')} : OK ?`)) {
       initializeSetting()
     }
   }
   const initAccount = () => {
-    console.log('init')
-    if (window.confirm('realy?')) {
+    if (window.confirm(`${t('setting_delete_account')} : OK ?`)) {
       deleteAllAccount()
     }
   }
   const initDomain = () => {
-    console.log('init')
-    if (window.confirm('realy?')) {
+    if (window.confirm(`${t('setting_delete_domain')} : OK ?`)) {
       deleteAllDomain()
     }
   }
@@ -161,14 +156,14 @@ const Options: React.VFC<Props> = ({ reload, update, setting, setSetting }) => {
           </FormControl>
         </Center>
       </Wrapper>
-      <Wrapper>
+      {/* <Wrapper>
         <Column>
           <Typography text="Version" variant="h5" />
         </Column>
         <Center>
           <Typography text={version} variant="subtitle1" />
         </Center>
-      </Wrapper>
+      </Wrapper> */}
       <Wrapper>
         <SAccordion>
           <AccordionSummary
