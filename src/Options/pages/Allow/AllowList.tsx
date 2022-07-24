@@ -46,7 +46,7 @@ const Component: React.VFC<Props> = ({ allowlist, reload }) => {
   if (allowlist.length === 0)
     return (
       <div>
-        <div>{t('allowlist_howuse_e')}</div>
+        <Text>{t('allowlist_howuse_e')}</Text>
         <Spacer MBottom="40px" MTop="20px">
           <Wrap>
             <TextField
@@ -136,4 +136,8 @@ const Wrap = styled('div')({
 })
 const IconWrapper = styled('div')({
   margin: '8px',
+})
+
+const Text = styled('div')({
+  marginLeft: '16px',
 })
