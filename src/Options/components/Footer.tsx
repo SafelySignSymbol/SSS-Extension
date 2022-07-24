@@ -34,6 +34,15 @@ const Component: React.VFC = () => {
             </Link>
           </LinksWrapper>
         </Wrapper>
+        <Wrapper>
+          <Title>Help & Guide</Title>
+          <LinksWrapper>
+            <Link href="https://inatatsu-tatsuhiro.github.io/privacy-policy/">
+              Privacy policy
+            </Link>
+            <Link href="https://forms.gle/NckQuA8QHiSQDBFEA">Contact</Link>
+          </LinksWrapper>
+        </Wrapper>
       </Container>
       <FooterWrapper>
         <Text>© 2022 Tatsuhiro Inagaki</Text>
@@ -89,7 +98,7 @@ const Link = styled('a')({
   textDecoration: 'none',
   color: Color.blue,
   display: 'block',
-  margin: '0px 16px',
+  margin: '0px 8px',
   fontSize: '14px',
 })
 const Text = styled('div')({
