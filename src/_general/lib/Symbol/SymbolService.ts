@@ -24,10 +24,7 @@ export type MosaicData = {
 }
 
 export const getAddressMosaics = (address: Address): Promise<MosaicData[]> => {
-  const net_type =
-    address.plain().charAt(0) === 'T'
-      ? NetworkType.TEST_NET
-      : NetworkType.MAIN_NET
+  const net_type = getNetworkTypeByAddress(address.plain())
 
   const NODE_URL = getNodeUrl(net_type)
   const repositoryFactory = new RepositoryFactoryHttp(NODE_URL)
@@ -104,7 +101,8 @@ export const getAddressXym = (address: Address): Promise<number> => {
 }
 export const getTransactions = (
   address: Address,
-  pageNum: number
+  pageNum: number,
+  pageSize: number = 50
 ): Promise<Transaction[]> => {
   const net_type = getNetworkTypeByAddress(address.plain())
 
@@ -115,7 +113,7 @@ export const getTransactions = (
     group: TransactionGroup.Confirmed,
     address,
     pageNumber: pageNum,
-    pageSize: 50,
+    pageSize: pageSize,
     order: Order.Desc,
   }
   return new Promise((resolve, reject) => {

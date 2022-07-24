@@ -20,7 +20,7 @@ import Accounts from './pages/Accounts'
 import {
   Setting,
   getSetting,
-  setSetting,
+  changeLang,
 } from '../_general/lib/Storage/Setting'
 import Footer from './components/Footer'
 
@@ -65,12 +65,10 @@ const Options: React.VFC = () => {
         return s.lang.toUpperCase()
       })()
       if (s.lang !== lang) {
-        const st = {
-          lang: lang,
-          session: s.session,
-        }
+        const st = s
+        s.lang = lang
         setPageSetting(st)
-        setSetting(st)
+        changeLang(lang)
         reload()
       }
       i18n.changeLanguage(lang)

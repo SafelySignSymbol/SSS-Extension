@@ -5,10 +5,22 @@ import { Address, Transaction } from 'symbol-sdk'
 import { getTransactions } from '../../../../_general/lib/Symbol/SymbolService'
 import { getTransactionType } from '../../../../_general/lib/TransactionType'
 import Item from './Item'
-import { Divider } from '@mui/material'
+import {
+  Divider,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  OutlinedInput,
+  Select,
+} from '@mui/material'
 import Spacer from '../../../../_general/components/Spacer'
 import Typography from '../../../../_general/components/Typography'
 import Color from '../../../../_general/utils/Color'
+import {
+  changeSize,
+  getSetting,
+  Setting,
+} from '../../../../_general/lib/Storage'
 
 import { useTranslation } from 'react-i18next'
 
@@ -16,19 +28,42 @@ export type Props = {
   address: Address
 }
 
+const values = [10, 25, 50, 100]
+
 const Component: React.VFC<Props> = ({ address }) => {
   const [t] = useTranslation()
+  const [setting, setSetting] = useState<Setting>({} as Setting)
 
   const [transactions, setTransactions] = useState<Transaction[]>([])
   useEffect(() => {
-    getTransactions(address, 1).then((txs) => {
+    getTransactions(address, 1, setting.transactionSize).then((txs) => {
       setTransactions(txs)
     })
-  }, [address])
+    getSetting().then((data) => {
+      setSetting(data)
+    })
+  }, [address, setting.transactionSize])
   return (
     <Wrapper>
       <Spacer margin="0px 32px 16px">
         <Title>
+          <FormControl sx={{ width: 160 }}>
+            <InputLabel id="demo-multiple-name-label">Display</InputLabel>
+            <Select
+              labelId="demo-multiple-name-label"
+              id="demo-multiple-name"
+              value={setting.transactionSize}
+              onChange={(e) => {
+                changeSize(Number(e.target.value)).then((data) => {
+                  setSetting(data)
+                })
+              }}
+              input={<OutlinedInput label="Display" />}>
+              {values.map((l) => (
+                <MenuItem value={l}>{l}</MenuItem>
+              ))}
+            </Select>
+          </FormControl>
           <Typography
             text={t('recent_transaction')}
             variant="h5"
@@ -85,5 +120,5 @@ const Wrapper = styled('div')({
 
 const Title = styled('div')({
   display: 'flex',
-  justifyContent: 'end',
+  justifyContent: 'space-between',
 })

@@ -10,10 +10,7 @@ import {
   getHistory,
   initializeSetting,
 } from '../../../_general/lib/Storage'
-import {
-  Setting,
-  setSetting as setExtensionSetting,
-} from '../../../_general/lib/Storage/Setting'
+import { Setting, changeLang } from '../../../_general/lib/Storage/Setting'
 import {
   FormControl,
   InputLabel,
@@ -92,15 +89,14 @@ const Options: React.VFC<Props> = ({ reload, update, setting, setSetting }) => {
     URL.revokeObjectURL(url)
   }
 
-  const changeLang = (val: string) => {
-    const newSetting: Setting = {
-      lang: val,
-      session: setting.session,
-    }
-
-    setSetting(newSetting)
-    setExtensionSetting(newSetting)
-    reload()
+  const changeLanguage = (val: string) => {
+    changeLang(val)
+      .then((data) => {
+        setSetting(data)
+      })
+      .finally(() => {
+        reload()
+      })
   }
 
   const init = () => {
@@ -145,7 +141,7 @@ const Options: React.VFC<Props> = ({ reload, update, setting, setSetting }) => {
               labelId="demo-multiple-name-label"
               id="demo-multiple-name"
               value={setting.lang}
-              onChange={(e) => changeLang(e.target.value)}
+              onChange={(e) => changeLanguage(e.target.value)}
               input={<OutlinedInput label="Name" />}>
               {langs.map((l) => (
                 <MenuItem key={l.key} value={l.value}>
@@ -156,14 +152,7 @@ const Options: React.VFC<Props> = ({ reload, update, setting, setSetting }) => {
           </FormControl>
         </Center>
       </Wrapper>
-      {/* <Wrapper>
-        <Column>
-          <Typography text="Version" variant="h5" />
-        </Column>
-        <Center>
-          <Typography text={version} variant="subtitle1" />
-        </Center>
-      </Wrapper> */}
+      <SDivider />
       <Wrapper>
         <SAccordion>
           <AccordionSummary
@@ -245,4 +234,9 @@ const SAccordion = styled(Accordion)({
   ':before': {
     opacity: '0 !important',
   },
+})
+
+const SDivider = styled('div')({
+  height: '32px',
+  width: '100%',
 })
