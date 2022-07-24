@@ -3,7 +3,12 @@ import styled from '@emotion/styled'
 import { decrypt } from '../_general/lib/Crypto'
 
 import './global.css'
-import { Account, AggregateTransaction, Transaction } from 'symbol-sdk'
+import {
+  Account,
+  AggregateTransaction,
+  PublicAccount,
+  Transaction,
+} from 'symbol-sdk'
 
 import {
   getActiveAccount,
@@ -21,6 +26,7 @@ import {
 } from '../_general/lib/Sign'
 import {
   REMOVE_DATA,
+  REQUEST_ACTIVE_ACCOUNT_TOKEN,
   REQUEST_SIGN,
   REQUEST_SIGN_COSIGNATURE,
   REQUEST_SIGN_WITH_COSIGNATORIES,
@@ -76,7 +82,19 @@ const Popup: React.VFC = () => {
 
     const net_type = getNetworkTypeByAddress(extensionAccount.address)
 
-    encription(message, pubkey, priKey, net_type)
+    if (signStatus === REQUEST_ACTIVE_ACCOUNT_TOKEN) {
+      const msg = JSON.parse(message)
+      const acc = Account.createFromPrivateKey(priKey, net_type)
+      const recipient = PublicAccount.createFromPublicKey(pubkey, net_type)
+
+      const encriptedPayload = !!msg.encriptedPayload
+        ? acc.decryptMessage(msg.encriptedPayload, recipient).payload
+        : undefined
+      msg.encriptedPayload = encriptedPayload
+      encription(JSON.stringify(msg), pubkey, priKey, net_type)
+    } else {
+      encription(message, pubkey, priKey, net_type)
+    }
   }
 
   const signTx = (transaction: Transaction | AggregateTransaction | null) => {
