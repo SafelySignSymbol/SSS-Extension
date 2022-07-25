@@ -83,7 +83,11 @@ const Main: React.VFC<Props> = ({
       return (
         <Contents>
           <Center>
-            <Typography text="Authentication Token" variant="h3" />
+            <M>
+              <Typography text="Authentication To" variant="h3" />
+            </M>
+            <Typography text={enMsg.pubkey.substring(0, 32)} variant="h4" />
+            <Typography text={enMsg.pubkey.substring(32)} variant="h4" />
           </Center>
         </Contents>
       )
@@ -126,9 +130,14 @@ export default Main
 
 const Center = styled('div')({
   display: 'flex',
+  flexDirection: 'column',
   justifyContent: 'center',
   alignItems: 'center',
   height: '100%',
+})
+
+const M = styled('div')({
+  marginBottom: '32px',
 })
 
 const Container = styled('div')({

@@ -9,19 +9,14 @@ import {
   deleteAllDomain,
   getHistory,
   initializeSetting,
-  version,
 } from '../../../_general/lib/Storage'
-import {
-  Setting,
-  setSetting as setExtensionSetting,
-} from '../../../_general/lib/Storage/Setting'
+import { Setting, changeLang } from '../../../_general/lib/Storage/Setting'
 import {
   FormControl,
   InputLabel,
   Select,
   OutlinedInput,
   MenuItem,
-  Divider,
   Accordion,
   AccordionDetails,
   AccordionSummary,
@@ -94,32 +89,28 @@ const Options: React.VFC<Props> = ({ reload, update, setting, setSetting }) => {
     URL.revokeObjectURL(url)
   }
 
-  const changeLang = (val: string) => {
-    const newSetting: Setting = {
-      lang: val,
-      session: setting.session,
-    }
-
-    setSetting(newSetting)
-    setExtensionSetting(newSetting)
-    reload()
+  const changeLanguage = (val: string) => {
+    changeLang(val)
+      .then((data) => {
+        setSetting(data)
+      })
+      .finally(() => {
+        reload()
+      })
   }
 
   const init = () => {
-    console.log('init')
-    if (window.confirm('realy?')) {
+    if (window.confirm(`${t('setting_delete_all')} : OK ?`)) {
       initializeSetting()
     }
   }
   const initAccount = () => {
-    console.log('init')
-    if (window.confirm('realy?')) {
+    if (window.confirm(`${t('setting_delete_account')} : OK ?`)) {
       deleteAllAccount()
     }
   }
   const initDomain = () => {
-    console.log('init')
-    if (window.confirm('realy?')) {
+    if (window.confirm(`${t('setting_delete_domain')} : OK ?`)) {
       deleteAllDomain()
     }
   }
@@ -150,7 +141,7 @@ const Options: React.VFC<Props> = ({ reload, update, setting, setSetting }) => {
               labelId="demo-multiple-name-label"
               id="demo-multiple-name"
               value={setting.lang}
-              onChange={(e) => changeLang(e.target.value)}
+              onChange={(e) => changeLanguage(e.target.value)}
               input={<OutlinedInput label="Name" />}>
               {langs.map((l) => (
                 <MenuItem key={l.key} value={l.value}>
@@ -161,14 +152,7 @@ const Options: React.VFC<Props> = ({ reload, update, setting, setSetting }) => {
           </FormControl>
         </Center>
       </Wrapper>
-      <Wrapper>
-        <Column>
-          <Typography text="Version" variant="h5" />
-        </Column>
-        <Center>
-          <Typography text={version} variant="subtitle1" />
-        </Center>
-      </Wrapper>
+      <SDivider />
       <Wrapper>
         <SAccordion>
           <AccordionSummary
@@ -179,40 +163,31 @@ const Options: React.VFC<Props> = ({ reload, update, setting, setSetting }) => {
             }
             aria-controls="panel1a-content"
             id="panel1a-header">
-            <Typography text="データ削除" variant="h5" />
+            <Typography text={t('setting_delete')} variant="h5" />
           </AccordionSummary>
           <AccordionDetails>
             <Wrapper>
               <Column>
-                <Typography
-                  text="すべてのアカウントの登録を解除する"
-                  variant="h5"
-                />
+                <Typography text={t('setting_delete_account')} variant="h5" />
               </Column>
               <Center>
-                <Button text="DELETE" onClick={initAccount} />
+                <Button text="RESET" onClick={initAccount} />
               </Center>
             </Wrapper>
             <Wrapper>
               <Column>
-                <Typography
-                  text="すべてのアプリケーションとの連携を解除する"
-                  variant="h5"
-                />
+                <Typography text={t('setting_delete_domain')} variant="h5" />
               </Column>
               <Center>
-                <Button text="DELETE" onClick={initDomain} />
+                <Button text="RESET" onClick={initDomain} />
               </Center>
             </Wrapper>
             <Wrapper>
               <Column>
-                <Typography
-                  text="SSS_Extension上のすべてのデータを削除する"
-                  variant="h5"
-                />
+                <Typography text={t('setting_delete_all')} variant="h5" />
               </Column>
               <Center>
-                <Button text="DELETE" onClick={init} />
+                <Button text="RESET" onClick={init} />
               </Center>
             </Wrapper>
           </AccordionDetails>
@@ -259,4 +234,9 @@ const SAccordion = styled(Accordion)({
   ':before': {
     opacity: '0 !important',
   },
+})
+
+const SDivider = styled('div')({
+  height: '32px',
+  width: '100%',
 })

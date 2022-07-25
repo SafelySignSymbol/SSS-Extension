@@ -4,6 +4,7 @@ const Color = {
   pink: 'rgb(180, 41, 249)',
   purple: 'rgb(78, 44, 112)',
   sky: 'rgb(38, 197, 243)',
+  blue: 'rgb(58, 95, 168)',
 }
 export default Color
 
