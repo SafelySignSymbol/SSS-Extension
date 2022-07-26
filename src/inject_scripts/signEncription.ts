@@ -21,7 +21,7 @@ declare const window: SSSWindow
 export const getActiveAccountToken = (
   publicKey: string,
   payload?: any,
-  encriptedPayload?: string
+  encryptedMessage?: string
 ): Promise<string> => {
   const defaultPayload = {
     signerAddress: window.SSS.activeAddress,
@@ -34,7 +34,7 @@ export const getActiveAccountToken = (
   }
 
   const p = Object.assign(payload === undefined ? {} : payload, defaultPayload)
-  p.encriptedPayload = encriptedPayload
+  p.encryptedMessage = encryptedMessage
   window.SSS.isSet = true
   window.postMessage(
     {

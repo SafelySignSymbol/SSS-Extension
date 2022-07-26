@@ -8,6 +8,7 @@ import {
   AggregateTransaction,
   PublicAccount,
   Transaction,
+  EncryptedMessage,
 } from 'symbol-sdk'
 
 import {
@@ -87,10 +88,13 @@ const Popup: React.VFC = () => {
       const acc = Account.createFromPrivateKey(priKey, net_type)
       const recipient = PublicAccount.createFromPublicKey(pubkey, net_type)
 
-      const encriptedPayload = !!msg.encriptedPayload
-        ? acc.decryptMessage(msg.encriptedPayload, recipient).payload
+      const encryptedMessage = !!msg.encryptedMessage
+        ? acc.decryptMessage(
+            new EncryptedMessage(msg.encryptedMessage),
+            recipient
+          ).payload
         : undefined
-      msg.encriptedPayload = encriptedPayload
+      msg.encryptedMessage = encryptedMessage
       encription(JSON.stringify(msg), pubkey, priKey, net_type)
     } else {
       encription(message, pubkey, priKey, net_type)
