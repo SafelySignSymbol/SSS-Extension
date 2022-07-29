@@ -1,6 +1,6 @@
 {
-  "name": "sample_app",
-  "version": "0.1.0",
+  "name": "sss_extension",
+  "version": "2.2.2",
   "private": true,
   "dependencies": {
     "@emotion/react": "^11.7.1",

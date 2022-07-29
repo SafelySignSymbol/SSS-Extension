@@ -26,6 +26,7 @@ const Component: React.VFC = () => {
             <Link href="https://github.com/inatatsu-tatsuhiro/SSS-Extension">
               GitHub
             </Link>
+            <Link href="https://docs.sss-symbol.com">Docs</Link>
             <Link href="https://github.com/inatatsu-tatsuhiro/SSS-Extension/wiki">
               Wiki
             </Link>
@@ -45,7 +46,7 @@ const Component: React.VFC = () => {
         </Wrapper>
       </Container>
       <FooterWrapper>
-        <Text>© 2022 Tatsuhiro Inagaki</Text>
+        <Text>Copyright © 2022 Safely Sign Symbol.</Text>
         <Text>version {version}</Text>
       </FooterWrapper>
     </Root>
