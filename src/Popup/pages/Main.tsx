@@ -13,7 +13,7 @@ import Spacer from '../../_general/components/Spacer'
 import TransactionInfo from './components/TransactionInfo'
 import { getData } from '../../_general/lib/Storage'
 import { TransactionURI } from 'symbol-uri-scheme'
-import { Transaction, TransactionMapping } from 'symbol-sdk'
+import { Address, Transaction, TransactionMapping } from 'symbol-sdk'
 import NotFoundTx from './components/NotFoundTx'
 import { EncriptionMessage } from '../../_general/model/EncriptionMessage'
 import { MESSAGE, TRANSACTION } from '../../_general/model/Data'
@@ -22,6 +22,7 @@ import {
   REQUEST_MESSAGE_ENCODE,
 } from '../../_general/model/MessageType'
 import MessageEncription from './components/MessageEncription'
+import { getNetworkTypeByAddress } from '../../_general/lib/Symbol/Config'
 
 export interface Props {
   extensionAccount: ExtensionAccount
@@ -80,14 +81,18 @@ const Main: React.VFC<Props> = ({
       )
     }
     if (type === REQUEST_ACTIVE_ACCOUNT_TOKEN && enMsg !== null) {
+      const addr = Address.createFromPublicKey(
+        enMsg.pubkey,
+        getNetworkTypeByAddress(extensionAccount.address)
+      )
       return (
         <Contents>
           <Center>
             <M>
-              <Typography text="Authentication To" variant="h3" />
+              <Typography text="Authentication To" variant="h2" />
             </M>
-            <Typography text={enMsg.pubkey.substring(0, 32)} variant="h4" />
-            <Typography text={enMsg.pubkey.substring(32)} variant="h4" />
+            <Typography text={addr.plain().substring(0, 19)} variant="h3" />
+            <Typography text={addr.plain().substring(19)} variant="h3" />
           </Center>
         </Contents>
       )

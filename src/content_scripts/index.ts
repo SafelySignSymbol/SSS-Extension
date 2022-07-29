@@ -108,7 +108,7 @@ window.addEventListener('message', async (event) => {
       type: SET_MESSAGE,
       message: event.data.message,
       publicKey: event.data.pubkey,
-      encriptedPayload: event.data.encriptedPayload,
+      encryptedMessage: event.data.encryptedMessage,
     })
     chrome.runtime.sendMessage({ type: OPEN_POPUP })
   }
