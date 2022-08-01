@@ -44,6 +44,7 @@ const Popup: React.VFC = () => {
     useState<ExtensionAccount | null>(null)
   const [status, setStatus] = useState<PopupStatus>(LOGIN)
   const [signStatus, setSignStatus] = useState<string>('')
+  const [update, setUpdate] = useState(new Date())
 
   window.onbeforeunload = () => {
     chrome.runtime.sendMessage({
@@ -64,7 +65,7 @@ const Popup: React.VFC = () => {
     getSignStatus().then((status) => {
       setSignStatus(status)
     })
-  }, [])
+  }, [update])
 
   const loginSuccess = (p: string) => {
     setPass(p)
@@ -155,6 +156,10 @@ const Popup: React.VFC = () => {
           signTx={signTx}
           encriptMessage={encriptMessage}
           type={signStatus}
+          logout={() => {
+            setStatus(LOGIN)
+            setUpdate(new Date())
+          }}
         />
       )
     }

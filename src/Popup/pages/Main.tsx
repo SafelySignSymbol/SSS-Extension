@@ -3,15 +3,26 @@ import styled from '@emotion/styled'
 
 import { ExtensionAccount } from '../../_general/model/ExtensionAccount'
 import { SquareLogo } from '../../_general/components/Logo/'
-import { IconButton } from '@mui/material'
+import {
+  Chip,
+  IconButton,
+  List,
+  ListItemButton,
+  Modal,
+  Paper,
+} from '@mui/material'
 import { IconContext } from 'react-icons'
-import { RiSettings2Fill } from 'react-icons/ri'
+import { MdSupervisorAccount } from 'react-icons/md'
 import Typography from '../../_general/components/Typography'
 import Button from '../../_general/components/Button'
 import Color, { addAlpha } from '../../_general/utils/Color'
 import Spacer from '../../_general/components/Spacer'
 import TransactionInfo from './components/TransactionInfo'
-import { getData } from '../../_general/lib/Storage'
+import {
+  getData,
+  getExtensionAccounts,
+  setActiveAccount,
+} from '../../_general/lib/Storage'
 import { TransactionURI } from 'symbol-uri-scheme'
 import { Address, Transaction, TransactionMapping } from 'symbol-sdk'
 import NotFoundTx from './components/NotFoundTx'
@@ -29,6 +40,7 @@ export interface Props {
   type: string
   signTx: (tx: Transaction | null) => void
   encriptMessage: (message: string, pubkey: string) => void
+  logout: () => void
 }
 
 const Main: React.VFC<Props> = ({
@@ -36,9 +48,12 @@ const Main: React.VFC<Props> = ({
   type,
   signTx,
   encriptMessage,
+  logout,
 }) => {
   const [transaction, setTransaction] = useState<string>('')
   const [enMsg, setEnMsg] = useState<EncriptionMessage | null>(null)
+  const [open, setOpen] = useState(false)
+  const [accounts, setAccounts] = useState<ExtensionAccount[]>([])
 
   useEffect(() => {
     getData().then((data) => {
@@ -50,6 +65,10 @@ const Main: React.VFC<Props> = ({
           new EncriptionMessage(data.message.msg, data.message.publicKey)
         )
       }
+    })
+
+    getExtensionAccounts().then((accs) => {
+      setAccounts(accs)
     })
   }, [])
 
@@ -108,6 +127,13 @@ const Main: React.VFC<Props> = ({
     )
   }
 
+  const handleClick = (i: number) => {
+    console.log({ i })
+    setActiveAccount(i).then(() => {
+      logout()
+    })
+  }
+
   return (
     <Container>
       <Header>
@@ -115,11 +141,38 @@ const Main: React.VFC<Props> = ({
         <Grid>
           <Typography text={extensionAccount.address} variant="h6" />
         </Grid>
-        <IconButton onClick={() => chrome.runtime.openOptionsPage()}>
+        <IconButton onClick={() => setOpen(true)}>
           <IconContext.Provider value={{ size: '32px' }}>
-            <RiSettings2Fill style={{ margin: '6px' }} />
+            <MdSupervisorAccount style={{ margin: '6px' }} />
           </IconContext.Provider>
         </IconButton>
+        <Modal open={open} onClose={() => setOpen(false)}>
+          <SPaper>
+            <Typography variant="h3" text="Change Account" />
+            <List
+              sx={{
+                width: '100%',
+                maxHeight: 400,
+                position: 'relative',
+                overflow: 'auto',
+              }}>
+              {accounts.map((a, i) => {
+                return (
+                  <SListItem onClick={() => handleClick(i)} key={a.address}>
+                    <Typography variant="h5" text={a.name} />
+                    <Chip
+                      label={
+                        getNetworkTypeByAddress(a.address) === 152
+                          ? 'TEST NET'
+                          : 'MAIN NET'
+                      }
+                    />
+                  </SListItem>
+                )
+              })}
+            </List>
+          </SPaper>
+        </Modal>
       </Header>
       {contents()}
       <Footer>
@@ -188,4 +241,24 @@ const Footer = styled('div')({
   height: '64px',
   margin: '8px',
   justifyContent: 'center',
+})
+
+const SPaper = styled(Paper)({
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  width: '70vw',
+  transform: 'translate(-50%, -50%)',
+  padding: '16px',
+
+  display: 'flex',
+  flexDirection: 'column',
+  justifyContent: 'center',
+  alignItems: 'center',
+})
+
+const SListItem = styled(ListItemButton)({
+  margin: '16px',
+  display: 'flex',
+  justifyContent: 'space-between',
 })
