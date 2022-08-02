@@ -18,7 +18,6 @@ export interface Props {
 
 const Login: React.VFC<Props> = ({ extensionAccount, loginSuccess }) => {
   const [pass, setPass] = useState('default password')
-  const [isVPass, setIsVPass] = useState(false)
   const [open, setOpen] = useState(false)
 
   const [t] = useTranslation()
@@ -63,13 +62,7 @@ const Login: React.VFC<Props> = ({ extensionAccount, loginSuccess }) => {
           </Container>
         </Spacer>
         <Spacer margin="48px 0px">
-          <PasswordTextField
-            label="Password"
-            autoFocus
-            setPass={setPass}
-            isVisible={isVPass}
-            updateIsVisible={() => setIsVPass((prev) => !prev)}
-          />
+          <PasswordTextField label="Password" autoFocus setPass={setPass} />
         </Spacer>
         <Spacer margin="48px 0px">
           <Flex>

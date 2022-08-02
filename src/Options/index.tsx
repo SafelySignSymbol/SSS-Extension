@@ -24,7 +24,7 @@ import {
 } from '../_general/lib/Storage/Setting'
 import Footer from './components/Footer'
 
-export type Page = 'SETTING' | 'ALLOW' | 'HOME' | 'ACCOUNTS'
+export type Page = 'SETTING' | 'ALLOW' | 'HOME' | 'ACCOUNTS' | 'HISTORY'
 
 i18n.use(initReactI18next).init({
   debug: true,
@@ -45,7 +45,7 @@ i18n.use(initReactI18next).init({
 const Options: React.VFC = () => {
   const [page, setPage] = useState<Page>('HOME')
 
-  const [openModal, setOpenModal] = useState(false)
+  const [state, setState] = useState(0)
 
   const [update, setUpdate] = useState(new Date())
 
@@ -53,7 +53,7 @@ const Options: React.VFC = () => {
 
   useEffect(() => {
     getActiveAccount().then((acc) => {
-      if (acc === null) setOpenModal(true)
+      if (acc === null) setState(1)
     })
   }, [])
 
@@ -104,13 +104,13 @@ const Options: React.VFC = () => {
   }
 
   const handleOpen = () => {
-    setOpenModal(true)
+    setState(1)
     reload()
   }
   return (
     <Root>
       <Header page={page} setPage={setPage} handleOpen={handleOpen} />
-      <AccountModal open={openModal} setOpen={setOpenModal} reload={reload} />
+      <AccountModal state={state} setState={setState} reload={reload} />
       <Contents>{getBody()}</Contents>
       <Footer />
     </Root>

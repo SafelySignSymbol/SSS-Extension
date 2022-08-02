@@ -5,11 +5,16 @@ import { encrypt } from '../../_general/lib/Crypto'
 import {
   Alert,
   AlertColor,
+  Divider,
+  IconButton,
+  ListItemButton,
+  MobileStepper,
   Modal,
   Paper,
   Snackbar,
-  Typography,
 } from '@mui/material'
+
+import { IoMdClose } from 'react-icons/io'
 
 import TextField from '../../_general/components/TextField'
 import Spacer from '../../_general/components/Spacer'
@@ -19,14 +24,24 @@ import { addExtensionAccount } from '../../_general/lib/Storage'
 import { ExtensionAccount } from '../../_general/model/ExtensionAccount'
 import PasswordTextField from '../../_general/components/TextField/PasswordTextField'
 import { useTranslation } from 'react-i18next'
+import Typography from '../../_general/components/Typography'
+import Color, { addAlpha } from '../../_general/utils/Color'
+import { IconContext } from 'react-icons'
+import MethodSelect from './MethodSelect'
+import ImportPriKey from './ImportPriKey'
+import CreateAccount from './CreateAccount'
+
+import { MdArrowRight, MdArrowLeft } from 'react-icons/md'
 
 export type Props = {
-  open: boolean
-  setOpen: Dispatch<boolean>
+  state: number
+  setState: Dispatch<number>
   reload: () => void
 }
 
-const Component: React.VFC<Props> = ({ open, setOpen, reload }) => {
+export type Method = 'IMPORT' | 'CREATE' | 'HARDWARE' | 'NONE'
+
+const Component: React.VFC<Props> = ({ state, setState, reload }) => {
   const [message, setMessage] = useState('')
   const [openSB, setOpenSB] = useState(false)
   const [snackbarStatus, setSnackbarStatus] = useState<AlertColor>('success')
@@ -35,13 +50,13 @@ const Component: React.VFC<Props> = ({ open, setOpen, reload }) => {
   const [address, setAddress] = useState('')
   const [prikey, setPrikey] = useState('')
   const [pass, setPass] = useState('default password')
-  const [isVPK, setIsVPK] = useState(false)
-  const [isVPass, setIsVPass] = useState(false)
+
+  const [method, setMethod] = useState<Method>('NONE')
 
   const [t] = useTranslation()
 
   const closeModal = () => {
-    setOpen(false)
+    setState(0)
   }
 
   const closeSB = () => {
@@ -109,44 +124,79 @@ const Component: React.VFC<Props> = ({ open, setOpen, reload }) => {
 
   return (
     <>
-      <Modal open={open} onClose={closeModal}>
+      <Modal open={state !== 0} onClose={closeModal}>
         <Wrapper>
-          <Title>
-            <Spacer margin="32px 64px">
-              <Typography variant="h4" component="div">
-                {t('accmodal_signup')}
-              </Typography>
-            </Spacer>
-          </Title>
-          <Root>
-            <Spacer margin="8px">
-              <TextField label="Name" setText={setName} />
-            </Spacer>
-            <Spacer margin="8px">
-              <TextField label="Address" setText={setAddress} />
-            </Spacer>
-            <Spacer margin="8px">
-              <PasswordTextField
-                label="Private Key"
-                setPass={setPrikey}
-                isVisible={isVPK}
-                updateIsVisible={() => setIsVPK((prev) => !prev)}
+          <ModalHeader>
+            <Typography variant="h5" text="アカウント追加" />
+            <IconButton size="small" onClick={() => setState(0)}>
+              <IconContext.Provider value={{ size: '24px' }}>
+                <IoMdClose style={{ margin: '6px' }} />
+              </IconContext.Provider>
+            </IconButton>
+          </ModalHeader>
+          <Contents>
+            <Stepper>
+              <MobileStepper
+                variant="dots"
+                steps={3}
+                position="static"
+                activeStep={state - 1}
+                backButton={undefined}
+                nextButton={undefined}
+                sx={{
+                  '.MuiMobileStepper-dotActive': {
+                    background: Color.base_black,
+                  },
+                }}
               />
-            </Spacer>
-            <Spacer margin="8px">
-              <PasswordTextField
-                label="Password"
-                setPass={setPass}
-                isVisible={isVPass}
-                updateIsVisible={() => setIsVPass((prev) => !prev)}
+            </Stepper>
+            {state === 1 && (
+              <MethodSelect setState={setState} setMethod={setMethod} />
+            )}
+            {state === 2 && method === 'IMPORT' && (
+              <ImportPriKey
+                setName={setName}
+                setState={setState}
+                setMethod={setMethod}
+                setAddress={setAddress}
+                setPrivateKey={setPrikey}
+                setPassword={setPass}
               />
-            </Spacer>
-            <Spacer margin="32px">
-              <Right>
-                <Button text={t('accmodal_submit')} onClick={submit} />
-              </Right>
-            </Spacer>
-          </Root>
+            )}
+            {state === 2 && method === 'CREATE' && (
+              <CreateAccount setState={setState} setMethod={setMethod} />
+            )}
+          </Contents>
+          <ButtonWrappr>
+            {1 < state && (
+              <BackButton onClick={() => setState(state - 1)}>
+                <IconContext.Provider value={{ size: '64px' }}>
+                  <MdArrowLeft
+                    style={{ color: Color.base_white, margin: '0px 16px' }}
+                  />
+                  <Typography
+                    variant="h4"
+                    text="Back"
+                    color={Color.base_white}
+                  />
+                </IconContext.Provider>
+              </BackButton>
+            )}
+            {1 < state && (
+              <NextButton onClick={() => setState(state + 1)}>
+                <Typography
+                  variant="h4"
+                  text={state === 3 ? 'Done' : 'Next'}
+                  color={Color.base_white}
+                />
+                <IconContext.Provider value={{ size: '64px' }}>
+                  <MdArrowRight
+                    style={{ color: Color.base_white, margin: '0px 16px' }}
+                  />
+                </IconContext.Provider>
+              </NextButton>
+            )}
+          </ButtonWrappr>
         </Wrapper>
       </Modal>
       <Snackbar open={openSB} autoHideDuration={6000} onClose={closeSB}>
@@ -167,26 +217,60 @@ const Wrapper = styled(Paper)({
   position: 'absolute',
   top: '50%',
   left: '50%',
-  width: '50vw',
+  width: '600px',
   transform: 'translate(-50%, -50%)',
-  padding: '16px',
-
   display: 'flex',
   flexDirection: 'column',
   justifyContent: 'center',
+})
+
+const ModalHeader = styled('div')({
+  background: Color.base_white,
+  display: 'flex',
+  justifyContent: 'space-between',
+  alignItems: 'center',
+  padding: '16px',
+})
+
+const Contents = styled('div')({
+  height: '400px',
+  display: 'flex',
+  flexDirection: 'column',
   alignItems: 'center',
 })
 
-const Root = styled('div')({
+const Stepper = styled('div')({
   width: '100%',
   margin: '16px',
-})
-
-const Right = styled('div')({
   display: 'flex',
-  justifyContent: 'end',
+  flexDirection: 'column',
+  alignItems: 'center',
 })
 
-const Title = styled('div')({
-  width: 'calc(100% - 64px)',
+const ButtonWrappr = styled('div')({
+  width: '100%',
+  height: '80px',
+  display: 'flex',
+})
+
+const NextButton = styled('div')({
+  width: '50%',
+  background: Color.blue,
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+  '> h4': {
+    marginLeft: '32px',
+  },
+})
+
+const BackButton = styled('div')({
+  width: '50%',
+  background: addAlpha(Color.gray_black, 0.8),
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+  '> h4': {
+    marginRight: '32px',
+  },
 })

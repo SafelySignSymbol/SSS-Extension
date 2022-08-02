@@ -1,12 +1,17 @@
-import React, { Dispatch } from 'react'
+import React, { Dispatch, useEffect, useState } from 'react'
 import styled from '@emotion/styled'
-import { Box, Divider } from '@mui/material'
+import { Box, Divider, IconButton } from '@mui/material'
 import Logo from '../../_general/components/Logo'
 import Spacer from '../../_general/components/Spacer'
-import Button from '../../_general/components/Button'
 import { Page } from '../index'
+import Avatar from 'boring-avatars'
 
 import { useTranslation } from 'react-i18next'
+import { ExtensionAccount } from '../../_general/model/ExtensionAccount'
+import { getActiveAccount } from '../../_general/lib/Storage'
+import Color, { MainNetColors, TestNetColors } from '../../_general/utils/Color'
+import { getNetworkTypeByAddress } from '../../_general/lib/Symbol/Config'
+import { NetworkType } from 'symbol-sdk'
 
 export interface Props {
   page: Page
@@ -16,6 +21,14 @@ export interface Props {
 
 const Component: React.VFC<Props> = ({ page, setPage, handleOpen }) => {
   const [t] = useTranslation()
+
+  const [extensionAccount, setExtensionAccount] = useState<ExtensionAccount>(
+    {} as ExtensionAccount
+  )
+
+  useEffect(() => {
+    getActiveAccount().then((acc) => setExtensionAccount(acc))
+  }, [])
 
   return (
     <Container>
@@ -39,13 +52,31 @@ const Component: React.VFC<Props> = ({ page, setPage, handleOpen }) => {
             {t('allowlist')}
           </Item>
           <Divider orientation="vertical" flexItem />
+          <Item isOpen={page === 'HISTORY'} onClick={() => setPage('HISTORY')}>
+            {t('history')}
+          </Item>
+          <Divider orientation="vertical" flexItem />
           <Item isOpen={page === 'SETTING'} onClick={() => setPage('SETTING')}>
             {t('settings')}
           </Item>
         </Flex>
       </Spacer>
       <Spacer margin="0px 64px">
-        <Button text={t('add_account')} onClick={handleOpen} />
+        <IconButton onClick={handleOpen}>
+          {!!extensionAccount.address && (
+            <Avatar
+              size={40}
+              name={extensionAccount.address}
+              variant="beam"
+              colors={
+                getNetworkTypeByAddress(extensionAccount.address) ===
+                NetworkType.MAIN_NET
+                  ? MainNetColors
+                  : TestNetColors
+              }
+            />
+          )}
+        </IconButton>
       </Spacer>
     </Container>
   )
@@ -69,30 +100,7 @@ const Item = styled('div')((p: { isOpen: boolean }) => ({
   cursor: 'pointer',
   padding: '4px 0px',
   fontSize: '18px',
-  ':after': p.isOpen
-    ? {
-        content: '""',
-        background: 'black', //'linear-gradient(to right, #B429F9 0%, #3EABF4 100%)'
-        display: 'block',
-        height: '1px',
-        width: '100%',
-      }
-    : {
-        content: '""',
-        background: 'black', //'linear-gradient(to right, #B429F9 0%, #3EABF4 100%)'
-        display: 'block',
-        height: '1px',
-        width: '100%',
-        transform: 'scale(0, 1)',
-        transformOrigin: 'center top',
-        transition: 'transform .3s',
-      },
-
-  ':hover': {
-    ':after': {
-      transform: 'scale(1, 1)',
-    },
-  },
+  color: `${p.isOpen ? Color.blue : Color.gray_black}`,
 }))
 
 // .mail-title-box:after {
