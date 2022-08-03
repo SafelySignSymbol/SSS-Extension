@@ -3,14 +3,18 @@ import styled from '@emotion/styled'
 import { useTranslation } from 'react-i18next'
 import Typography from '../../../_general/components/Typography'
 import Button from '../../../_general/components/Button'
-import { SignedTransaction } from 'symbol-sdk'
+import { NetworkType, SignedTransaction } from 'symbol-sdk'
 import {
   deleteAllAccount,
   deleteAllDomain,
   getHistory,
   initializeSetting,
 } from '../../../_general/lib/Storage'
-import { Setting, changeLang } from '../../../_general/lib/Storage/Setting'
+import {
+  Setting,
+  changeLang,
+  changeNetwork,
+} from '../../../_general/lib/Storage/Setting'
 import {
   FormControl,
   InputLabel,
@@ -115,6 +119,14 @@ const Options: React.VFC<Props> = ({ reload, update, setting, setSetting }) => {
     }
   }
 
+  const changeNet = () => {
+    if (setting.networkType === NetworkType.MAIN_NET) {
+      changeNetwork(NetworkType.TEST_NET)
+    } else {
+      changeNetwork(NetworkType.MAIN_NET)
+    }
+  }
+
   return (
     <Root>
       <Wrapper>
@@ -124,6 +136,15 @@ const Options: React.VFC<Props> = ({ reload, update, setting, setSetting }) => {
         </Column>
         <Center>
           <Button text={t('setting_sign_history_btn')} onClick={save} />
+        </Center>
+      </Wrapper>
+      <Wrapper>
+        <Column>
+          <Typography text="ネットワーク変更" variant="h5" />
+          <Typography text="ネットワークを変更する" variant="subtitle1" />
+        </Column>
+        <Center>
+          <Button text="change net type" onClick={changeNet} />
         </Center>
       </Wrapper>
       <Wrapper>

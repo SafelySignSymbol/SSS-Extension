@@ -42,5 +42,39 @@ const TextField: React.VFC<Props> = ({
     </FormControl>
   )
 }
+interface InactiveTextFieldProps {
+  label: string
+  value: string
+  variant?: 'outlined' | 'text' | 'filled'
+}
+export const InactiveTextField: React.FC<InactiveTextFieldProps> = ({
+  label,
+  value,
+  variant = 'outlined',
+}) => {
+  if (variant === 'text') {
+    return (
+      <FormControl sx={{ m: 1 }} variant="outlined">
+        <InputLabel>{label}</InputLabel>
+        <Input value={value} disabled />
+      </FormControl>
+    )
+  }
+  if (variant === 'filled') {
+    return (
+      <FormControl sx={{ m: 1 }} variant="outlined">
+        <InputLabel>{label}</InputLabel>
+        <FilledInput value={value} disabled />
+      </FormControl>
+    )
+  }
+
+  return (
+    <FormControl sx={{ m: 1 }} variant="outlined">
+      <InputLabel>{label}</InputLabel>
+      <OutlinedInput value={value} disabled />
+    </FormControl>
+  )
+}
 
 export default TextField

@@ -4,13 +4,15 @@ import { ListItemButton, Divider } from '@mui/material'
 
 import Typography from '../../_general/components/Typography'
 import { Method } from './AccountModal'
+import { NetworkType } from 'symbol-sdk'
 
 export type Props = {
   setMethod: Dispatch<Method>
   setState: Dispatch<number>
+  setNettype: Dispatch<NetworkType>
 }
 
-const Component: React.FC<Props> = ({ setMethod, setState }) => {
+const Component: React.FC<Props> = ({ setMethod, setState, setNettype }) => {
   const handleClick = (method: Method) => {
     setState(2)
     setMethod(method)
@@ -22,8 +24,19 @@ const Component: React.FC<Props> = ({ setMethod, setState }) => {
         <Typography variant="h5" text="秘密鍵をインポート" />
       </ListItemButton>
       <Divider />
-      <ListItemButton onClick={() => handleClick('CREATE')}>
-        <Typography variant="h5" text="新規アカウント" />
+      <ListItemButton
+        onClick={() => {
+          handleClick('CREATE')
+          setNettype(NetworkType.TEST_NET)
+        }}>
+        <Typography variant="h5" text="新規テストネットアカウント" />
+      </ListItemButton>
+      <ListItemButton
+        onClick={() => {
+          handleClick('CREATE')
+          setNettype(NetworkType.MAIN_NET)
+        }}>
+        <Typography variant="h5" text="新規メインネットアカウント" />
       </ListItemButton>
       <Divider />
       <ListItemButton disabled onClick={() => handleClick('HARDWARE')}>

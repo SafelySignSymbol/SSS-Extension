@@ -1,13 +1,11 @@
 import React, { Dispatch } from 'react'
 import styled from '@emotion/styled'
 
-import { Method } from './AccountModal'
 import TextField from '../../_general/components/TextField'
 import PasswordTextField from '../../_general/components/TextField/PasswordTextField'
+import Typography from '../../_general/components/Typography'
 
 export type Props = {
-  setMethod: Dispatch<Method>
-  setState: Dispatch<number>
   setName: Dispatch<string>
   setAddress: Dispatch<string>
   setPrivateKey: Dispatch<string>
@@ -15,8 +13,6 @@ export type Props = {
 }
 
 const Component: React.FC<Props> = ({
-  setMethod,
-  setState,
   setName,
   setAddress,
   setPrivateKey,
@@ -24,6 +20,9 @@ const Component: React.FC<Props> = ({
 }) => {
   return (
     <Root>
+      <Center>
+        <Typography variant="h5" text="アカウント情報を入力" />
+      </Center>
       <TextField label="Name" setText={setName} variant="text" />
       <TextField label="Address" setText={setAddress} variant="text" />
       <TextField label="PrivateKey" setText={setPrivateKey} variant="text" />
@@ -39,4 +38,13 @@ const Root = styled('div')({
   height: '400px',
   display: 'flex',
   flexDirection: 'column',
+})
+const Center = styled('div')({
+  display: 'flex',
+  flexDirection: 'column',
+  justifyContent: 'center',
+  alignItems: 'center',
+  '> *': {
+    margin: '4px',
+  },
 })

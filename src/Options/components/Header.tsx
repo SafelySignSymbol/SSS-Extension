@@ -1,9 +1,9 @@
 import React, { Dispatch, useEffect, useState } from 'react'
 import styled from '@emotion/styled'
-import { Box, Divider, IconButton } from '@mui/material'
+import { Box, Divider, IconButton, Menu, MenuItem } from '@mui/material'
 import Logo from '../../_general/components/Logo'
 import Spacer from '../../_general/components/Spacer'
-import { Page } from '../index'
+import { Page, Select } from '../index'
 import Avatar from 'boring-avatars'
 
 import { useTranslation } from 'react-i18next'
@@ -16,11 +16,22 @@ import { NetworkType } from 'symbol-sdk'
 export interface Props {
   page: Page
   setPage: Dispatch<Page>
-  handleOpen: () => void
+  handleOpen: (event: React.MouseEvent<HTMLButtonElement>) => void
+  handleClose: (select: Select) => void
+  anchorEl: null | HTMLElement
+  update: Date
 }
 
-const Component: React.VFC<Props> = ({ page, setPage, handleOpen }) => {
+const Component: React.VFC<Props> = ({
+  page,
+  setPage,
+  handleOpen,
+  handleClose,
+  anchorEl,
+  update,
+}) => {
   const [t] = useTranslation()
+  const open = Boolean(anchorEl)
 
   const [extensionAccount, setExtensionAccount] = useState<ExtensionAccount>(
     {} as ExtensionAccount
@@ -28,7 +39,7 @@ const Component: React.VFC<Props> = ({ page, setPage, handleOpen }) => {
 
   useEffect(() => {
     getActiveAccount().then((acc) => setExtensionAccount(acc))
-  }, [])
+  }, [update])
 
   return (
     <Container>
@@ -55,10 +66,6 @@ const Component: React.VFC<Props> = ({ page, setPage, handleOpen }) => {
           <Item isOpen={page === 'HISTORY'} onClick={() => setPage('HISTORY')}>
             {t('history')}
           </Item>
-          <Divider orientation="vertical" flexItem />
-          <Item isOpen={page === 'SETTING'} onClick={() => setPage('SETTING')}>
-            {t('settings')}
-          </Item>
         </Flex>
       </Spacer>
       <Spacer margin="0px 64px">
@@ -78,6 +85,19 @@ const Component: React.VFC<Props> = ({ page, setPage, handleOpen }) => {
           )}
         </IconButton>
       </Spacer>
+      <Menu
+        id="basic-menu"
+        anchorEl={anchorEl}
+        open={open}
+        onClose={() => handleClose('NONE')}
+        MenuListProps={{
+          'aria-labelledby': 'basic-button',
+        }}>
+        <MenuItem onClick={() => handleClose('SETTING')}>設定</MenuItem>
+        <MenuItem onClick={() => handleClose('ACCOUNT')}>
+          アカウント追加
+        </MenuItem>
+      </Menu>
     </Container>
   )
 }
@@ -101,12 +121,5 @@ const Item = styled('div')((p: { isOpen: boolean }) => ({
   padding: '4px 0px',
   fontSize: '18px',
   color: `${p.isOpen ? Color.blue : Color.gray_black}`,
+  fontWeight: `${p.isOpen ? 'bold' : 'normal'}`,
 }))
-
-// .mail-title-box:after {
-//   content: '';
-//   background: 'red';
-//   display: 'block';
-//   height: '4px';
-//   width: '100%'
-// }

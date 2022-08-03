@@ -1,13 +1,11 @@
-import React, { Dispatch, useState } from 'react'
+import React, { Dispatch, useEffect, useState } from 'react'
 import styled from '@emotion/styled'
 import { encrypt } from '../../_general/lib/Crypto'
 
 import {
   Alert,
   AlertColor,
-  Divider,
   IconButton,
-  ListItemButton,
   MobileStepper,
   Modal,
   Paper,
@@ -16,13 +14,9 @@ import {
 
 import { IoMdClose } from 'react-icons/io'
 
-import TextField from '../../_general/components/TextField'
-import Spacer from '../../_general/components/Spacer'
-import Button from '../../_general/components/Button'
 import { Address, Account, NetworkType } from 'symbol-sdk'
 import { addExtensionAccount } from '../../_general/lib/Storage'
 import { ExtensionAccount } from '../../_general/model/ExtensionAccount'
-import PasswordTextField from '../../_general/components/TextField/PasswordTextField'
 import { useTranslation } from 'react-i18next'
 import Typography from '../../_general/components/Typography'
 import Color, { addAlpha } from '../../_general/utils/Color'
@@ -32,6 +26,8 @@ import ImportPriKey from './ImportPriKey'
 import CreateAccount from './CreateAccount'
 
 import { MdArrowRight, MdArrowLeft } from 'react-icons/md'
+import { getNetworkTypeByAddress } from '../../_general/lib/Symbol/Config'
+import CheckAccount from './CheckAccount'
 
 export type Props = {
   state: number
@@ -52,8 +48,17 @@ const Component: React.VFC<Props> = ({ state, setState, reload }) => {
   const [pass, setPass] = useState('default password')
 
   const [method, setMethod] = useState<Method>('NONE')
+  const [nettype, setNettype] = useState<NetworkType>(NetworkType.TEST_NET)
 
   const [t] = useTranslation()
+
+  useEffect(() => {
+    if (method === 'CREATE') {
+      const acc = Account.generateNewAccount(nettype)
+      setAddress(acc.address.plain())
+      setPrikey(acc.privateKey)
+    }
+  }, [method, nettype])
 
   const closeModal = () => {
     setState(0)
@@ -62,6 +67,7 @@ const Component: React.VFC<Props> = ({ state, setState, reload }) => {
   const closeSB = () => {
     setOpenSB(false)
   }
+
   const resetInput = () => {
     setName('')
     setAddress('')
@@ -122,6 +128,157 @@ const Component: React.VFC<Props> = ({ state, setState, reload }) => {
     }
   }
 
+  const getBody = () => {
+    if (state === 1) {
+      return (
+        <MethodSelect
+          setState={setState}
+          setMethod={setMethod}
+          setNettype={setNettype}
+        />
+      )
+    }
+
+    if (state === 2) {
+      if (method === 'IMPORT') {
+        return (
+          <ImportPriKey
+            setName={setName}
+            setAddress={setAddress}
+            setPrivateKey={setPrikey}
+            setPassword={setPass}
+          />
+        )
+      }
+
+      if (method === 'CREATE') {
+        return (
+          <CreateAccount
+            setPassword={setPass}
+            setName={setName}
+            address={address}
+          />
+        )
+      }
+    }
+
+    if (state === 3) {
+      return <CheckAccount address={address} name={name} password={pass} />
+    }
+  }
+
+  const getFooter = () => {
+    if (state === 1) {
+      return <ButtonWrappr />
+    }
+    if (state === 2) {
+      console.log(method)
+      if (method === 'IMPORT') {
+        return (
+          <ButtonWrappr>
+            <BackButton onClick={() => setState(state - 1)}>
+              <IconContext.Provider value={{ size: '64px' }}>
+                <MdArrowLeft
+                  style={{ color: Color.base_white, margin: '0px 16px' }}
+                />
+                <Typography variant="h4" text="Back" color={Color.base_white} />
+              </IconContext.Provider>
+            </BackButton>
+            <NextButton onClick={nextImport}>
+              <Typography variant="h4" text="Next" color={Color.base_white} />
+              <IconContext.Provider value={{ size: '64px' }}>
+                <MdArrowRight
+                  style={{ color: Color.base_white, margin: '0px 16px' }}
+                />
+              </IconContext.Provider>
+            </NextButton>
+          </ButtonWrappr>
+        )
+      }
+      if (method === 'CREATE') {
+        return (
+          <ButtonWrappr>
+            <BackButton onClick={() => setState(state - 1)}>
+              <IconContext.Provider value={{ size: '64px' }}>
+                <MdArrowLeft
+                  style={{ color: Color.base_white, margin: '0px 16px' }}
+                />
+                <Typography variant="h4" text="Back" color={Color.base_white} />
+              </IconContext.Provider>
+            </BackButton>
+            <NextButton onClick={nextCreate}>
+              <Typography variant="h4" text="Next" color={Color.base_white} />
+              <IconContext.Provider value={{ size: '64px' }}>
+                <MdArrowRight
+                  style={{ color: Color.base_white, margin: '0px 16px' }}
+                />
+              </IconContext.Provider>
+            </NextButton>
+          </ButtonWrappr>
+        )
+      }
+    }
+
+    if (state === 3) {
+      return (
+        <ButtonWrappr>
+          <BackButton onClick={() => setState(state - 1)}>
+            <IconContext.Provider value={{ size: '64px' }}>
+              <MdArrowLeft
+                style={{ color: Color.base_white, margin: '0px 16px' }}
+              />
+              <Typography variant="h4" text="Back" color={Color.base_white} />
+            </IconContext.Provider>
+          </BackButton>
+          <NextButton onClick={done}>
+            <Typography variant="h4" text="Done" color={Color.base_white} />
+            <IconContext.Provider value={{ size: '64px' }}>
+              <MdArrowRight
+                style={{ color: Color.base_white, margin: '0px 16px' }}
+              />
+            </IconContext.Provider>
+          </NextButton>
+        </ButtonWrappr>
+      )
+    }
+  }
+
+  const nextImport = () => {
+    if (!address) {
+      setSnackbarStatus('error')
+      setMessage(t('accmodal_wrong_address_format'))
+      return
+    }
+
+    if (!prikey) {
+      setSnackbarStatus('error')
+      setMessage(t('accmodal_wrong_prikey_format'))
+      return
+    }
+
+    const nt = getNetworkTypeByAddress(address)
+    const addr = Address.createFromRawAddress(address)
+    const acc = Account.createFromPrivateKey(prikey, nt)
+
+    if (addr.plain() !== acc.address.plain()) {
+      setSnackbarStatus('error')
+      setMessage(t('accmodal_wrong_keypair'))
+      setOpenSB(true)
+    } else {
+      // TODO password check
+      setState(state + 1)
+    }
+  }
+
+  const nextCreate = () => {
+    // TODO password check
+    setState(state + 1)
+  }
+
+  const done = () => {
+    alert('done')
+  }
+
   return (
     <>
       <Modal open={state !== 0} onClose={closeModal}>
@@ -150,53 +307,9 @@ const Component: React.VFC<Props> = ({ state, setState, reload }) => {
                 }}
               />
             </Stepper>
-            {state === 1 && (
-              <MethodSelect setState={setState} setMethod={setMethod} />
-            )}
-            {state === 2 && method === 'IMPORT' && (
-              <ImportPriKey
-                setName={setName}
-                setState={setState}
-                setMethod={setMethod}
-                setAddress={setAddress}
-                setPrivateKey={setPrikey}
-                setPassword={setPass}
-              />
-            )}
-            {state === 2 && method === 'CREATE' && (
-              <CreateAccount setState={setState} setMethod={setMethod} />
-            )}
+            {getBody()}
           </Contents>
-          <ButtonWrappr>
-            {1 < state && (
-              <BackButton onClick={() => setState(state - 1)}>
-                <IconContext.Provider value={{ size: '64px' }}>
-                  <MdArrowLeft
-                    style={{ color: Color.base_white, margin: '0px 16px' }}
-                  />
-                  <Typography
-                    variant="h4"
-                    text="Back"
-                    color={Color.base_white}
-                  />
-                </IconContext.Provider>
-              </BackButton>
-            )}
-            {1 < state && (
-              <NextButton onClick={() => setState(state + 1)}>
-                <Typography
-                  variant="h4"
-                  text={state === 3 ? 'Done' : 'Next'}
-                  color={Color.base_white}
-                />
-                <IconContext.Provider value={{ size: '64px' }}>
-                  <MdArrowRight
-                    style={{ color: Color.base_white, margin: '0px 16px' }}
-                  />
-                </IconContext.Provider>
-              </NextButton>
-            )}
-          </ButtonWrappr>
+          {getFooter()}
         </Wrapper>
       </Modal>
       <Snackbar open={openSB} autoHideDuration={6000} onClose={closeSB}>
@@ -256,6 +369,7 @@ const ButtonWrappr = styled('div')({
 const NextButton = styled('div')({
   width: '50%',
   background: Color.blue,
+  cursor: 'pointer',
   display: 'flex',
   justifyContent: 'center',
   alignItems: 'center',
@@ -267,6 +381,7 @@ const NextButton = styled('div')({
 const BackButton = styled('div')({
   width: '50%',
   background: addAlpha(Color.gray_black, 0.8),
+  cursor: 'pointer',
   display: 'flex',
   justifyContent: 'center',
   alignItems: 'center',

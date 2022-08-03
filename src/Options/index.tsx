@@ -25,6 +25,7 @@ import {
 import Footer from './components/Footer'
 
 export type Page = 'SETTING' | 'ALLOW' | 'HOME' | 'ACCOUNTS' | 'HISTORY'
+export type Select = 'SETTING' | 'ACCOUNT' | 'NONE'
 
 i18n.use(initReactI18next).init({
   debug: true,
@@ -51,6 +52,8 @@ const Options: React.VFC = () => {
 
   const [pageSetting, setPageSetting] = useState<Setting>({} as Setting)
 
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
+
   useEffect(() => {
     getActiveAccount().then((acc) => {
       if (acc === null) setState(1)
@@ -70,10 +73,12 @@ const Options: React.VFC = () => {
         setPageSetting(st)
         changeLang(lang)
         reload()
+      } else if (s !== pageSetting) {
+        setPageSetting(s)
       }
       i18n.changeLanguage(lang)
     })
-  }, [update])
+  }, [pageSetting, update])
 
   const reload = () => {
     setUpdate(new Date())
@@ -95,7 +100,7 @@ const Options: React.VFC = () => {
       return <Allow reload={reload} update={update} />
     }
     if (page === 'ACCOUNTS') {
-      return <Accounts reload={reload} update={update} />
+      return <Accounts reload={reload} update={update} setting={pageSetting} />
     }
 
     if (page === 'HOME') {
@@ -103,13 +108,33 @@ const Options: React.VFC = () => {
     }
   }
 
-  const handleOpen = () => {
-    setState(1)
+  const handleOpen = (event: React.MouseEvent<HTMLButtonElement>) => {
+    // setState(1)
+    setAnchorEl(event.currentTarget)
     reload()
   }
+
+  const handleClose = (select: Select) => {
+    if (select === 'SETTING') {
+      setPage('SETTING')
+    }
+
+    if (select === 'ACCOUNT') {
+      setState(1)
+    }
+    setAnchorEl(null)
+  }
+
   return (
     <Root>
-      <Header page={page} setPage={setPage} handleOpen={handleOpen} />
+      <Header
+        page={page}
+        setPage={setPage}
+        handleOpen={handleOpen}
+        handleClose={handleClose}
+        anchorEl={anchorEl}
+        update={update}
+      />
       <AccountModal state={state} setState={setState} reload={reload} />
       <Contents>{getBody()}</Contents>
       <Footer />

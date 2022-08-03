@@ -68,11 +68,13 @@ const Component: React.VFC<Props> = ({ allowlist, reload }) => {
     <Wrapper>
       <Spacer MBottom="40px" MTop="20px">
         <Wrap>
-          <TextField
-            label="Domain Name"
-            setText={setDomainName}
-            variant="text"
-          />
+          <TFWrapper>
+            <TextField
+              label="Domain Name"
+              setText={setDomainName}
+              variant="text"
+            />
+          </TFWrapper>
           <IconButton size="small" onClick={allow}>
             <IconContext.Provider value={{ size: '24px' }}>
               <RiAddFill style={{ margin: '6px' }} />
@@ -140,4 +142,8 @@ const IconWrapper = styled('div')({
 
 const Text = styled('div')({
   marginLeft: '16px',
+})
+
+const TFWrapper = styled('div')({
+  width: '100%',
 })
