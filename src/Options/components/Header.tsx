@@ -8,7 +8,11 @@ import Avatar from 'boring-avatars'
 
 import { useTranslation } from 'react-i18next'
 import { ExtensionAccount } from '../../_general/model/ExtensionAccount'
-import { getActiveAccount } from '../../_general/lib/Storage'
+import {
+  // getActiveAccount,
+  getActiveAccountV2,
+  Setting,
+} from '../../_general/lib/Storage'
 import Color, { MainNetColors, TestNetColors } from '../../_general/utils/Color'
 import { getNetworkTypeByAddress } from '../../_general/lib/Symbol/Config'
 import { NetworkType } from 'symbol-sdk'
@@ -20,6 +24,7 @@ export interface Props {
   handleClose: (select: Select) => void
   anchorEl: null | HTMLElement
   update: Date
+  setting: Setting
 }
 
 const Component: React.VFC<Props> = ({
@@ -29,6 +34,7 @@ const Component: React.VFC<Props> = ({
   handleClose,
   anchorEl,
   update,
+  setting,
 }) => {
   const [t] = useTranslation()
   const open = Boolean(anchorEl)
@@ -38,8 +44,11 @@ const Component: React.VFC<Props> = ({
   )
 
   useEffect(() => {
-    getActiveAccount().then((acc) => setExtensionAccount(acc))
-  }, [update])
+    // getActive Account().then((acc) => setExtensionAccount(acc))
+    getActiveAccountV2(setting.networkType).then((acc) => {
+      setExtensionAccount(acc)
+    })
+  }, [setting.networkType, update])
 
   return (
     <Container>

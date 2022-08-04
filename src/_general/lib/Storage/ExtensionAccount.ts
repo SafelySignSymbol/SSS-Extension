@@ -1,3 +1,5 @@
+import { getActiveAccountV2 } from './ActiveAccount'
+import { NetworkType } from 'symbol-sdk'
 import { getStorage, getActiveAccount, setStorage } from '.'
 import {
   IExtensionAccount,
@@ -57,10 +59,13 @@ export const getExtensionAccount = (
   })
 }
 
-export const deleteExtensionAccount = (arrayNum: number) => {
+export const deleteExtensionAccount = (
+  arrayNum: number,
+  network: NetworkType
+) => {
   return new Promise((resolve, reject) => {
     chrome.storage.local.get(['extensionAccounts', 'accountsCount'], (data) => {
-      getActiveAccount().then((acc) => {
+      getActiveAccountV2(network).then((acc) => {
         if (
           acc.address === data.extensionAccounts[arrayNum].address &&
           data.extensionAccounts.length !== 1

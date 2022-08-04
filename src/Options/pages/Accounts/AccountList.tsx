@@ -11,21 +11,33 @@ import { Chip, IconButton } from '@mui/material'
 import { IconContext } from 'react-icons'
 import { HiOutlineClipboardCopy } from 'react-icons/hi'
 import AccountMenu from './AccountMenu'
-import { getActiveAccount } from '../../../_general/lib/Storage'
+import {
+  // getActiveAccount,
+  getActiveAccountV2,
+  Setting,
+} from '../../../_general/lib/Storage'
 
 export type Props = {
   extensionAccounts: ExtensionAccount[]
+  setting: Setting
   reload: () => void
 }
 
-const Component: React.VFC<Props> = ({ extensionAccounts, reload }) => {
+const Component: React.VFC<Props> = ({
+  extensionAccounts,
+  reload,
+  setting,
+}) => {
   const [activeAccount, setActiveAccount] = useState<string>('')
 
   useEffect(() => {
-    getActiveAccount().then((acc) => {
+    // getActive Account().then((acc) => {
+    //   setActiveAccount(acc.address)
+    // })
+    getActiveAccountV2(setting.networkType).then((acc) => {
       setActiveAccount(acc.address)
     })
-  }, [extensionAccounts])
+  }, [extensionAccounts, setting.networkType])
 
   if (extensionAccounts.length === 0) return <div></div>
 
@@ -53,7 +65,7 @@ const Component: React.VFC<Props> = ({ extensionAccounts, reload }) => {
               </IsActive>
               <div>
                 <SChip label={net_type} clr={color} />
-                <AccountMenu index={i} reload={reload} />
+                <AccountMenu index={i} reload={reload} setting={setting} />
               </div>
             </Name>
             <Flex>

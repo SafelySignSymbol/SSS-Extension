@@ -13,7 +13,7 @@ import itJson from '../_general/utils/locales/it.json'
 import Home from './pages/Home'
 import Header from './components/Header'
 import AccountModal from './components/AccountModal'
-import { getActiveAccount } from '../_general/lib/Storage'
+import { getExtensionAccounts } from '../_general/lib/Storage'
 import Settings from './pages/Settings'
 import Allow from './pages/Allow'
 import Accounts from './pages/Accounts'
@@ -55,12 +55,10 @@ const Options: React.VFC = () => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
 
   useEffect(() => {
-    getActiveAccount().then((acc) => {
-      if (acc === null) setState(1)
+    getExtensionAccounts().then((acc) => {
+      if (acc.length === 0) setState(1)
     })
-  }, [])
 
-  useEffect(() => {
     getSetting().then((s) => {
       const lang = (() => {
         if (s.lang === 'INIT') return window.navigator.language.toUpperCase()
@@ -73,12 +71,12 @@ const Options: React.VFC = () => {
         setPageSetting(st)
         changeLang(lang)
         reload()
+        i18n.changeLanguage(lang)
       } else if (s !== pageSetting) {
         setPageSetting(s)
       }
-      i18n.changeLanguage(lang)
     })
-  }, [pageSetting, update])
+  }, [pageSetting])
 
   const reload = () => {
     setUpdate(new Date())
@@ -104,7 +102,7 @@ const Options: React.VFC = () => {
     }
 
     if (page === 'HOME') {
-      return <Home reload={reload} update={update} />
+      return <Home reload={reload} update={update} setting={pageSetting} />
     }
   }
 
@@ -133,6 +131,7 @@ const Options: React.VFC = () => {
         handleOpen={handleOpen}
         handleClose={handleClose}
         anchorEl={anchorEl}
+        setting={pageSetting}
         update={update}
       />
       <AccountModal state={state} setState={setState} reload={reload} />

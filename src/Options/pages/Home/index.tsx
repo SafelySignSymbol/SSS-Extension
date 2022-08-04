@@ -5,7 +5,11 @@ import { Grid } from '@mui/material'
 
 import Spacer from '../../../_general/components/Spacer'
 
-import { getActiveAccount } from '../../../_general/lib/Storage'
+import {
+  // getActiveAccount,
+  getActiveAccountV2,
+  Setting,
+} from '../../../_general/lib/Storage'
 import { ExtensionAccount } from '../../../_general/model/ExtensionAccount'
 import Mosaics from './Mosaics'
 import { Address } from 'symbol-sdk'
@@ -15,16 +19,21 @@ import TransactionHistory from './TransactionHistory'
 interface Props {
   reload: () => void
   update: Date
+  setting: Setting
 }
 
-const Options: React.VFC<Props> = ({ reload, update }) => {
+const Options: React.VFC<Props> = ({ reload, update, setting }) => {
   const [account, setAccount] = useState<ExtensionAccount | null>(null)
 
   useEffect(() => {
-    getActiveAccount().then((acc) => {
+    // getActive Account().then((acc) => {
+    //   setAccount(acc)
+    // })
+    getActiveAccountV2(setting.networkType).then((acc) => {
+      console.log({ setting: setting.networkType })
       setAccount(acc)
     })
-  }, [update])
+  }, [setting.networkType, update])
 
   if (account === null) {
     return <></>

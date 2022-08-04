@@ -141,7 +141,14 @@ const Options: React.VFC<Props> = ({ reload, update, setting, setSetting }) => {
       <Wrapper>
         <Column>
           <Typography text="ネットワーク変更" variant="h5" />
-          <Typography text="ネットワークを変更する" variant="subtitle1" />
+          <Typography
+            text={`ネットワークを変更する 現在 ${
+              setting.networkType === 152
+                ? NetworkType.TEST_NET
+                : NetworkType.MAIN_NET
+            }`}
+            variant="subtitle1"
+          />
         </Column>
         <Center>
           <Button text="change net type" onClick={changeNet} />

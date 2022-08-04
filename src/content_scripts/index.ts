@@ -15,9 +15,10 @@ import {
   SIGN_TRANSACTION,
 } from './../_general/model/MessageType'
 import {
-  getActiveAccount,
+  // getActiveAccount,
   setCosignatories,
   setSignStatus,
+  getActiveAccountV2,
 } from '../_general/lib/Storage'
 import { getSetting } from '../_general/lib/Storage/Setting'
 
@@ -46,8 +47,8 @@ const injectStylefile = function (file: string, node: string) {
 }
 
 const injectSSS = () => {
-  getActiveAccount().then((activeAccount) => {
-    getSetting().then((setting) => {
+  getSetting().then((setting) => {
+    getActiveAccountV2(setting.networkType).then((activeAccount) => {
       setTimeout(() => {
         window.postMessage(
           {

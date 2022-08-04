@@ -24,7 +24,13 @@ const Options: React.VFC<Props> = ({ reload, update, setting }) => {
     })
   }, [setting.networkType, update])
 
-  return <AccountList extensionAccounts={accounts} reload={reload} />
+  return (
+    <AccountList
+      extensionAccounts={accounts}
+      reload={reload}
+      setting={setting}
+    />
+  )
 }
 
 export default Options

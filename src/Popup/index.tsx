@@ -12,9 +12,12 @@ import {
 } from 'symbol-sdk'
 
 import {
-  getActiveAccount,
+  // getActiveAccount,
+  getActiveAccountV2,
   getCosignatories,
+  getSetting,
   getSignStatus,
+  Setting,
 } from '../_general/lib/Storage'
 import { ExtensionAccount } from '../_general/model/ExtensionAccount'
 import Login from './pages/Login'
@@ -45,6 +48,7 @@ const Popup: React.VFC = () => {
   const [status, setStatus] = useState<PopupStatus>(LOGIN)
   const [signStatus, setSignStatus] = useState<string>('')
   const [update, setUpdate] = useState(new Date())
+  const [pageSetting, setPageSetting] = useState<Setting>({} as Setting)
 
   window.onbeforeunload = () => {
     chrome.runtime.sendMessage({
@@ -54,12 +58,23 @@ const Popup: React.VFC = () => {
 
   const [pass, setPass] = useState('')
   useEffect(() => {
-    getActiveAccount().then((acc) => {
-      if (acc === null) {
-        chrome.runtime.openOptionsPage()
-      } else {
-        setExtensionAccount(acc)
-      }
+    // getActive Account().then((acc) => {
+    //   if (acc === null) {
+    //     chrome.runtime.openOptionsPage()
+    //   } else {
+    //     setExtensionAccount(acc)
+    //   }
+    // })
+
+    getSetting().then((s) => {
+      setPageSetting(s)
+      getActiveAccountV2(s.networkType)
+        .then((acc) => {
+          setExtensionAccount(acc)
+        })
+        .catch(() => {
+          chrome.runtime.openOptionsPage()
+        })
     })
 
     getSignStatus().then((status) => {

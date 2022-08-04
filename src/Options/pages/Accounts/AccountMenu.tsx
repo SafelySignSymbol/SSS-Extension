@@ -12,6 +12,7 @@ import {
 import {
   deleteExtensionAccount,
   setActiveAccount,
+  Setting,
 } from '../../../_general/lib/Storage'
 import { IconContext } from 'react-icons'
 import { RiSettings2Fill } from 'react-icons/ri'
@@ -20,9 +21,10 @@ import { useTranslation } from 'react-i18next'
 export type Props = {
   index: number
   reload: () => void
+  setting: Setting
 }
 
-const Component: React.VFC<Props> = ({ index, reload }) => {
+const Component: React.VFC<Props> = ({ index, reload, setting }) => {
   const [message, setMessage] = useState('')
   const [openSB, setOpenSB] = useState(false)
   const [snackbarStatus, setSnackbarStatus] = useState<AlertColor>('success')
@@ -45,7 +47,7 @@ const Component: React.VFC<Props> = ({ index, reload }) => {
   }
 
   const onClickDelete = () => {
-    deleteExtensionAccount(index)
+    deleteExtensionAccount(index, setting.networkType)
       .then(() => {
         setSnackbarStatus('success')
         setMessage(t('accounts_success_remove_account'))
