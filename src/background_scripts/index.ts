@@ -19,14 +19,16 @@ import {
 
 import { openPopup } from './utils'
 
-chrome.runtime.onInstalled.addListener(() => {
-  chrome.runtime.openOptionsPage()
+chrome.runtime.onInstalled.addListener((detail) => {
+  if (detail.reason === chrome.runtime.OnInstalledReason.INSTALL) {
+    chrome.runtime.openOptionsPage()
+    initialize()
+  }
   chrome.contextMenus.create({
     type: 'normal',
     id: 'contextmenu',
     title: 'Link to SSS',
   })
-  initialize()
 })
 
 chrome.action.onClicked.addListener(() => {
