@@ -56,6 +56,7 @@ const init = () => {
     extensionAccounts: [],
     accountsCount: 0,
     activeAccount: null,
+    activeAccounts: [],
     signStatus: '',
     cosignatories: [],
     history: [],
