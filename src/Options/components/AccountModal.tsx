@@ -132,14 +132,14 @@ const Component: React.VFC<Props> = ({ state, setState, reload }) => {
     if (state === 1) {
       return (
         <MethodSelect
-          setState={setState}
-          setMethod={setMethod}
-          setNettype={setNettype}
+        setState={setState}
+        setMethod={setMethod}
+        setNettype={setNettype}
         />
-      )
-    }
-
-    if (state === 2) {
+        )
+      }
+      
+      if (state === 2) {
       if (method === 'IMPORT') {
         return (
           <ImportPriKey
@@ -230,7 +230,7 @@ const Component: React.VFC<Props> = ({ state, setState, reload }) => {
               <Typography variant="h4" text="Back" color={Color.base_white} />
             </IconContext.Provider>
           </BackButton>
-          <NextButton onClick={done}>
+          <NextButton onClick={submit}>
             <Typography variant="h4" text="Done" color={Color.base_white} />
             <IconContext.Provider value={{ size: '64px' }}>
               <MdArrowRight

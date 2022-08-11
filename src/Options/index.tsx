@@ -27,6 +27,7 @@ import Footer from './components/Footer'
 export type Page = 'SETTING' | 'ALLOW' | 'HOME' | 'ACCOUNTS' | 'HISTORY'
 export type Select = 'SETTING' | 'ACCOUNT' | 'NONE'
 
+
 i18n.use(initReactI18next).init({
   debug: true,
   resources: {
@@ -55,14 +56,14 @@ const Options: React.VFC = () => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
 
   useEffect(() => {
-    getExtensionAccounts().then((acc) => {
-      if (acc.length === 0) setState(1)
-    })
+    // getExtensionAccounts().then((acc) => {
+    //   if (acc.length === 0) setState(1)
+    // })
 
     getSetting().then((s) => {
       const lang = (() => {
         if (s.lang === 'INIT') return window.navigator.language.toUpperCase()
-        if (s.lang.toUpperCase() === 'KR') return 'KO'
+        // if (s.lang.toUpperCase() === 'KR') return 'KO'
         return s.lang.toUpperCase()
       })()
       if (s.lang !== lang) {
@@ -71,12 +72,13 @@ const Options: React.VFC = () => {
         setPageSetting(st)
         changeLang(lang)
         reload()
+        console.log({lang})
         i18n.changeLanguage(lang)
       } else if (s !== pageSetting) {
         setPageSetting(s)
       }
     })
-  }, [pageSetting])
+  }, [pageSetting, update])
 
   const reload = () => {
     setUpdate(new Date())
@@ -124,20 +126,20 @@ const Options: React.VFC = () => {
   }
 
   return (
-    <Root>
-      <Header
-        page={page}
-        setPage={setPage}
-        handleOpen={handleOpen}
-        handleClose={handleClose}
-        anchorEl={anchorEl}
-        setting={pageSetting}
-        update={update}
-      />
-      <AccountModal state={state} setState={setState} reload={reload} />
-      <Contents>{getBody()}</Contents>
-      <Footer />
-    </Root>
+      <Root>
+        <Header
+          page={page}
+          setPage={setPage}
+          handleOpen={handleOpen}
+          handleClose={handleClose}
+          anchorEl={anchorEl}
+          setting={pageSetting}
+          update={update}
+          />
+        <AccountModal state={state} setState={setState} reload={reload} />
+        <Contents>{getBody()}</Contents>
+        <Footer />
+      </Root>
   )
 }
 

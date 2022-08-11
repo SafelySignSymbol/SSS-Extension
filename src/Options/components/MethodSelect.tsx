@@ -14,6 +14,7 @@ export type Props = {
 
 const Component: React.FC<Props> = ({ setMethod, setState, setNettype }) => {
   const handleClick = (method: Method) => {
+    console.log('handleClick')
     setState(2)
     setMethod(method)
   }
@@ -31,6 +32,7 @@ const Component: React.FC<Props> = ({ setMethod, setState, setNettype }) => {
         }}>
         <Typography variant="h5" text="新規テストネットアカウント" />
       </ListItemButton>
+      <Divider />
       <ListItemButton
         onClick={() => {
           handleClick('CREATE')
