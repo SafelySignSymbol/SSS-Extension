@@ -11,7 +11,8 @@ import {
 } from '@mui/material'
 import {
   deleteExtensionAccount,
-  setActiveAccount,
+  getAccountIndexByAddress,
+  setActiveAccountV2,
   Setting,
 } from '../../../_general/lib/Storage'
 import { IconContext } from 'react-icons'
@@ -20,11 +21,12 @@ import { useTranslation } from 'react-i18next'
 
 export type Props = {
   index: number
+  address: string
   reload: () => void
   setting: Setting
 }
 
-const Component: React.VFC<Props> = ({ index, reload, setting }) => {
+const Component: React.VFC<Props> = ({ index, address, reload, setting }) => {
   const [message, setMessage] = useState('')
   const [openSB, setOpenSB] = useState(false)
   const [snackbarStatus, setSnackbarStatus] = useState<AlertColor>('success')
@@ -34,16 +36,18 @@ const Component: React.VFC<Props> = ({ index, reload, setting }) => {
   const open = Boolean(anchorEl)
 
   const onClickActive = () => {
-    setActiveAccount(index)
-      .then(() => {
-        setSnackbarStatus('success')
-        setMessage(t('accounts_success_change_active'))
-        setOpenSB(true)
-      })
-      .finally(() => {
-        reload()
-        handleClose()
-      })
+    getAccountIndexByAddress(address).then((index) => {
+      setActiveAccountV2(index, setting.networkType)
+        .then(() => {
+          setSnackbarStatus('success')
+          setMessage(t('accounts_success_change_active'))
+          setOpenSB(true)
+        })
+        .finally(() => {
+          reload()
+          handleClose()
+        })
+    })
   }
 
   const onClickDelete = () => {

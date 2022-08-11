@@ -135,6 +135,10 @@ const Wrap = styled('div')({
   background: 'white',
   padding: '16px',
   margin: '8px',
+  width: '100%',
+  '& > div': {
+    width: '100%',
+  },
 })
 const IconWrapper = styled('div')({
   margin: '8px',

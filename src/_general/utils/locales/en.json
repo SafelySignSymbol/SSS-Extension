@@ -19,6 +19,8 @@
   "setting_sign_history_btn": "Download",
   "setting_change_langage": "Language Settings",
   "setting_change_langage_e": "Change the language of text displayed on the SSS",
+  "setting_change_network": "Network Setting",
+  "setting_change_network_e": "Change the network to be enabled on the SSS",
   "setting_delete": "Reset data",
   "setting_delete_domain": "Reset domain settings",
   "setting_delete_account": "Reset account settings",

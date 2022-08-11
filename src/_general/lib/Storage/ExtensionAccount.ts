@@ -1,4 +1,5 @@
-import { getActiveAccountV2 } from './ActiveAccount'
+import { getNetworkTypeByAddress } from './../Symbol/Config'
+import { getActiveAccountV2, setActiveAccountV2 } from './ActiveAccount'
 import { NetworkType } from 'symbol-sdk'
 import { getStorage, getActiveAccount, setStorage } from '.'
 import {
@@ -22,17 +23,29 @@ export const addExtensionAccount = (account: IExtensionAccount) => {
         ]
         const newAccountsCount: number = data.accountsCount + 1
 
-        if (data.accountsCount === 0) {
-          chrome.storage.local.set({
-            activeAccount: account,
+        chrome.storage.local
+          .set({
+            extensionAccounts: newExtensionAccounts,
+            accountsCount: newAccountsCount,
           })
-        }
+          .then(() => {
+            // 追加したアカウントと同じネットワークのアカウントが一つもなかったらアクティブアカウントにする
+            const nt = getNetworkTypeByAddress(account.address)
+            const arr = data.extensionAccounts.filter(
+              (e: ExtensionAccount) => getNetworkTypeByAddress(e.address) === nt
+            )
 
-        chrome.storage.local.set({
-          extensionAccounts: newExtensionAccounts,
-          accountsCount: newAccountsCount,
-        })
-        resolve(account)
+            if (arr.length === 0) {
+              console.log({ newAccountsCount })
+              setActiveAccountV2(
+                data.accountsCount,
+                getNetworkTypeByAddress(account.address)
+              )
+            }
+            //
+
+            resolve(account)
+          })
       }
     })
   })

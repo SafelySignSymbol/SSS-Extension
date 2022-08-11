@@ -132,14 +132,14 @@ const Component: React.VFC<Props> = ({ state, setState, reload }) => {
     if (state === 1) {
       return (
         <MethodSelect
-        setState={setState}
-        setMethod={setMethod}
-        setNettype={setNettype}
+          setState={setState}
+          setMethod={setMethod}
+          setNettype={setNettype}
         />
-        )
-      }
-      
-      if (state === 2) {
+      )
+    }
+
+    if (state === 2) {
       if (method === 'IMPORT') {
         return (
           <ImportPriKey
@@ -172,7 +172,6 @@ const Component: React.VFC<Props> = ({ state, setState, reload }) => {
       return <ButtonWrappr />
     }
     if (state === 2) {
-      console.log(method)
       if (method === 'IMPORT') {
         return (
           <ButtonWrappr>

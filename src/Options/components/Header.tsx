@@ -79,7 +79,7 @@ const Component: React.VFC<Props> = ({
       </Spacer>
       <Spacer margin="0px 64px">
         <IconButton onClick={handleOpen}>
-          {!!extensionAccount.address ?(
+          {!!extensionAccount.address ? (
             <Avatar
               size={40}
               name={extensionAccount.address}
@@ -96,7 +96,12 @@ const Component: React.VFC<Props> = ({
               size={40}
               name="default icon"
               variant="beam"
-              colors={[TestNetColors[0], MainNetColors[0], TestNetColors[1], MainNetColors[1]]}
+              colors={[
+                TestNetColors[0],
+                MainNetColors[0],
+                TestNetColors[1],
+                MainNetColors[1],
+              ]}
             />
           )}
         </IconButton>

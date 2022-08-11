@@ -1,6 +1,10 @@
 import React, { useEffect, useState } from 'react'
 
-import { getExtensionAccounts, Setting } from '../../../_general/lib/Storage'
+import {
+  getActiveAccountV2,
+  getExtensionAccounts,
+  Setting,
+} from '../../../_general/lib/Storage'
 import { getNetworkTypeByAddress } from '../../../_general/lib/Symbol/Config'
 import { ExtensionAccount } from '../../../_general/model/ExtensionAccount'
 import AccountList from './AccountList'
@@ -15,11 +19,16 @@ const Options: React.VFC<Props> = ({ reload, update, setting }) => {
 
   useEffect(() => {
     getExtensionAccounts().then((data) => {
-      console.log(setting.networkType)
-      const accs = data.filter(
+      const accs: ExtensionAccount[] = []
+      getActiveAccountV2(setting.networkType).then((acc) => {
+        accs.push(acc)
+      })
+      const tmp = data.filter(
         (acc) => getNetworkTypeByAddress(acc.address) === setting.networkType
       )
-      console.log({ accs })
+
+      accs.push(...tmp)
+
       setAccounts(accs)
     })
   }, [setting.networkType, update])

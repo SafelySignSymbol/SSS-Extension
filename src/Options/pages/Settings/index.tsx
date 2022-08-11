@@ -66,6 +66,17 @@ const langs = [
   // },
 ]
 
+const networks = [
+  {
+    name: 'TEST NET',
+    value: NetworkType.TEST_NET,
+  },
+  {
+    name: 'MAIN NET',
+    value: NetworkType.MAIN_NET,
+  },
+]
+
 const Options: React.VFC<Props> = ({ reload, update, setting, setSetting }) => {
   const [history, setHistory] = useState<SignedTransaction[]>([])
 
@@ -119,12 +130,12 @@ const Options: React.VFC<Props> = ({ reload, update, setting, setSetting }) => {
     }
   }
 
-  const changeNet = () => {
-    if (setting.networkType === NetworkType.MAIN_NET) {
-      changeNetwork(NetworkType.TEST_NET)
-    } else {
-      changeNetwork(NetworkType.MAIN_NET)
-    }
+  const changeNet = (val: NetworkType) => {
+    changeNetwork(
+      val === NetworkType.MAIN_NET ? NetworkType.MAIN_NET : NetworkType.TEST_NET
+    ).then(() => {
+      reload()
+    })
   }
 
   return (
@@ -138,22 +149,34 @@ const Options: React.VFC<Props> = ({ reload, update, setting, setSetting }) => {
           <Button text={t('setting_sign_history_btn')} onClick={save} />
         </Center>
       </Wrapper>
+
       <Wrapper>
         <Column>
-          <Typography text="ネットワーク変更" variant="h5" />
+          <Typography text={t('setting_change_network')} variant="h5" />
           <Typography
-            text={`ネットワークを変更する 現在 ${
-              setting.networkType === 152
-                ? NetworkType.TEST_NET
-                : NetworkType.MAIN_NET
-            }`}
+            text={t('setting_change_network_e')}
             variant="subtitle1"
           />
         </Column>
         <Center>
-          <Button text="change net type" onClick={changeNet} />
+          <FormControl sx={{ width: 160 }}>
+            <InputLabel id="demo-multiple-name-label">Network</InputLabel>
+            <Select
+              labelId="demo-multiple-name-label"
+              id="demo-multiple-name"
+              value={setting.networkType}
+              onChange={(e) => changeNet(e.target.value as NetworkType)}
+              input={<OutlinedInput label="Name" />}>
+              {networks.map((n) => (
+                <MenuItem key={n.name} value={n.value}>
+                  {n.name}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
         </Center>
       </Wrapper>
+
       <Wrapper>
         <Column>
           <Typography text={t('setting_change_langage')} variant="h5" />

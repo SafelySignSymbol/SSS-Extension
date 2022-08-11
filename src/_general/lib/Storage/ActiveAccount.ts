@@ -1,7 +1,9 @@
+import { getExtensionAccounts } from './ExtensionAccount'
 import { NetworkType } from 'symbol-sdk'
 import { getStorage, getExtensionAccount, setStorage } from '.'
 import { ExtensionAccount } from '../../model/ExtensionAccount'
 import { ActiveAccount } from '../../model/ActiveAccount'
+import { resolve } from 'path'
 
 export const getActiveAccount = (): Promise<ExtensionAccount> => {
   return new Promise((resolve) => {
@@ -16,6 +18,20 @@ export const setActiveAccount = (arrayNum: number) => {
     getExtensionAccount(arrayNum).then((acc) => {
       setStorage({ activeAccount: acc })
       resolve({})
+    })
+  })
+}
+
+export const getAccountIndexByAddress = (addr: string): Promise<number> => {
+  let index = 0
+  return new Promise((resolve) => {
+    getExtensionAccounts().then((accs) => {
+      accs.forEach((a, i) => {
+        if (a.address === addr) {
+          index = i
+        }
+      })
+      resolve(index)
     })
   })
 }
@@ -46,12 +62,18 @@ export const setActiveAccountV2 = (arrayNum: number, network: NetworkType) => {
       const activeAccounts: ActiveAccount[] = (data as ActiveAccount[]).filter(
         (a) => a.net_type !== network
       )
+
+      console.log({ activeAccounts })
       getExtensionAccount(arrayNum).then((acc) => {
         const newAccount = {
           account: acc,
           net_type: network,
         }
+
         activeAccounts.push(newAccount)
+        setStorage({
+          activeAccounts: activeAccounts,
+        })
         resolve({})
       })
     })

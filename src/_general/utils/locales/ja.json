@@ -19,6 +19,8 @@
   "setting_sign_history_btn": "ダウンロード",
   "setting_change_langage": "言語設定",
   "setting_change_langage_e": "SSS上で表示されるテキストの言語を変更する",
+  "setting_change_network": "ネットワーク設定",
+  "setting_change_network_e": "SSSで有効化するネットワークを変更する",
   "setting_delete": "設定のリセット",
   "setting_delete_domain": "すべてのアプリケーションとの連携を解除する",
   "setting_delete_account": "すべてのアカウントの登録を解除する",

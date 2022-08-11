@@ -27,7 +27,6 @@ import Footer from './components/Footer'
 export type Page = 'SETTING' | 'ALLOW' | 'HOME' | 'ACCOUNTS' | 'HISTORY'
 export type Select = 'SETTING' | 'ACCOUNT' | 'NONE'
 
-
 i18n.use(initReactI18next).init({
   debug: true,
   resources: {
@@ -55,30 +54,36 @@ const Options: React.VFC = () => {
 
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
 
-  useEffect(() => {
-    // getExtensionAccounts().then((acc) => {
-    //   if (acc.length === 0) setState(1)
-    // })
+  // useEffect(() => {
+  //   // getExtensionAccounts().then((acc) => {
+  //   //   if (acc.length === 0) setState(1)
+  //   // })
 
+  //   getSetting().then((s) => {
+  //     const lang = (() => {
+  //       if (s.lang === 'INIT') return window.navigator.language.toUpperCase()
+  //       // if (s.lang.toUpperCase() === 'KR') return 'KO'
+  //       return s.lang.toUpperCase()
+  //     })()
+  //     if (s.lang !== lang) {
+  //       const st = s
+  //       s.lang = lang
+  //       setPageSetting(st)
+  //       changeLang(lang)
+  //       reload()
+  //       i18n.changeLanguage(lang)
+  //     } else if (s !== pageSetting) {
+  //       setPageSetting(s)
+  //     }
+  //   })
+  // }, [pageSetting])
+
+  useEffect(() => {
     getSetting().then((s) => {
-      const lang = (() => {
-        if (s.lang === 'INIT') return window.navigator.language.toUpperCase()
-        // if (s.lang.toUpperCase() === 'KR') return 'KO'
-        return s.lang.toUpperCase()
-      })()
-      if (s.lang !== lang) {
-        const st = s
-        s.lang = lang
-        setPageSetting(st)
-        changeLang(lang)
-        reload()
-        console.log({lang})
-        i18n.changeLanguage(lang)
-      } else if (s !== pageSetting) {
-        setPageSetting(s)
-      }
+      i18n.changeLanguage(s.lang)
+      setPageSetting(s)
     })
-  }, [pageSetting, update])
+  }, [update])
 
   const reload = () => {
     setUpdate(new Date())
@@ -109,9 +114,7 @@ const Options: React.VFC = () => {
   }
 
   const handleOpen = (event: React.MouseEvent<HTMLButtonElement>) => {
-    // setState(1)
     setAnchorEl(event.currentTarget)
-    reload()
   }
 
   const handleClose = (select: Select) => {
@@ -126,20 +129,20 @@ const Options: React.VFC = () => {
   }
 
   return (
-      <Root>
-        <Header
-          page={page}
-          setPage={setPage}
-          handleOpen={handleOpen}
-          handleClose={handleClose}
-          anchorEl={anchorEl}
-          setting={pageSetting}
-          update={update}
-          />
-        <AccountModal state={state} setState={setState} reload={reload} />
-        <Contents>{getBody()}</Contents>
-        <Footer />
-      </Root>
+    <Root>
+      <Header
+        page={page}
+        setPage={setPage}
+        handleOpen={handleOpen}
+        handleClose={handleClose}
+        anchorEl={anchorEl}
+        setting={pageSetting}
+        update={update}
+      />
+      <AccountModal state={state} setState={setState} reload={reload} />
+      <Contents>{getBody()}</Contents>
+      <Footer />
+    </Root>
   )
 }
 

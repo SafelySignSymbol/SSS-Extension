@@ -16,6 +16,8 @@ import {
   getActiveAccountV2,
   Setting,
 } from '../../../_general/lib/Storage'
+import { getNetworkTypeByAddress } from '../../../_general/lib/Symbol/Config'
+import { NetworkType } from 'symbol-sdk'
 
 export type Props = {
   extensionAccounts: ExtensionAccount[]
@@ -44,9 +46,9 @@ const Component: React.VFC<Props> = ({
   return (
     <Root>
       {extensionAccounts.map((acc, i) => {
-        const net_type = acc.address.charAt(0) === 'T' ? 'TEST NET' : 'MAIN NET'
+        const net_type = getNetworkTypeByAddress(acc.address)
         const color: string = (() => {
-          if (net_type === 'TEST NET') {
+          if (net_type === NetworkType.TEST_NET) {
             return 'black'
           } else {
             return Color.sky
@@ -65,7 +67,12 @@ const Component: React.VFC<Props> = ({
               </IsActive>
               <div>
                 <SChip label={net_type} clr={color} />
-                <AccountMenu index={i} reload={reload} setting={setting} />
+                <AccountMenu
+                  index={i}
+                  address={acc.address}
+                  reload={reload}
+                  setting={setting}
+                />
               </div>
             </Name>
             <Flex>
