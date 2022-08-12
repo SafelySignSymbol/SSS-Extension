@@ -28,7 +28,7 @@ export type Props = {
   address: Address
 }
 
-const values = [10, 25, 50, 100]
+const values = [10, 25, 50]
 
 const Component: React.VFC<Props> = ({ address }) => {
   const [t] = useTranslation()

@@ -1,20 +1,13 @@
 import React, { useEffect, useState } from 'react'
 import styled from '@emotion/styled'
 
-import { Grid } from '@mui/material'
-
 import Spacer from '../../../_general/components/Spacer'
 
-import {
-  // getActiveAccount,
-  getActiveAccountV2,
-  Setting,
-} from '../../../_general/lib/Storage'
+import { getActiveAccountV2, Setting } from '../../../_general/lib/Storage'
 import { ExtensionAccount } from '../../../_general/model/ExtensionAccount'
 import Mosaics from './Mosaics'
 import { Address } from 'symbol-sdk'
 import ActiveAccount from './ActiveAccount'
-import TransactionHistory from './TransactionHistory'
 
 interface Props {
   reload: () => void
@@ -26,9 +19,6 @@ const Options: React.VFC<Props> = ({ reload, update, setting }) => {
   const [account, setAccount] = useState<ExtensionAccount | null>(null)
 
   useEffect(() => {
-    // getActive Account().then((acc) => {
-    //   setAccount(acc)
-    // })
     getActiveAccountV2(setting.networkType).then((acc) => {
       console.log({ setting: setting.networkType })
       setAccount(acc)
@@ -43,23 +33,12 @@ const Options: React.VFC<Props> = ({ reload, update, setting }) => {
 
   return (
     <Wrapper>
-      <Grid container>
-        <Grid item xs={4}>
-          <Spacer margin="32px 8px">
-            <ActiveAccount address={adr} />
-          </Spacer>
-          <Spacer margin="32px 8px">
-            <Mosaics address={adr} />
-          </Spacer>
-        </Grid>
-        <Grid item xs={8}>
-          <Spacer margin="32px 8px">
-            <Wrap>
-              <TransactionHistory address={adr} />
-            </Wrap>
-          </Spacer>
-        </Grid>
-      </Grid>
+      <Spacer margin="32px 8px">
+        <ActiveAccount address={adr} />
+      </Spacer>
+      <Spacer margin="32px 8px">
+        <Mosaics address={adr} />
+      </Spacer>
     </Wrapper>
   )
 }
@@ -67,10 +46,6 @@ const Options: React.VFC<Props> = ({ reload, update, setting }) => {
 export default Options
 
 const Wrapper = styled('div')({
-  margin: '16px 80px',
-  width: 'calc(100vw - 64px)',
-})
-
-const Wrap = styled('div')({
-  height: 'calc(100vh - 176px)',
+  margin: '16px 10vw',
+  width: '80vw',
 })

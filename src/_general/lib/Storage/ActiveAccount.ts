@@ -3,7 +3,6 @@ import { NetworkType } from 'symbol-sdk'
 import { getStorage, getExtensionAccount, setStorage } from '.'
 import { ExtensionAccount } from '../../model/ExtensionAccount'
 import { ActiveAccount } from '../../model/ActiveAccount'
-import { resolve } from 'path'
 
 export const getActiveAccount = (): Promise<ExtensionAccount> => {
   return new Promise((resolve) => {

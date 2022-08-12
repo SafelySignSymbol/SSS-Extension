@@ -46,14 +46,6 @@ const Component: React.VFC<Props> = ({
   return (
     <Root>
       {extensionAccounts.map((acc, i) => {
-        const net_type = getNetworkTypeByAddress(acc.address)
-        const color: string = (() => {
-          if (net_type === NetworkType.TEST_NET) {
-            return 'black'
-          } else {
-            return Color.sky
-          }
-        })()
         const copy = (value: string) => {
           navigator.clipboard.writeText(value)
         }
@@ -62,18 +54,8 @@ const Component: React.VFC<Props> = ({
         return (
           <Wrapper>
             <Name>
-              <IsActive isActive={acc.address === activeAccount}>
-                <Typography text={name} variant="h5" />
-              </IsActive>
-              <div>
-                <SChip label={net_type} clr={color} />
-                <AccountMenu
-                  index={i}
-                  address={acc.address}
-                  reload={reload}
-                  setting={setting}
-                />
-              </div>
+              <Typography text={name} variant="h5" />
+              <AccountMenu account={acc} reload={reload} setting={setting} />
             </Name>
             <Flex>
               <div>
@@ -130,18 +112,3 @@ const Name = styled('div')({
   display: 'flex',
   justifyContent: 'space-between',
 })
-
-const SChip = styled(Chip)((p: { clr: string }) => ({
-  margin: '0px 16px',
-  color: p.clr,
-}))
-
-const IsActive = styled('span')((p: { isActive: boolean }) => ({
-  display: 'flex',
-  ':after': {
-    content: '"*"',
-    fontSize: '32px',
-    marginLeft: '16px',
-    color: `${p.isActive ? Color.sky : 'white'}`,
-  },
-}))

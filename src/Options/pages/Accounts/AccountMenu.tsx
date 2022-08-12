@@ -18,15 +18,16 @@ import {
 import { IconContext } from 'react-icons'
 import { RiSettings2Fill } from 'react-icons/ri'
 import { useTranslation } from 'react-i18next'
+import { decriptPrivateKey } from '../../../_general/lib/Crypto/core'
+import { ExtensionAccount } from '../../../_general/model/ExtensionAccount'
 
 export type Props = {
-  index: number
-  address: string
+  account: ExtensionAccount
   reload: () => void
   setting: Setting
 }
 
-const Component: React.VFC<Props> = ({ index, address, reload, setting }) => {
+const Component: React.VFC<Props> = ({ account, reload, setting }) => {
   const [message, setMessage] = useState('')
   const [openSB, setOpenSB] = useState(false)
   const [snackbarStatus, setSnackbarStatus] = useState<AlertColor>('success')
@@ -36,7 +37,8 @@ const Component: React.VFC<Props> = ({ index, address, reload, setting }) => {
   const open = Boolean(anchorEl)
 
   const onClickActive = () => {
-    getAccountIndexByAddress(address).then((index) => {
+    getAccountIndexByAddress(account.address).then((index) => {
+      console.log('i', index)
       setActiveAccountV2(index, setting.networkType)
         .then(() => {
           setSnackbarStatus('success')
@@ -51,21 +53,33 @@ const Component: React.VFC<Props> = ({ index, address, reload, setting }) => {
   }
 
   const onClickDelete = () => {
-    deleteExtensionAccount(index, setting.networkType)
-      .then(() => {
-        setSnackbarStatus('success')
-        setMessage(t('accounts_success_remove_account'))
-        setOpenSB(true)
-      })
-      .catch(() => {
-        setSnackbarStatus('error')
-        setMessage(t('accounts_failed_remove_account'))
-        setOpenSB(true)
-      })
-      .finally(() => {
-        reload()
-        handleClose()
-      })
+    getAccountIndexByAddress(account.address).then((index) => {
+      deleteExtensionAccount(index, setting.networkType)
+        .then(() => {
+          setSnackbarStatus('success')
+          setMessage(t('accounts_success_remove_account'))
+          setOpenSB(true)
+        })
+        .catch(() => {
+          setSnackbarStatus('error')
+          setMessage(t('accounts_failed_remove_account'))
+          setOpenSB(true)
+        })
+        .finally(() => {
+          reload()
+          handleClose()
+        })
+    })
+  }
+
+  const showPrikey = () => {
+    const pk = decriptPrivateKey(
+      Array.from(String(account.seed)),
+      account.encriptedPrivateKey,
+      'test'
+    )
+
+    console.log('PK', pk)
   }
 
   const handleOpen = (event: {
@@ -95,6 +109,7 @@ const Component: React.VFC<Props> = ({ index, address, reload, setting }) => {
         <MenuItem onClick={onClickDelete}>
           {t('accounts_remove_account')}
         </MenuItem>
+        <MenuItem onClick={showPrikey}>秘密鍵表示</MenuItem>
       </Menu>
       <Snackbar open={openSB} autoHideDuration={6000} onClose={closeSB}>
         <Alert
