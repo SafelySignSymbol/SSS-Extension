@@ -72,16 +72,6 @@ const Component: React.VFC<Props> = ({ account, reload, setting }) => {
     })
   }
 
-  const showPrikey = () => {
-    const pk = decriptPrivateKey(
-      Array.from(String(account.seed)),
-      account.encriptedPrivateKey,
-      'test'
-    )
-
-    console.log('PK', pk)
-  }
-
   const handleOpen = (event: {
     currentTarget: React.SetStateAction<HTMLElement | null>
   }) => {
@@ -109,7 +99,6 @@ const Component: React.VFC<Props> = ({ account, reload, setting }) => {
         <MenuItem onClick={onClickDelete}>
           {t('accounts_remove_account')}
         </MenuItem>
-        <MenuItem onClick={showPrikey}>秘密鍵表示</MenuItem>
       </Menu>
       <Snackbar open={openSB} autoHideDuration={6000} onClose={closeSB}>
         <Alert

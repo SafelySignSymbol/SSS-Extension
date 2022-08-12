@@ -54,6 +54,7 @@ const Options: React.VFC<Props> = ({ reload, update, setting }) => {
         reload={reload}
         setting={setting}
       />
+      <Nettype>TEST NET</Nettype>
     </Root>
   )
 }
@@ -63,4 +64,13 @@ export default Options
 const Root = styled('div')({
   display: 'flex',
   flexDirection: 'column',
+})
+
+const Nettype = styled('div')({
+  position: 'absolute',
+  right: '200px',
+  top: '80px',
+  fontSize: '64px',
+  zIndex: '-1',
+  color: 'white',
 })

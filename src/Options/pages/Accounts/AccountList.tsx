@@ -1,23 +1,15 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 
 import styled from '@emotion/styled'
 
 import Typography from '../../../_general/components/Typography'
 
-import Color from '../../../_general/utils/Color'
-
 import { ExtensionAccount } from '../../../_general/model/ExtensionAccount'
-import { Chip, IconButton } from '@mui/material'
+import { IconButton } from '@mui/material'
 import { IconContext } from 'react-icons'
 import { HiOutlineClipboardCopy } from 'react-icons/hi'
 import AccountMenu from './AccountMenu'
-import {
-  // getActiveAccount,
-  getActiveAccountV2,
-  Setting,
-} from '../../../_general/lib/Storage'
-import { getNetworkTypeByAddress } from '../../../_general/lib/Symbol/Config'
-import { NetworkType } from 'symbol-sdk'
+import { Setting } from '../../../_general/lib/Storage'
 
 export type Props = {
   extensionAccounts: ExtensionAccount[]
@@ -30,16 +22,7 @@ const Component: React.VFC<Props> = ({
   reload,
   setting,
 }) => {
-  const [activeAccount, setActiveAccount] = useState<string>('')
-
-  useEffect(() => {
-    // getActive Account().then((acc) => {
-    //   setActiveAccount(acc.address)
-    // })
-    getActiveAccountV2(setting.networkType).then((acc) => {
-      setActiveAccount(acc.address)
-    })
-  }, [extensionAccounts, setting.networkType])
+  useEffect(() => {}, [extensionAccounts, setting.networkType])
 
   if (extensionAccounts.length === 0) return <div></div>
 

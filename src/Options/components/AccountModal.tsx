@@ -274,10 +274,6 @@ const Component: React.VFC<Props> = ({ state, setState, reload }) => {
     setState(state + 1)
   }
 
-  const done = () => {
-    alert('done')
-  }
-
   return (
     <>
       <Modal open={state !== 0} onClose={closeModal}>
