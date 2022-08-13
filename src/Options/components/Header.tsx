@@ -113,9 +113,11 @@ const Component: React.VFC<Props> = ({
         MenuListProps={{
           'aria-labelledby': 'basic-button',
         }}>
-        <MenuItem onClick={() => handleClose('SETTING')}>設定</MenuItem>
+        <MenuItem onClick={() => handleClose('SETTING')}>
+          {t('iconmenu_setting')}
+        </MenuItem>
         <MenuItem onClick={() => handleClose('ACCOUNT')}>
-          アカウント追加
+          {t('iconmenu_account')}
         </MenuItem>
       </Menu>
     </Container>

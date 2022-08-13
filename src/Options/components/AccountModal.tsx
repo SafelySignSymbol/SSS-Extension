@@ -279,7 +279,7 @@ const Component: React.VFC<Props> = ({ state, setState, reload }) => {
       <Modal open={state !== 0} onClose={closeModal}>
         <Wrapper>
           <ModalHeader>
-            <Typography variant="h5" text="アカウント追加" />
+            <Typography variant="h5" text={t('accmodal_signup')} />
             <IconButton size="small" onClick={() => setState(0)}>
               <IconContext.Provider value={{ size: '24px' }}>
                 <IoMdClose style={{ margin: '6px' }} />

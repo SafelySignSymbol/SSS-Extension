@@ -4,6 +4,7 @@ import styled from '@emotion/styled'
 import TextField from '../../_general/components/TextField'
 import PasswordTextField from '../../_general/components/TextField/PasswordTextField'
 import Typography from '../../_general/components/Typography'
+import { useTranslation } from 'react-i18next'
 
 export type Props = {
   setName: Dispatch<string>
@@ -18,10 +19,11 @@ const Component: React.FC<Props> = ({
   setPrivateKey,
   setPassword,
 }) => {
+  const [t] = useTranslation()
   return (
     <Root>
       <Center>
-        <Typography variant="h5" text="アカウント情報を入力" />
+        <Typography variant="h5" text={t('accmodal_import_input')} />
       </Center>
       <TextField label="Name" setText={setName} variant="text" />
       <TextField label="Address" setText={setAddress} variant="text" />

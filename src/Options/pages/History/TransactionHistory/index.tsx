@@ -49,7 +49,7 @@ const Component: React.VFC<Props> = ({ address }) => {
           <Pagination>
             <Margin>
               <IconButton size="small" onClick={back} disabled={pageNum === 1}>
-                <IconContext.Provider value={{ size: '16px' }}>
+                <IconContext.Provider value={{ size: '32px' }}>
                   <MdArrowLeft
                     style={{
                       color:
@@ -68,7 +68,7 @@ const Component: React.VFC<Props> = ({ address }) => {
             </Margin>
             <Margin>
               <IconButton size="small" onClick={next} disabled={isLastPage}>
-                <IconContext.Provider value={{ size: '16px' }}>
+                <IconContext.Provider value={{ size: '32px' }}>
                   <MdArrowRight
                     style={{
                       color: isLastPage ? Color.base_white : Color.base_black,
@@ -107,7 +107,7 @@ const Component: React.VFC<Props> = ({ address }) => {
 export default Component
 
 const Wrapper = styled('div')({
-  padding: '16px',
+  padding: '32px',
   background: 'white',
   maxHeight: 'calc(100% - 32px)',
   overflowY: 'scroll',

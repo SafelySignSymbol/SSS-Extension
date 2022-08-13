@@ -1,11 +1,10 @@
-import React, { Dispatch, useEffect, useState } from 'react'
+import React from 'react'
 import styled from '@emotion/styled'
 
 import Typography from '../../_general/components/Typography'
 
-import TextField, {
-  InactiveTextField,
-} from '../../_general/components/TextField'
+import { InactiveTextField } from '../../_general/components/TextField'
+import { useTranslation } from 'react-i18next'
 export type Props = {
   name: string
   address: string
@@ -13,10 +12,11 @@ export type Props = {
 }
 
 const Component: React.FC<Props> = ({ name, address, password }) => {
+  const [t] = useTranslation()
   return (
     <Root>
       <Center>
-        <Typography variant="h5" text="アカウントを確認" />
+        <Typography variant="h5" text={t('accmodal_check')} />
       </Center>
       <InactiveTextField label="Name" value={name} variant="text" />
       <InactiveTextField label="Address" value={address} variant="text" />

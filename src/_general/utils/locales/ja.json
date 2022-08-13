@@ -1,6 +1,13 @@
 {
   "accmodal_signup": "アカウントを追加",
   "accmodal_submit": "登録",
+  "accmodal_import": "秘密鍵をインポート",
+  "accmodal_create_testnet": "新規テストネットアカウント",
+  "accmodal_create_mainnet": "新規メインネットアカウント",
+  "accmodal_hardware": "ハードウェアウォレット",
+  "accmodal_import_input": "アカウント情報を入力",
+  "accmodal_create_generated_addr": "生成されたアドレス",
+  "accmodal_check": "アカウントを確認",
   "accmodal_wrong_address_format": "アドレスのフォーマットが間違っています",
   "accmodal_wrong_prikey_format": "秘密鍵のフォーマットが間違っています",
   "accmodal_wrong_keypair": "秘密鍵とアドレスのペアが一致しません",
@@ -33,5 +40,7 @@
   "alert_notfound_tx": "トランザクションがセットされていません",
   "alert_request_sign": "SSSへ署名が要求されました",
   "alert_succsess_sign": "トランザクションの署名に成功しました",
-  "alert_failed_sign": "トランザクションの署名に失敗しました"
+  "alert_failed_sign": "トランザクションの署名に失敗しました",
+  "iconmenu_setting": "設定",
+  "iconmenu_account": "アカウント追加"
 }

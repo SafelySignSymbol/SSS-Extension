@@ -5,6 +5,7 @@ import { ListItemButton, Divider } from '@mui/material'
 import Typography from '../../_general/components/Typography'
 import { Method } from './AccountModal'
 import { NetworkType } from 'symbol-sdk'
+import { useTranslation } from 'react-i18next'
 
 export type Props = {
   setMethod: Dispatch<Method>
@@ -13,6 +14,7 @@ export type Props = {
 }
 
 const Component: React.FC<Props> = ({ setMethod, setState, setNettype }) => {
+  const [t] = useTranslation()
   const handleClick = (method: Method) => {
     console.log('handleClick')
     setState(2)
@@ -22,7 +24,7 @@ const Component: React.FC<Props> = ({ setMethod, setState, setNettype }) => {
   return (
     <Root>
       <ListItemButton onClick={() => handleClick('IMPORT')}>
-        <Typography variant="h5" text="秘密鍵をインポート" />
+        <Typography variant="h5" text={t('accmodal_import')} />
       </ListItemButton>
       <Divider />
       <ListItemButton
@@ -30,7 +32,7 @@ const Component: React.FC<Props> = ({ setMethod, setState, setNettype }) => {
           handleClick('CREATE')
           setNettype(NetworkType.TEST_NET)
         }}>
-        <Typography variant="h5" text="新規テストネットアカウント" />
+        <Typography variant="h5" text={t('accmodal_create_testnet')} />
       </ListItemButton>
       <Divider />
       <ListItemButton
@@ -38,11 +40,11 @@ const Component: React.FC<Props> = ({ setMethod, setState, setNettype }) => {
           handleClick('CREATE')
           setNettype(NetworkType.MAIN_NET)
         }}>
-        <Typography variant="h5" text="新規メインネットアカウント" />
+        <Typography variant="h5" text={t('accmodal_create_mainnet')} />
       </ListItemButton>
       <Divider />
       <ListItemButton disabled onClick={() => handleClick('HARDWARE')}>
-        <Typography variant="h5" text="ハードウェアウォレット" />
+        <Typography variant="h5" text={t('accmodal_hardware')} />
       </ListItemButton>
       <Divider />
     </Root>
