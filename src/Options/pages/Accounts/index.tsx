@@ -1,8 +1,8 @@
 import styled from '@emotion/styled'
 import React, { useEffect, useState } from 'react'
+import { NetworkType } from 'symbol-sdk'
 
 import {
-  getActiveAccount,
   getActiveAccountV2,
   getExtensionAccounts,
   Setting,
@@ -54,7 +54,9 @@ const Options: React.VFC<Props> = ({ reload, update, setting }) => {
         reload={reload}
         setting={setting}
       />
-      <Nettype>TEST NET</Nettype>
+      <Nettype>
+        {setting.networkType === NetworkType.TEST_NET ? 'TEST NET' : 'MAIN NET'}
+      </Nettype>
     </Root>
   )
 }
@@ -68,9 +70,10 @@ const Root = styled('div')({
 
 const Nettype = styled('div')({
   position: 'absolute',
-  right: '200px',
-  top: '80px',
-  fontSize: '64px',
+  right: '100px',
+  top: '100px',
+  fontSize: '96px',
+  fontWeight: '900',
   zIndex: '-1',
   color: 'white',
 })

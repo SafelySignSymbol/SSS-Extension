@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import styled from '@emotion/styled'
-import Typography from '../../../../_general/components/Typography'
 import { NetworkType, UInt64 } from 'symbol-sdk'
 import { getTimeStamp } from '../../../../_general/lib/Symbol/SymbolService'
+import { getExplorerLinkFromHash } from '../../../../_general/lib/Symbol/Config'
+import Color from '../../../../_general/utils/Color'
+import { Link } from '@mui/material'
 
 export type Props = {
   type: string
@@ -24,15 +26,15 @@ const Component: React.VFC<Props> = ({ type, hash, netType, height }) => {
   }, [height, netType])
 
   return (
-    <Column>
+    <Wrap>
+      <SLink href={getExplorerLinkFromHash(netType, hash)} target="_brank">
+        {hash}
+      </SLink>
       <Right>
         <Text>{type}</Text>
+        <Time>{time}</Time>
       </Right>
-      <Wrap>
-        <Typography text={hash} variant="h5" />
-        <Typography text={time} variant="subtitle1" />
-      </Wrap>
-    </Column>
+    </Wrap>
   )
 }
 
@@ -44,25 +46,30 @@ export default Component
 
 const Wrap = styled('div')({
   display: 'flex',
-  justifyContent: 'space-between',
   alignItems: 'center',
   margin: '8px',
-})
-
-const Column = styled('div')({
-  display: 'flex',
-  flexDirection: 'column',
-  justifyContent: 'center',
-  margin: '2px',
 })
 
 const Right = styled('div')({
   display: 'flex',
   justifyContent: 'end',
+  alignItems: 'center',
+  width: '100%',
   margin: '8px',
   marginBottom: '0px',
 })
 
-const Text = styled('span')({
-  fontSize: '20px',
+const Text = styled('div')({
+  fontSize: '16px',
+})
+const Time = styled('div')({
+  fontSize: '16px',
+  width: '140px',
+  textAlign: 'end',
+})
+
+const SLink = styled(Link)({
+  fontSize: '16px',
+  textDecoration: 'none',
+  color: Color.base_black,
 })

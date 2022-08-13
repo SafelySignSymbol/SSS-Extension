@@ -11,6 +11,7 @@ import {
   MosaicInfo,
   NetworkType,
   Order,
+  Page,
   RepositoryFactoryHttp,
   Transaction,
   TransactionGroup,
@@ -103,7 +104,7 @@ export const getTransactions = (
   address: Address,
   pageNum: number,
   pageSize: number = 50
-): Promise<Transaction[]> => {
+): Promise<Page<Transaction>> => {
   const net_type = getNetworkTypeByAddress(address.plain())
 
   const NODE_URL = getNodeUrl(net_type)
@@ -121,7 +122,7 @@ export const getTransactions = (
       .search(searchCriteria)
       .toPromise()
       .then((txs) => {
-        resolve(txs.data)
+        resolve(txs)
       })
       .catch(() => {
         reject()

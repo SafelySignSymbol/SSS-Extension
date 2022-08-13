@@ -13,15 +13,11 @@ import itJson from '../_general/utils/locales/it.json'
 import Home from './pages/Home'
 import Header from './components/Header'
 import AccountModal from './components/AccountModal'
-import { getExtensionAccounts } from '../_general/lib/Storage'
 import Settings from './pages/Settings'
 import Allow from './pages/Allow'
+import History from './pages/History'
 import Accounts from './pages/Accounts'
-import {
-  Setting,
-  getSetting,
-  changeLang,
-} from '../_general/lib/Storage/Setting'
+import { Setting, getSetting } from '../_general/lib/Storage/Setting'
 import Footer from './components/Footer'
 
 export type Page = 'SETTING' | 'ALLOW' | 'HOME' | 'ACCOUNTS' | 'HISTORY'
@@ -53,30 +49,6 @@ const Options: React.VFC = () => {
   const [pageSetting, setPageSetting] = useState<Setting>({} as Setting)
 
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
-
-  // useEffect(() => {
-  //   // getExtensionAccounts().then((acc) => {
-  //   //   if (acc.length === 0) setState(1)
-  //   // })
-
-  //   getSetting().then((s) => {
-  //     const lang = (() => {
-  //       if (s.lang === 'INIT') return window.navigator.language.toUpperCase()
-  //       // if (s.lang.toUpperCase() === 'KR') return 'KO'
-  //       return s.lang.toUpperCase()
-  //     })()
-  //     if (s.lang !== lang) {
-  //       const st = s
-  //       s.lang = lang
-  //       setPageSetting(st)
-  //       changeLang(lang)
-  //       reload()
-  //       i18n.changeLanguage(lang)
-  //     } else if (s !== pageSetting) {
-  //       setPageSetting(s)
-  //     }
-  //   })
-  // }, [pageSetting])
 
   useEffect(() => {
     getSetting().then((s) => {
@@ -110,6 +82,9 @@ const Options: React.VFC = () => {
 
     if (page === 'HOME') {
       return <Home reload={reload} update={update} setting={pageSetting} />
+    }
+    if (page === 'HISTORY') {
+      return <History reload={reload} update={update} setting={pageSetting} />
     }
   }
 

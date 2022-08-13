@@ -5,70 +5,79 @@ import { Address, Transaction } from 'symbol-sdk'
 import { getTransactions } from '../../../../_general/lib/Symbol/SymbolService'
 import { getTransactionType } from '../../../../_general/lib/TransactionType'
 import Item from './Item'
-import {
-  Divider,
-  FormControl,
-  InputLabel,
-  MenuItem,
-  OutlinedInput,
-  Select,
-} from '@mui/material'
+import { Divider, IconButton } from '@mui/material'
 import Spacer from '../../../../_general/components/Spacer'
 import Typography from '../../../../_general/components/Typography'
 import Color from '../../../../_general/utils/Color'
-import {
-  changeSize,
-  getSetting,
-  Setting,
-} from '../../../../_general/lib/Storage'
 
 import { useTranslation } from 'react-i18next'
+import { IconContext } from 'react-icons'
+import { MdArrowRight, MdArrowLeft } from 'react-icons/md'
 
 export type Props = {
   address: Address
 }
 
-const values = [10, 25, 50]
-
 const Component: React.VFC<Props> = ({ address }) => {
   const [t] = useTranslation()
-  const [setting, setSetting] = useState<Setting>({} as Setting)
 
   const [transactions, setTransactions] = useState<Transaction[]>([])
+  const [isLastPage, setIsLastPage] = useState(false)
+  const [pageNum, setPageNum] = useState(1)
   useEffect(() => {
-    getTransactions(address, 1, setting.transactionSize).then((txs) => {
-      setTransactions(txs)
+    getTransactions(address, pageNum, 10).then((txs) => {
+      setTransactions(txs.data)
+      setIsLastPage(txs.isLastPage)
     })
-    getSetting().then((data) => {
-      setSetting(data)
-    })
-  }, [address, setting.transactionSize])
+  }, [address, pageNum])
+
+  const back = () => {
+    setPageNum((prev) => prev - 1)
+  }
+  const next = () => {
+    setPageNum((prev) => prev + 1)
+  }
   return (
     <Wrapper>
-      <Spacer margin="0px 32px 16px">
+      <Spacer MBottom="16px">
         <Title>
-          <FormControl sx={{ width: 160 }}>
-            <InputLabel id="demo-multiple-name-label">Display</InputLabel>
-            <Select
-              labelId="demo-multiple-name-label"
-              id="demo-multiple-name"
-              value={setting.transactionSize}
-              onChange={(e) => {
-                changeSize(Number(e.target.value)).then((data) => {
-                  setSetting(data)
-                })
-              }}
-              input={<OutlinedInput label="Display" />}>
-              {values.map((l) => (
-                <MenuItem value={l}>{l}</MenuItem>
-              ))}
-            </Select>
-          </FormControl>
           <Typography
             text={t('recent_transaction')}
             variant="h5"
             color={Color.grayscale}
           />
+          <Pagination>
+            <Margin>
+              <IconButton size="small" onClick={back} disabled={pageNum === 1}>
+                <IconContext.Provider value={{ size: '32px' }}>
+                  <MdArrowLeft
+                    style={{
+                      color:
+                        pageNum === 1 ? Color.base_white : Color.base_black,
+                    }}
+                  />
+                </IconContext.Provider>
+              </IconButton>
+            </Margin>
+            <Margin>
+              <Typography
+                text={String(pageNum)}
+                variant="h6"
+                color={Color.base_black}
+              />
+            </Margin>
+            <Margin>
+              <IconButton size="small" onClick={next} disabled={isLastPage}>
+                <IconContext.Provider value={{ size: '32px' }}>
+                  <MdArrowRight
+                    style={{
+                      color: isLastPage ? Color.base_white : Color.base_black,
+                    }}
+                  />
+                </IconContext.Provider>
+              </IconButton>
+            </Margin>
+          </Pagination>
         </Title>
       </Spacer>
       <Divider />
@@ -121,4 +130,13 @@ const Wrapper = styled('div')({
 const Title = styled('div')({
   display: 'flex',
   justifyContent: 'space-between',
+})
+
+const Pagination = styled('div')({
+  display: 'flex',
+  alignItems: 'center',
+})
+
+const Margin = styled('div')({
+  margin: '0px 8px',
 })

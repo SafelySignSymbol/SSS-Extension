@@ -22,7 +22,6 @@ import { MdVisibility } from 'react-icons/md'
 import { Setting } from '../../../_general/lib/Storage'
 import { Account, NetworkType } from 'symbol-sdk'
 import { getNetworkTypeByAddress } from '../../../_general/lib/Symbol/Config'
-import TextField from '../../../_general/components/TextField'
 import Button from '../../../_general/components/Button'
 import { decriptPrivateKey } from '../../../_general/lib/Crypto/core'
 import PasswordTextField from '../../../_general/components/TextField/PasswordTextField'
@@ -33,10 +32,12 @@ export type Props = {
   reload: () => void
 }
 
-const Component: React.VFC<Props> = ({ activeAccount, reload, setting }) => {
+const huse = '****************************************************************'
+
+const Component: React.VFC<Props> = ({ activeAccount }) => {
   const [open, setOpen] = useState(false)
   const [pass, setPass] = useState('')
-  const [prikey, setPrikey] = useState('**********')
+  const [prikey, setPrikey] = useState(huse)
 
   const [message, setMessage] = useState('')
   const [openSB, setOpenSB] = useState(false)
@@ -45,16 +46,6 @@ const Component: React.VFC<Props> = ({ activeAccount, reload, setting }) => {
   const copy = (value: string) => {
     navigator.clipboard.writeText(value)
   }
-
-  const net_type = getNetworkTypeByAddress(activeAccount.address)
-
-  const color: string = (() => {
-    if (net_type === NetworkType.TEST_NET) {
-      return 'black'
-    } else {
-      return Color.sky
-    }
-  })()
 
   const showPrikey = () => {
     try {
@@ -68,7 +59,7 @@ const Component: React.VFC<Props> = ({ activeAccount, reload, setting }) => {
         getNetworkTypeByAddress(activeAccount.address)
       )
 
-      if (!open && acc.address.plain() === activeAccount.address) {
+      if (open && acc.address.plain() === activeAccount.address) {
         setPrikey(pk)
         setSnackbarStatus('success')
         setMessage('秘密鍵を表示します')
@@ -92,14 +83,6 @@ const Component: React.VFC<Props> = ({ activeAccount, reload, setting }) => {
       <Wrapper>
         <Name>
           <Typography text={activeAccount.name} variant="h5" />
-          <div>
-            <SChip
-              label={
-                net_type === NetworkType.TEST_NET ? 'TEST NET' : 'MAIN NET'
-              }
-              clr={color}
-            />
-          </div>
         </Name>
         <Flex>
           <div>
@@ -186,11 +169,6 @@ const Name = styled('div')({
   display: 'flex',
   justifyContent: 'space-between',
 })
-
-const SChip = styled(Chip)((p: { clr: string }) => ({
-  margin: '0px 16px',
-  color: p.clr,
-}))
 
 const ModalWrapper = styled(Paper)({
   position: 'absolute',
