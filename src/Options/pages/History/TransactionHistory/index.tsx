@@ -49,7 +49,7 @@ const Component: React.VFC<Props> = ({ address }) => {
           <Pagination>
             <Margin>
               <IconButton size="small" onClick={back} disabled={pageNum === 1}>
-                <IconContext.Provider value={{ size: '32px' }}>
+                <IconContext.Provider value={{ size: '16px' }}>
                   <MdArrowLeft
                     style={{
                       color:
@@ -62,13 +62,13 @@ const Component: React.VFC<Props> = ({ address }) => {
             <Margin>
               <Typography
                 text={String(pageNum)}
-                variant="h6"
+                variant="subtitle2"
                 color={Color.base_black}
               />
             </Margin>
             <Margin>
               <IconButton size="small" onClick={next} disabled={isLastPage}>
-                <IconContext.Provider value={{ size: '32px' }}>
+                <IconContext.Provider value={{ size: '16px' }}>
                   <MdArrowRight
                     style={{
                       color: isLastPage ? Color.base_white : Color.base_black,
@@ -107,9 +107,9 @@ const Component: React.VFC<Props> = ({ address }) => {
 export default Component
 
 const Wrapper = styled('div')({
-  padding: '32px',
+  padding: '16px',
   background: 'white',
-  maxHeight: 'calc(100% - 64px)',
+  maxHeight: 'calc(100% - 32px)',
   overflowY: 'scroll',
   '::-webkit-scrollbar-track': {
     background: 'white',
@@ -130,6 +130,7 @@ const Wrapper = styled('div')({
 const Title = styled('div')({
   display: 'flex',
   justifyContent: 'space-between',
+  marginBottom: '16px',
 })
 
 const Pagination = styled('div')({
@@ -138,5 +139,5 @@ const Pagination = styled('div')({
 })
 
 const Margin = styled('div')({
-  margin: '0px 8px',
+  margin: '0px 4px',
 })

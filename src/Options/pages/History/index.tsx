@@ -39,4 +39,5 @@ export default Options
 const Root = styled('div')({
   margin: '32px 10vw',
   width: '80vw',
+  height: 'calc(100%-80px)',
 })

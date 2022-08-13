@@ -44,7 +44,6 @@ const Component: React.VFC<Props> = ({
   )
 
   useEffect(() => {
-    // getActive Account().then((acc) => setExtensionAccount(acc))
     getActiveAccountV2(setting.networkType).then((acc) => {
       setExtensionAccount(acc)
     })

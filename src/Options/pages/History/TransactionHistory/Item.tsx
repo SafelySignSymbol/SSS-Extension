@@ -55,8 +55,6 @@ const Right = styled('div')({
   justifyContent: 'end',
   alignItems: 'center',
   width: '100%',
-  margin: '8px',
-  marginBottom: '0px',
 })
 
 const Text = styled('div')({
