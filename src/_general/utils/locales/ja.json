@@ -42,5 +42,6 @@
   "alert_succsess_sign": "トランザクションの署名に成功しました",
   "alert_failed_sign": "トランザクションの署名に失敗しました",
   "iconmenu_setting": "設定",
-  "iconmenu_account": "アカウント追加"
+  "iconmenu_account": "アカウント追加",
+  "enter_password": "パスワードを入力"
 }

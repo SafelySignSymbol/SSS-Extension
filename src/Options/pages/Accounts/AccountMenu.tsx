@@ -18,7 +18,6 @@ import {
 import { IconContext } from 'react-icons'
 import { RiSettings2Fill } from 'react-icons/ri'
 import { useTranslation } from 'react-i18next'
-import { decriptPrivateKey } from '../../../_general/lib/Crypto/core'
 import { ExtensionAccount } from '../../../_general/model/ExtensionAccount'
 
 export type Props = {

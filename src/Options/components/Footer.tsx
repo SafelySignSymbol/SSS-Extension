@@ -41,6 +41,9 @@ const Component: React.VFC = () => {
             <Link href="https://inatatsu-tatsuhiro.github.io/privacy-policy/">
               Privacy policy
             </Link>
+            <Link href="https://docs.sss-symbol.com/blog/tags/sss-extension">
+              Release notes
+            </Link>
             <Link href="https://forms.gle/NckQuA8QHiSQDBFEA">Contact</Link>
           </LinksWrapper>
         </Wrapper>

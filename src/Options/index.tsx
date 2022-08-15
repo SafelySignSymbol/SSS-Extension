@@ -19,6 +19,7 @@ import History from './pages/History'
 import Accounts from './pages/Accounts'
 import { Setting, getSetting } from '../_general/lib/Storage/Setting'
 import Footer from './components/Footer'
+import { getExtensionAccounts } from '../_general/lib/Storage'
 
 export type Page = 'SETTING' | 'ALLOW' | 'HOME' | 'ACCOUNTS' | 'HISTORY'
 export type Select = 'SETTING' | 'ACCOUNT' | 'NONE'
@@ -52,10 +53,27 @@ const Options: React.VFC = () => {
 
   useEffect(() => {
     getSetting().then((s) => {
-      i18n.changeLanguage(s.lang)
-      setPageSetting(s)
+      if (s.lang === 'INIT') {
+        const l = navigator.language.toUpperCase()
+        i18n.changeLanguage(l)
+        const setting = s
+        setting.lang = l
+        setPageSetting(setting)
+      } else {
+        i18n.changeLanguage(s.lang)
+        console.log({ s })
+        setPageSetting(s)
+      }
     })
   }, [update])
+
+  useEffect(() => {
+    getExtensionAccounts().then((accs) => {
+      if (accs.length === 0) {
+        setState(1)
+      }
+    })
+  }, [])
 
   const reload = () => {
     setUpdate(new Date())

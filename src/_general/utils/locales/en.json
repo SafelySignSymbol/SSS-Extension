@@ -53,5 +53,6 @@
   "xym_balance": "XYM Balance",
   "mosaics": "Mosaics",
   "iconmenu_setting": "Setting",
-  "iconmenu_account": "Add account"
+  "iconmenu_account": "Add account",
+  "enter_password": "Enter the password"
 }

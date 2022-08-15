@@ -15,7 +15,11 @@ import {
 import { IoMdClose } from 'react-icons/io'
 
 import { Address, Account, NetworkType } from 'symbol-sdk'
-import { addExtensionAccount } from '../../_general/lib/Storage'
+import {
+  addExtensionAccount,
+  changeNetwork,
+  getExtensionAccounts,
+} from '../../_general/lib/Storage'
 import { ExtensionAccount } from '../../_general/model/ExtensionAccount'
 import { useTranslation } from 'react-i18next'
 import Typography from '../../_general/components/Typography'
@@ -90,10 +94,8 @@ const Component: React.VFC<Props> = ({ state, setState, reload }) => {
       setMessage(t('accmodal_wrong_prikey_format'))
     }
     const addr = Address.createFromRawAddress(ad)
-    const acc = Account.createFromPrivateKey(
-      pk,
-      ad.charAt(0) === 'T' ? NetworkType.TEST_NET : NetworkType.MAIN_NET
-    )
+    const net = getNetworkTypeByAddress(addr.plain())
+    const acc = Account.createFromPrivateKey(pk, net)
     if (addr.plain() !== acc.address.plain()) {
       setSnackbarStatus('error')
       setMessage(t('accmodal_wrong_keypair'))
@@ -111,20 +113,28 @@ const Component: React.VFC<Props> = ({ state, setState, reload }) => {
         seed
       )
 
-      addExtensionAccount(extensionAccount)
-        .then(() => {
-          setSnackbarStatus('success')
-          setMessage(t('accmodal_success_register'))
-          setOpenSB(true)
-          resetInput()
-          closeModal()
-          reload()
-        })
-        .catch(() => {
-          setSnackbarStatus('error')
-          setMessage(t('accmodal_allready_added'))
-          setOpenSB(true)
-        })
+      getExtensionAccounts().then((accs) => {
+        addExtensionAccount(extensionAccount)
+          .then(() => {
+            if (accs.length === 0) {
+              changeNetwork(net).then(() => {
+                reload()
+              })
+            }
+            setSnackbarStatus('success')
+            setMessage(t('accmodal_success_register'))
+            setOpenSB(true)
+            resetInput()
+            closeModal()
+            reload()
+          })
+          .catch(() => {
+            setSnackbarStatus('error')
+            setMessage(t('accmodal_allready_added'))
+            setOpenSB(true)
+          })
+          .finally(() => {})
+      })
     }
   }
 

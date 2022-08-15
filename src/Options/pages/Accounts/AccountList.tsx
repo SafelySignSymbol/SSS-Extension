@@ -11,6 +11,10 @@ import { HiOutlineClipboardCopy } from 'react-icons/hi'
 import AccountMenu from './AccountMenu'
 import { Setting } from '../../../_general/lib/Storage'
 
+import Avatar from 'boring-avatars'
+import { NetworkType } from 'symbol-sdk'
+import { getNetworkTypeByAddress } from '../../../_general/lib/Symbol/Config'
+import { MainNetColors, TestNetColors } from '../../../_general/utils/Color'
 export type Props = {
   extensionAccounts: ExtensionAccount[]
   setting: Setting
@@ -37,7 +41,22 @@ const Component: React.VFC<Props> = ({
         return (
           <Wrapper>
             <Name>
-              <Typography text={name} variant="h5" />
+              <NameWrpper>
+                <AvatarWrapper>
+                  <Avatar
+                    size={32}
+                    name={acc.address}
+                    variant="beam"
+                    colors={
+                      getNetworkTypeByAddress(acc.address) ===
+                      NetworkType.MAIN_NET
+                        ? MainNetColors
+                        : TestNetColors
+                    }
+                  />
+                </AvatarWrapper>
+                <Typography text={name} variant="h5" />
+              </NameWrpper>
               <AccountMenu account={acc} reload={reload} setting={setting} />
             </Name>
             <Flex>
@@ -94,4 +113,13 @@ const Name = styled('div')({
   marginBottom: '8px',
   display: 'flex',
   justifyContent: 'space-between',
+})
+
+const AvatarWrapper = styled('div')({
+  marginRight: '16px',
+})
+
+const NameWrpper = styled('div')({
+  display: 'flex',
+  alignItems: 'center',
 })
