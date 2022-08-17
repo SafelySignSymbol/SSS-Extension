@@ -1,3 +1,7 @@
+import { NetworkType } from "symbol-sdk"
+import { decrypt } from "../lib/Crypto"
+import { getNetworkTypeByAddress } from "../lib/Symbol/Config"
+
 export interface IExtensionAccount {
   name: string
   encriptedPrivateKey: string
@@ -26,5 +30,13 @@ export class ExtensionAccount implements IExtensionAccount {
       type: this.type,
       seed: this.seed,
     }
+  }
+
+  public getNetworktype(): NetworkType {
+    return getNetworkTypeByAddress(this.address)
+  }
+
+  public decrypt(password: string): string {
+    return decrypt(this.encriptedPrivateKey, password, this.seed)
   }
 }
