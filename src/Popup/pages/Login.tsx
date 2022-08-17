@@ -62,7 +62,9 @@ const Login: React.VFC<Props> = ({ extensionAccount, loginSuccess }) => {
           </Container>
         </Spacer>
         <Spacer margin="48px 0px">
-          <PasswordTextField label="Password" autoFocus setPass={setPass} />
+          <TFWrapper>
+            <PasswordTextField label="Password" autoFocus setPass={setPass} />
+          </TFWrapper>
         </Spacer>
         <Spacer margin="48px 0px">
           <Flex>
@@ -102,4 +104,11 @@ const Flex = styled('div')({
   display: 'flex',
   flexDirection: 'row',
   justifyContent: 'center',
+})
+
+const TFWrapper = styled('div')({
+  width: '100%',
+  '& > div': {
+    width: '100%',
+  },
 })

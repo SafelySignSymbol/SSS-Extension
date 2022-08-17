@@ -128,7 +128,6 @@ const Main: React.VFC<Props> = ({
   }
 
   const handleClick = (i: number) => {
-    console.log({ i })
     setActiveAccount(i).then(() => {
       logout()
     })

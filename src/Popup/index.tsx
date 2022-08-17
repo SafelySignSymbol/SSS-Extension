@@ -11,7 +11,6 @@ import {
 } from 'symbol-sdk'
 
 import {
-  // getActiveAccount,
   getActiveAccountV2,
   getCosignatories,
   getSetting,
@@ -26,8 +25,8 @@ import Main from './pages/Main'
 
 import {
   encription,
-  sign,
   signCosignatureTransaction,
+  sign,
   signWithCosignatories,
 } from '../_general/lib/Sign'
 import {
@@ -60,13 +59,6 @@ const Popup: React.VFC = () => {
 
   const [pass, setPass] = useState('')
   useEffect(() => {
-    // getActive Account().then((acc) => {
-    //   if (acc === null) {
-    //     chrome.runtime.openOptionsPage()
-    //   } else {
-    //     setExtensionAccount(acc)
-    //   }
-    // })
 
     getSetting().then((s) => {
       setPageSetting(s)
@@ -93,11 +85,6 @@ const Popup: React.VFC = () => {
     if (extensionAccount === null) {
       return
     }
-    // const priKey = decrypt(
-    //   extensionAccount.encriptedPrivateKey,
-    //   pass,
-    //   extensionAccount.seed
-    // )
 
     const priKey = extensionAccount.decrypt(pass)
 
@@ -110,14 +97,14 @@ const Popup: React.VFC = () => {
 
       const encryptedMessage = !!msg.encryptedMessage
         ? acc.decryptMessage(
-            new EncryptedMessage(msg.encryptedMessage),
-            recipient
-          ).payload
+          new EncryptedMessage(msg.encryptedMessage),
+          recipient
+        ).payload
         : undefined
       msg.encryptedMessage = encryptedMessage
-      encription(JSON.stringify(msg), pubkey, priKey, net_type)
+      encription(JSON.stringify(msg), pubkey, extensionAccount, pass)
     } else {
-      encription(message, pubkey, priKey, net_type)
+      encription(message, pubkey, extensionAccount, pass)
     }
   }
 
@@ -125,20 +112,17 @@ const Popup: React.VFC = () => {
     if (extensionAccount === null || transaction === null) {
       return
     }
-    // const priKey = decrypt(
-    //   extensionAccount.encriptedPrivateKey,
-    //   pass,
-    //   extensionAccount.seed
-    // )
-    const priKey = extensionAccount.decrypt(pass)
 
+    console.log({ extensionAccount })
     const net_type = extensionAccount.getNetworktype()
 
+    console.log({ net_type })
+
     if (signStatus === REQUEST_SIGN) {
-      sign(transaction, priKey, net_type)
+      sign(transaction, extensionAccount, pass)
     }
     if (signStatus === REQUEST_SIGN_COSIGNATURE) {
-      signCosignatureTransaction(transaction.serialize(), priKey, net_type)
+      signCosignatureTransaction(transaction.serialize(), extensionAccount, pass)
     }
     if (signStatus === REQUEST_SIGN_WITH_COSIGNATORIES) {
       getCosignatories().then((accounts) => {
@@ -148,8 +132,8 @@ const Popup: React.VFC = () => {
         signWithCosignatories(
           transaction as AggregateTransaction,
           accs,
-          priKey,
-          net_type
+          extensionAccount,
+          pass
         )
       })
     }
