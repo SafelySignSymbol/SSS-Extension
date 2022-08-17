@@ -1,21 +1,26 @@
 import React, { useEffect, useState } from 'react'
 import styled from '@emotion/styled'
 
-import Spacer from '../../../../_general/components/Spacer'
 import Typography from '../../../../_general/components/Typography'
-import { Address } from 'symbol-sdk'
+import { Address, NetworkType } from 'symbol-sdk'
 
 import { getAddressXym } from '../../../../_general/lib/Symbol/SymbolService'
-import Color from '../../../../_general/utils/Color'
-import { Chip } from '@mui/material'
+import Color, {
+  addAlpha,
+  MainNetColors,
+  TestNetColors,
+} from '../../../../_general/utils/Color'
 
 import { useTranslation } from 'react-i18next'
+import { getNetworkTypeByAddress } from '../../../../_general/lib/Symbol/Config'
+import Avatar from 'boring-avatars'
 
 export type Props = {
   address: Address
+  name: string
 }
 
-const Component: React.VFC<Props> = ({ address }) => {
+const Component: React.VFC<Props> = ({ address, name }) => {
   const [t] = useTranslation()
 
   const [amount, setAmount] = useState(['0', '0'])
@@ -25,47 +30,38 @@ const Component: React.VFC<Props> = ({ address }) => {
     })
   }, [address])
 
-  const net_type = address.plain().charAt(0) === 'T' ? 'TEST NET' : 'MAIN NET'
-  const color: string = (() => {
-    if (net_type === 'TEST NET') {
-      return 'black'
-    } else {
-      return Color.sky
-    }
-  })()
-
   return (
     <Root>
-      <Spacer margin="0px 32px 16px">
-        <Title>
-          <Typography
-            text={t('active_account_infomation')}
-            variant="h5"
-            color={Color.grayscale}
+      <HeaderWrapper>
+        <NameWrapper>
+          <Avatar
+            size={40}
+            name={address.plain()}
+            variant="beam"
+            colors={
+              getNetworkTypeByAddress(address.plain()) === NetworkType.MAIN_NET
+                ? MainNetColors
+                : TestNetColors
+            }
           />
-        </Title>
-      </Spacer>
-      <Spacer margin="8px 0px 16px">
-        <Addr>
-          <Typography text={t('address')} variant="h5" />
-          <SChip label={net_type} clr={color} />
-        </Addr>
-        <Typography text={address.pretty()} variant="subtitle1" />
-      </Spacer>
-      <Spacer margin="8px 0px">
-        <Typography text={t('xym_balance')} variant="h5" />
+          <Typography text={name} variant="h5" />
+        </NameWrapper>
         <Wrap>
-          <Amount color="black" float={false}>
+          <Amount color={Color.base_black} float={false}>
             {amount[0]}
           </Amount>
-          <Amount color="black" float={false}>
+          <Amount color={Color.base_black} float={false}>
             {amount.length === 2 && '.'}
           </Amount>
-          <Amount color="#555" float={true}>
+          <Amount color={addAlpha(Color.base_black, 0.8)} float={true}>
             {amount[1]}
           </Amount>
+          <XYM>XYM</XYM>
         </Wrap>
-      </Spacer>
+      </HeaderWrapper>
+      <AddressWrapper>
+        <Typography text={address.pretty()} variant="h5" />
+      </AddressWrapper>
     </Root>
   )
 }
@@ -74,7 +70,28 @@ export default Component
 
 const Root = styled('div')({
   padding: '32px',
-  background: 'white',
+  width: '800px',
+  background: Color.pure_white,
+})
+
+const HeaderWrapper = styled('div')({
+  display: 'flex',
+  justifyContent: 'space-between',
+  alignItems: 'center',
+})
+
+const NameWrapper = styled('div')({
+  display: 'flex',
+  alignItems: 'center',
+  '> :nth-child(1)': {
+    marginRight: '16px',
+  },
+})
+
+const XYM = styled('span')({
+  marginLeft: '8px',
+  color: Color.base_black,
+  fontSize: '28px',
 })
 
 const Amount = styled('span')((p: { color: string; float: boolean }) => ({
@@ -86,17 +103,8 @@ const Wrap = styled('div')({
   marginBottom: '4px',
 })
 
-const Title = styled('div')({
+const AddressWrapper = styled('div')({
+  width: '100%',
   display: 'flex',
-  justifyContent: 'end',
+  marginTop: '16px',
 })
-
-const Addr = styled('div')({
-  display: 'flex',
-  justifyContent: 'space-between',
-})
-
-const SChip = styled(Chip)((p: { clr: string }) => ({
-  margin: '0px 16px',
-  color: p.clr,
-}))

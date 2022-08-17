@@ -32,6 +32,7 @@ import CreateAccount from './CreateAccount'
 import { MdArrowRight, MdArrowLeft } from 'react-icons/md'
 import { getNetworkTypeByAddress } from '../../_general/lib/Symbol/Config'
 import CheckAccount from './CheckAccount'
+import Hardware from './Hardware'
 
 export type Props = {
   state: number
@@ -80,6 +81,7 @@ const Component: React.VFC<Props> = ({ state, setState, reload }) => {
   }
 
   const submit = () => {
+    // TODO  Hardwareのときの分岐を実装
     const ad = address
     const pk = prikey
     const ps = pass
@@ -170,6 +172,16 @@ const Component: React.VFC<Props> = ({ state, setState, reload }) => {
           />
         )
       }
+
+      if (method === 'HARDWARE') {
+        return (
+          <Hardware
+            setName={setName}
+            setAddress={setAddress}
+            address={address}
+          />
+        )
+      }
     }
 
     if (state === 3) {
@@ -205,6 +217,28 @@ const Component: React.VFC<Props> = ({ state, setState, reload }) => {
         )
       }
       if (method === 'CREATE') {
+        return (
+          <ButtonWrappr>
+            <BackButton onClick={() => setState(state - 1)}>
+              <IconContext.Provider value={{ size: '64px' }}>
+                <MdArrowLeft
+                  style={{ color: Color.base_white, margin: '0px 16px' }}
+                />
+                <Typography variant="h4" text="Back" color={Color.base_white} />
+              </IconContext.Provider>
+            </BackButton>
+            <NextButton onClick={nextCreate}>
+              <Typography variant="h4" text="Next" color={Color.base_white} />
+              <IconContext.Provider value={{ size: '64px' }}>
+                <MdArrowRight
+                  style={{ color: Color.base_white, margin: '0px 16px' }}
+                />
+              </IconContext.Provider>
+            </NextButton>
+          </ButtonWrappr>
+        )
+      }
+      if (method === 'HARDWARE') {
         return (
           <ButtonWrappr>
             <BackButton onClick={() => setState(state - 1)}>

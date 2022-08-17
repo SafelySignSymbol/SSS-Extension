@@ -13,6 +13,7 @@ export type Props = {
 
 const Component: React.FC<Props> = ({ name, address, password }) => {
   const [t] = useTranslation()
+
   return (
     <Root>
       <Center>

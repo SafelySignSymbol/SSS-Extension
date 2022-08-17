@@ -5,7 +5,7 @@ import { getTimeStamp } from '../../../../_general/lib/Symbol/SymbolService'
 import { getExplorerLinkFromHash } from '../../../../_general/lib/Symbol/Config'
 import Color from '../../../../_general/utils/Color'
 import { Link } from '@mui/material'
-
+import Avatar from 'boring-avatars'
 export type Props = {
   type: string
   hash: string
@@ -27,9 +27,12 @@ const Component: React.VFC<Props> = ({ type, hash, netType, height }) => {
 
   return (
     <Wrap>
-      <SLink href={getExplorerLinkFromHash(netType, hash)} target="_brank">
-        {hash}
-      </SLink>
+      <HashWrapper>
+        <Avatar size={32} name={hash} variant="bauhaus" />
+        <SLink href={getExplorerLinkFromHash(netType, hash)} target="_brank">
+          {hash}
+        </SLink>
+      </HashWrapper>
       <Right>
         <Text>{type}</Text>
         <Time>{time}</Time>
@@ -70,4 +73,12 @@ const SLink = styled(Link)({
   fontSize: '16px',
   textDecoration: 'none',
   color: Color.base_black,
+})
+
+const HashWrapper = styled('div')({
+  display: 'flex',
+  alignItems: 'center',
+  '> :nth-child(1)': {
+    marginRight: '16px',
+  },
 })

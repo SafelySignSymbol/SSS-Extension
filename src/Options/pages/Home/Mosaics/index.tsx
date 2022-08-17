@@ -18,6 +18,7 @@ import {
 import Color from '../../../../_general/utils/Color'
 
 import { useTranslation } from 'react-i18next'
+import Avatar from 'boring-avatars'
 
 export type Props = {
   address: Address
@@ -77,15 +78,6 @@ const Component: React.VFC<Props> = ({ address }) => {
   return (
     <Root>
       <Wrapper>
-        <Spacer margin="0px 32px 16px">
-          <Title>
-            <Typography
-              text={t('mosaics')}
-              variant="h5"
-              color={Color.grayscale}
-            />
-          </Title>
-        </Spacer>
         <Divider />
         {mosaics.map((m) => {
           const amount = (
@@ -97,7 +89,14 @@ const Component: React.VFC<Props> = ({ address }) => {
           return (
             <>
               <MosaicViewer key={m.mosaic.id.id.toString()}>
-                <Typography text={m.mosaic.id.id.toHex()} variant="h5" />
+                <MosaicName>
+                  <Avatar
+                    size={24}
+                    name={m.mosaic.id.id.toHex()}
+                    variant="marble"
+                  />
+                  <Typography text={m.mosaic.id.id.toHex()} variant="h5" />
+                </MosaicName>
                 <AmountWrapper>
                   <Amount color="black" float={false}>
                     {amount[0]}
@@ -123,6 +122,7 @@ export default Component
 
 const Root = styled('div')({
   padding: '32px',
+  width: '800px',
   background: 'white',
   display: 'flex',
 })
@@ -146,7 +146,10 @@ const Wrapper = styled('div')({
   width: '100%',
 })
 
-const Title = styled('div')({
+const MosaicName = styled('div')({
   display: 'flex',
-  justifyContent: 'end',
+  alignItems: 'center',
+  '> :nth-child(1)': {
+    marginRight: '16px',
+  },
 })

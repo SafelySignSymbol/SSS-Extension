@@ -43,7 +43,7 @@ const Component: React.FC<Props> = ({ setMethod, setState, setNettype }) => {
         <Typography variant="h5" text={t('accmodal_create_mainnet')} />
       </ListItemButton>
       <Divider />
-      <ListItemButton disabled onClick={() => handleClick('HARDWARE')}>
+      <ListItemButton onClick={() => handleClick('HARDWARE')}>
         <Typography variant="h5" text={t('accmodal_hardware')} />
       </ListItemButton>
       <Divider />

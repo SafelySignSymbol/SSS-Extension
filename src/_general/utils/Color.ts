@@ -8,6 +8,7 @@ const Color = {
   base_white: 'rgb(238, 238, 238)',
   base_black: 'rgb(51, 51, 51)',
   gray_black: 'rgb(94, 94, 94)',
+  pure_white: 'rgb(255, 255, 255)',
 }
 export default Color
 

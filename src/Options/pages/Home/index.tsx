@@ -34,7 +34,7 @@ const Options: React.VFC<Props> = ({ reload, update, setting }) => {
   return (
     <Wrapper>
       <Spacer margin="32px 8px">
-        <ActiveAccount address={adr} />
+        <ActiveAccount address={adr} name={account.name} />
       </Spacer>
       <Spacer margin="32px 8px">
         <Mosaics address={adr} />
