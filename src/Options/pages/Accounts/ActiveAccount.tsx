@@ -124,25 +124,27 @@ const Component: React.VFC<Props> = ({ activeAccount }) => {
             </IconContext.Provider>
           </IconButton>
         </Flex>
-        <Flex>
-          <div>
-            <Typography text="PrivateKey" variant="h5" />
-            <Typography text={prikey} variant="h6" />
-          </div>
-          {prikey === asterisk ? (
-            <IconButton size="small" onClick={() => setOpen(true)}>
-              <IconContext.Provider value={{ size: '24px' }}>
-                <MdVisibility style={{ margin: '6px' }} />
-              </IconContext.Provider>
-            </IconButton>
-          ) : (
-            <IconButton size="small" onClick={() => setPrikey(asterisk)}>
-              <IconContext.Provider value={{ size: '24px' }}>
-                <MdVisibilityOff style={{ margin: '6px' }} />
-              </IconContext.Provider>
-            </IconButton>
-          )}
-        </Flex>
+        {activeAccount.type !== 'HARD' && (
+          <Flex>
+            <div>
+              <Typography text="PrivateKey" variant="h5" />
+              <Typography text={prikey} variant="h6" />
+            </div>
+            {prikey === asterisk ? (
+              <IconButton size="small" onClick={() => setOpen(true)}>
+                <IconContext.Provider value={{ size: '24px' }}>
+                  <MdVisibility style={{ margin: '6px' }} />
+                </IconContext.Provider>
+              </IconButton>
+            ) : (
+              <IconButton size="small" onClick={() => setPrikey(asterisk)}>
+                <IconContext.Provider value={{ size: '24px' }}>
+                  <MdVisibilityOff style={{ margin: '6px' }} />
+                </IconContext.Provider>
+              </IconButton>
+            )}
+          </Flex>
+        )}
       </Wrapper>
       <Modal open={open} onClose={() => setOpen(false)}>
         <ModalWrapper>

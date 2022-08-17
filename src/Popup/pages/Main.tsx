@@ -38,13 +38,13 @@ import { MESSAGE, TRANSACTION } from '../../_general/model/Data'
 import {
   REQUEST_ACTIVE_ACCOUNT_TOKEN,
   REQUEST_MESSAGE_ENCODE,
+  REQUEST_SIGN,
   SIGN_TRANSACTION,
 } from '../../_general/model/MessageType'
 import MessageEncription from './components/MessageEncription'
 import { getNetworkTypeByAddress } from '../../_general/lib/Symbol/Config'
 import TransportWebHID from '@ledgerhq/hw-transport-webhid'
 import { SymbolLedger, LedgerNetworkType } from 'symbol-ledger-typescript'
-import { async } from 'rxjs'
 
 export interface Props {
   extensionAccount: ExtensionAccount
@@ -105,29 +105,64 @@ const Main: React.VFC<Props> = ({
               TransactionMapping.createFromPayload
             ).toTransaction()
 
-            console.log({ tx })
-
-            ledger
-              .signTransaction(path, tx, gh, publicKey, false)
-              .then(({ payload }) => {
-                const signedTx = new SignedTransaction(
-                  payload,
-                  Transaction.createTransactionHash(
+            if (type === REQUEST_SIGN) {
+              ledger
+                .signTransaction(path, tx, gh, publicKey, false)
+                .then(({ payload }) => {
+                  const signedTx = new SignedTransaction(
                     payload,
-                    Array.from(Convert.hexToUint8(gh))
-                  ),
-                  publicKey,
-                  tx.type,
-                  tx.networkType
-                )
+                    Transaction.createTransactionHash(
+                      payload,
+                      Array.from(Convert.hexToUint8(gh))
+                    ),
+                    publicKey,
+                    tx.type,
+                    tx.networkType
+                  )
 
-                addHistory(signedTx)
-                console.log({ signTx })
-                chrome.runtime.sendMessage({
-                  type: SIGN_TRANSACTION,
-                  signedTx: signedTx,
+                  addHistory(signedTx)
+                  chrome.runtime.sendMessage({
+                    type: SIGN_TRANSACTION,
+                    signedTx: signedTx,
+                  })
                 })
-              })
+            } else {
+              setTimeout(() => {
+                window.close()
+              }, 1000)
+            }
+            // if (type === REQUEST_SIGN_COSIGNATURE) {
+            //   const hash = Transaction.createTransactionHash(
+            //     t,
+            //     Array.from(Convert.hexToUint8(gh))
+            //   )
+            //   ledger
+            //     .signCosignatureTransaction(path, tx, hash, publicKey, false)
+            //     .then((data) => {
+            //       console.log(data)
+            //     })
+            // }
+            // if (type === REQUEST_SIGN_WITH_COSIGNATORIES) {
+            //   ledger
+            //     .signTransaction(path, tx, gh, publicKey, false)
+            //     .then(({ payload }) => {
+            //       const signedTx = new SignedTransaction(
+            //         payload,
+            //         Transaction.createTransactionHash(
+            //           payload,
+            //           Array.from(Convert.hexToUint8(gh))
+            //         ),
+            //         publicKey,
+            //         tx.type,
+            //         tx.networkType
+            //       )
+            //       addHistory(signedTx)
+            //       chrome.runtime.sendMessage({
+            //         type: SIGN_TRANSACTION,
+            //         signedTx: signedTx,
+            //       })
+            //     })
+            // }
           } catch {
             console.log('catch')
           } finally {
@@ -245,7 +280,14 @@ const Main: React.VFC<Props> = ({
       {contents()}
       <Footer>
         <Spacer margin="8px">
-          <Button text="SIGN" onClick={hundleClick} />
+          {extensionAccount.type === 'HARD' ? (
+            <Typography
+              variant="h5"
+              text="Please approve it in the hardware wallet"
+            />
+          ) : (
+            <Button text="SIGN" onClick={hundleClick} />
+          )}
         </Spacer>
       </Footer>
     </Container>

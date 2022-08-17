@@ -90,7 +90,7 @@ const Login: React.VFC<Props> = ({ extensionAccount, loginSuccess }) => {
           </Spacer>
           <Spacer margin="48px 0px">
             <Flex>
-              <Button text="CONNECT" onClick={connectHardwareWallet} />
+              <Button text="CONNECTED" onClick={connectHardwareWallet} />
             </Flex>
           </Spacer>
         </Spacer>

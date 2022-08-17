@@ -8,12 +8,9 @@ import {
   PublicAccount,
   Transaction,
   EncryptedMessage,
-  SignedTransaction,
-  TransactionMapping,
 } from 'symbol-sdk'
 
 import {
-  addHistory,
   getActiveAccountV2,
   getCosignatories,
   getSetting,
