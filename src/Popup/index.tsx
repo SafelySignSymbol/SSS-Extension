@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
 import styled from '@emotion/styled'
-import { decrypt } from '../_general/lib/Crypto'
 
 import './global.css'
 import {
@@ -16,9 +15,12 @@ import {
   getCosignatories,
   getSignStatus,
 } from '../_general/lib/Storage'
+
 import { ExtensionAccount } from '../_general/model/ExtensionAccount'
+
 import Login from './pages/Login'
 import Main from './pages/Main'
+
 import {
   encription,
   sign,
@@ -75,13 +77,15 @@ const Popup: React.VFC = () => {
     if (extensionAccount === null) {
       return
     }
-    const priKey = decrypt(
-      extensionAccount.encriptedPrivateKey,
-      pass,
-      extensionAccount.seed
-    )
+    // const priKey = decrypt(
+    //   extensionAccount.encriptedPrivateKey,
+    //   pass,
+    //   extensionAccount.seed
+    // )
 
-    const net_type = getNetworkTypeByAddress(extensionAccount.address)
+    const priKey = extensionAccount.decrypt(pass)
+
+    const net_type = extensionAccount.getNetworktype()
 
     if (signStatus === REQUEST_ACTIVE_ACCOUNT_TOKEN) {
       const msg = JSON.parse(message)
@@ -105,13 +109,14 @@ const Popup: React.VFC = () => {
     if (extensionAccount === null || transaction === null) {
       return
     }
-    const priKey = decrypt(
-      extensionAccount.encriptedPrivateKey,
-      pass,
-      extensionAccount.seed
-    )
+    // const priKey = decrypt(
+    //   extensionAccount.encriptedPrivateKey,
+    //   pass,
+    //   extensionAccount.seed
+    // )
+    const priKey = extensionAccount.decrypt(pass)
 
-    const net_type = getNetworkTypeByAddress(extensionAccount.address)
+    const net_type = extensionAccount.getNetworktype()
 
     if (signStatus === REQUEST_SIGN) {
       sign(transaction, priKey, net_type)
