@@ -9,13 +9,11 @@ import {
   RepositoryFactoryHttp,
 } from 'symbol-sdk'
 import Typography from '../../../../_general/components/Typography'
-import Spacer from '../../../../_general/components/Spacer'
 import { Divider } from '@mui/material'
 import {
   getNetworkTypeByAddress,
   getNodeUrl,
 } from '../../../../_general/lib/Symbol/Config'
-import Color from '../../../../_general/utils/Color'
 
 import { useTranslation } from 'react-i18next'
 import Avatar from 'boring-avatars'

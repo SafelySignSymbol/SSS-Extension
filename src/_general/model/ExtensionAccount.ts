@@ -1,7 +1,9 @@
-import { Account, Address, NetworkType, PublicAccount } from "symbol-sdk"
-import { decrypt } from "../lib/Crypto"
-import { getGenerationHash, getNetworkTypeByAddress } from "../lib/Symbol/Config"
-import { EncriptionMessage } from "./EncriptionMessage"
+import { Account, Address, NetworkType, PublicAccount } from 'symbol-sdk'
+import { decrypt } from '../lib/Crypto'
+import {
+  getGenerationHash,
+  getNetworkTypeByAddress,
+} from '../lib/Symbol/Config'
 
 export type AccountType = 'PASS' | 'NOPASS' | 'HARD'
 
@@ -22,7 +24,20 @@ export class ExtensionAccount implements IExtensionAccount {
     public address: string,
     public type: AccountType,
     public seed: number
-  ) { }
+  ) {}
+
+  public static createExtensionAccount(
+    acc: ExtensionAccount
+  ): ExtensionAccount {
+    return new ExtensionAccount(
+      acc.name,
+      acc.encriptedPrivateKey,
+      acc.publicKey,
+      acc.address,
+      acc.type,
+      acc.seed
+    )
+  }
 
   public getAddress(): Address {
     return Address.createFromRawAddress(this.address)
@@ -34,8 +49,6 @@ export class ExtensionAccount implements IExtensionAccount {
 
   public getNetworktype(): NetworkType {
     const net = getNetworkTypeByAddress(this.address)
-    console.log({ net })
-    console.log(this.address)
     return net
   }
 
@@ -45,7 +58,10 @@ export class ExtensionAccount implements IExtensionAccount {
   }
 
   public getPublicAccount(): PublicAccount {
-    return PublicAccount.createFromPublicKey(this.publicKey, this.getNetworktype())
+    return PublicAccount.createFromPublicKey(
+      this.publicKey,
+      this.getNetworktype()
+    )
   }
 
   public getGenerationHash(): string {

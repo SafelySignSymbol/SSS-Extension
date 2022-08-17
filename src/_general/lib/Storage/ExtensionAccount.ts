@@ -1,7 +1,7 @@
 import { getNetworkTypeByAddress } from './../Symbol/Config'
 import { getActiveAccountV2, setActiveAccountV2 } from './ActiveAccount'
 import { NetworkType } from 'symbol-sdk'
-import { getStorage, getActiveAccount, setStorage } from '.'
+import { getStorage, setStorage } from '.'
 import {
   IExtensionAccount,
   ExtensionAccount,

@@ -43,8 +43,20 @@ const Component: React.FC<Props> = ({ setMethod, setState, setNettype }) => {
         <Typography variant="h5" text={t('accmodal_create_mainnet')} />
       </ListItemButton>
       <Divider />
-      <ListItemButton onClick={() => handleClick('HARDWARE')}>
-        <Typography variant="h5" text={t('accmodal_hardware')} />
+      <ListItemButton
+        onClick={() => {
+          handleClick('HARDWARE')
+          setNettype(NetworkType.TEST_NET)
+        }}>
+        <Typography variant="h5" text={t('accmodal_hardware_testnet')} />
+      </ListItemButton>
+      <Divider />
+      <ListItemButton
+        onClick={() => {
+          handleClick('HARDWARE')
+          setNettype(NetworkType.MAIN_NET)
+        }}>
+        <Typography variant="h5" text={t('accmodal_hardware_mainnet')} />
       </ListItemButton>
       <Divider />
     </Root>

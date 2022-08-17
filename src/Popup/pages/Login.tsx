@@ -3,13 +3,15 @@ import styled from '@emotion/styled'
 
 import { ExtensionAccount } from '../../_general/model/ExtensionAccount'
 import Typography from '../../_general/components/Typography'
-import { Address } from 'symbol-sdk'
+import { Address, NetworkType } from 'symbol-sdk'
 import Spacer from '../../_general/components/Spacer'
 import Button from '../../_general/components/Button'
 import { checkPassword } from '../../_general/lib/validator'
 import PasswordTextField from '../../_general/components/TextField/PasswordTextField'
 import { Snackbar, Alert } from '@mui/material'
 import { useTranslation } from 'react-i18next'
+import TransportWebHID from '@ledgerhq/hw-transport-webhid'
+import { SymbolLedger, LedgerNetworkType } from 'symbol-ledger-typescript'
 
 export interface Props {
   extensionAccount: ExtensionAccount
@@ -40,12 +42,61 @@ const Login: React.VFC<Props> = ({ extensionAccount, loginSuccess }) => {
     }
   }
 
+  const connectHardwareWallet = () => {
+    TransportWebHID.create(5000, 5000).then(async (transport) => {
+      const ledger = new SymbolLedger(transport, 'XYM')
+      try {
+        const ledgerNetworkType = LedgerNetworkType.MAIN_NET
+        const path = extensionAccount.encriptedPrivateKey
+        const publicKey = await ledger.getAccount(
+          path,
+          ledgerNetworkType,
+          false,
+          false,
+          false
+        )
+
+        if (publicKey === extensionAccount.publicKey) {
+          loginSuccess(path)
+        }
+      } catch {
+      } finally {
+        await ledger.close()
+      }
+    })
+  }
+
   useEffect(() => {
     if (extensionAccount.type === 'NOPASS') {
       login()
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [extensionAccount.type])
+
+  if (extensionAccount.type === 'HARD') {
+    return (
+      <Container>
+        <Spacer margin="16px 8px">
+          <Spacer margin="32px 0px">
+            <Wrapper>
+              <Typography text="Login" variant="h4" />
+            </Wrapper>
+          </Spacer>
+          <Spacer margin="16px 0px">
+            <Container>
+              <Typography text={extensionAccount.name} variant="h4" />
+              <Typography text={address} variant="h6" />
+            </Container>
+          </Spacer>
+          <Spacer margin="48px 0px">
+            <Flex>
+              <Button text="CONNECT" onClick={connectHardwareWallet} />
+            </Flex>
+          </Spacer>
+        </Spacer>
+      </Container>
+    )
+  }
 
   return (
     <Container>

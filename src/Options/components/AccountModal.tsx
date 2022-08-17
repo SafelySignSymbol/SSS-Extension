@@ -50,6 +50,7 @@ const Component: React.VFC<Props> = ({ state, setState, reload }) => {
   const [name, setName] = useState('')
   const [address, setAddress] = useState('')
   const [prikey, setPrikey] = useState('')
+  const [pubKey, setPubkey] = useState('')
   const [pass, setPass] = useState('default password')
 
   const [method, setMethod] = useState<Method>('NONE')
@@ -80,31 +81,66 @@ const Component: React.VFC<Props> = ({ state, setState, reload }) => {
     setPass('')
   }
 
-  const submit = () => {
-    // TODO  Hardwareのときの分岐を実装
-    const ad = address
-    const pk = prikey
-    const ps = pass
+  const submitHardware = () => {
+    const extensionAccount = new ExtensionAccount(
+      name,
+      prikey,
+      pubKey,
+      address,
+      'HARD',
+      -1
+    )
 
-    if (!ad) {
+    getExtensionAccounts().then((accs) => {
+      addExtensionAccount(extensionAccount)
+        .then(() => {
+          if (accs.length === 0) {
+            const net = extensionAccount.getNetworktype()
+            changeNetwork(net).then(() => {
+              reload()
+            })
+          }
+          setSnackbarStatus('success')
+          setMessage(t('accmodal_success_register'))
+          setOpenSB(true)
+          resetInput()
+          closeModal()
+          reload()
+        })
+        .catch(() => {
+          setSnackbarStatus('error')
+          setMessage(t('accmodal_allready_added'))
+          setOpenSB(true)
+        })
+        .finally(() => {})
+    })
+  }
+
+  const submit = () => {
+    if (address === '') {
       setSnackbarStatus('error')
       setMessage(t('accmodal_wrong_address_format'))
     }
 
-    if (!pk) {
+    if (method === 'HARDWARE') {
+      return submitHardware()
+    }
+
+    if (prikey === '') {
       setSnackbarStatus('error')
       setMessage(t('accmodal_wrong_prikey_format'))
     }
-    const addr = Address.createFromRawAddress(ad)
+
+    const addr = Address.createFromRawAddress(address)
     const net = getNetworkTypeByAddress(addr.plain())
-    const acc = Account.createFromPrivateKey(pk, net)
+    const acc = Account.createFromPrivateKey(prikey, net)
     if (addr.plain() !== acc.address.plain()) {
       setSnackbarStatus('error')
       setMessage(t('accmodal_wrong_keypair'))
       setOpenSB(true)
     } else {
       const seed = Math.floor((Math.random() * 10000) % 1000)
-      const enpk = encrypt(pk, ps, seed)
+      const enpk = encrypt(prikey, pass, seed)
 
       const extensionAccount = new ExtensionAccount(
         name,
@@ -178,7 +214,10 @@ const Component: React.VFC<Props> = ({ state, setState, reload }) => {
           <Hardware
             setName={setName}
             setAddress={setAddress}
+            setPublicKey={setPubkey}
+            setPrivateKey={setPrikey}
             address={address}
+            network={nettype}
           />
         )
       }

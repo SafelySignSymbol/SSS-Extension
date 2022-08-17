@@ -8,9 +8,12 @@ import {
   PublicAccount,
   Transaction,
   EncryptedMessage,
+  SignedTransaction,
+  TransactionMapping,
 } from 'symbol-sdk'
 
 import {
+  addHistory,
   getActiveAccountV2,
   getCosignatories,
   getSetting,
@@ -36,7 +39,6 @@ import {
   REQUEST_SIGN_COSIGNATURE,
   REQUEST_SIGN_WITH_COSIGNATORIES,
 } from '../_general/model/MessageType'
-import { getNetworkTypeByAddress } from '../_general/lib/Symbol/Config'
 
 const LOGIN = 'LOGIN'
 const MAIN = 'MAIN'
@@ -59,12 +61,12 @@ const Popup: React.VFC = () => {
 
   const [pass, setPass] = useState('')
   useEffect(() => {
-
     getSetting().then((s) => {
       setPageSetting(s)
       getActiveAccountV2(s.networkType)
         .then((acc) => {
-          setExtensionAccount(acc)
+          const account = ExtensionAccount.createExtensionAccount(acc)
+          setExtensionAccount(account)
         })
         .catch(() => {
           chrome.runtime.openOptionsPage()
@@ -97,9 +99,9 @@ const Popup: React.VFC = () => {
 
       const encryptedMessage = !!msg.encryptedMessage
         ? acc.decryptMessage(
-          new EncryptedMessage(msg.encryptedMessage),
-          recipient
-        ).payload
+            new EncryptedMessage(msg.encryptedMessage),
+            recipient
+          ).payload
         : undefined
       msg.encryptedMessage = encryptedMessage
       encription(JSON.stringify(msg), pubkey, extensionAccount, pass)
@@ -112,17 +114,17 @@ const Popup: React.VFC = () => {
     if (extensionAccount === null || transaction === null) {
       return
     }
-
-    console.log({ extensionAccount })
     const net_type = extensionAccount.getNetworktype()
-
-    console.log({ net_type })
 
     if (signStatus === REQUEST_SIGN) {
       sign(transaction, extensionAccount, pass)
     }
     if (signStatus === REQUEST_SIGN_COSIGNATURE) {
-      signCosignatureTransaction(transaction.serialize(), extensionAccount, pass)
+      signCosignatureTransaction(
+        transaction.serialize(),
+        extensionAccount,
+        pass
+      )
     }
     if (signStatus === REQUEST_SIGN_WITH_COSIGNATORIES) {
       getCosignatories().then((accounts) => {

@@ -19,21 +19,32 @@ import Color, { addAlpha } from '../../_general/utils/Color'
 import Spacer from '../../_general/components/Spacer'
 import TransactionInfo from './components/TransactionInfo'
 import {
+  addHistory,
   getData,
   getExtensionAccounts,
   setActiveAccount,
 } from '../../_general/lib/Storage'
 import { TransactionURI } from 'symbol-uri-scheme'
-import { Address, Transaction, TransactionMapping } from 'symbol-sdk'
+import {
+  Address,
+  Convert,
+  SignedTransaction,
+  Transaction,
+  TransactionMapping,
+} from 'symbol-sdk'
 import NotFoundTx from './components/NotFoundTx'
 import { EncriptionMessage } from '../../_general/model/EncriptionMessage'
 import { MESSAGE, TRANSACTION } from '../../_general/model/Data'
 import {
   REQUEST_ACTIVE_ACCOUNT_TOKEN,
   REQUEST_MESSAGE_ENCODE,
+  SIGN_TRANSACTION,
 } from '../../_general/model/MessageType'
 import MessageEncription from './components/MessageEncription'
 import { getNetworkTypeByAddress } from '../../_general/lib/Symbol/Config'
+import TransportWebHID from '@ledgerhq/hw-transport-webhid'
+import { SymbolLedger, LedgerNetworkType } from 'symbol-ledger-typescript'
+import { async } from 'rxjs'
 
 export interface Props {
   extensionAccount: ExtensionAccount
@@ -65,10 +76,68 @@ const Main: React.VFC<Props> = ({
           new EncriptionMessage(data.message.msg, data.message.publicKey)
         )
       }
-    })
 
-    getExtensionAccounts().then((accs) => {
-      setAccounts(accs)
+      getExtensionAccounts().then((accs) => {
+        setAccounts(accs)
+      })
+
+      if (extensionAccount.type === 'HARD') {
+        TransportWebHID.create(5000, 5000).then(async (transport) => {
+          console.log('then')
+          const ledger = new SymbolLedger(transport, 'XYM')
+          try {
+            const ledgerNetworkType = LedgerNetworkType.MAIN_NET
+            const path = extensionAccount.encriptedPrivateKey
+            console.log({ path })
+            const publicKey = await ledger.getAccount(
+              path,
+              ledgerNetworkType,
+              false,
+              false,
+              false
+            )
+            const gh = extensionAccount.getGenerationHash()
+
+            console.log({ gh })
+            const t = data.transaction || ''
+            const tx = TransactionURI.fromURI(
+              t,
+              TransactionMapping.createFromPayload
+            ).toTransaction()
+
+            console.log({ tx })
+
+            ledger
+              .signTransaction(path, tx, gh, publicKey, false)
+              .then(({ payload }) => {
+                const signedTx = new SignedTransaction(
+                  payload,
+                  Transaction.createTransactionHash(
+                    payload,
+                    Array.from(Convert.hexToUint8(gh))
+                  ),
+                  publicKey,
+                  tx.type,
+                  tx.networkType
+                )
+
+                addHistory(signedTx)
+                console.log({ signTx })
+                chrome.runtime.sendMessage({
+                  type: SIGN_TRANSACTION,
+                  signedTx: signedTx,
+                })
+              })
+          } catch {
+            console.log('catch')
+          } finally {
+            await ledger.close()
+            setTimeout(() => {
+              window.close()
+            }, 1000)
+          }
+        })
+      }
     })
   }, [])
 

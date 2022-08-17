@@ -18,12 +18,22 @@ import TextField from '../../_general/components/TextField'
 export type Props = {
   setName: Dispatch<string>
   setAddress: Dispatch<string>
+  setPublicKey: Dispatch<string>
+  setPrivateKey: Dispatch<string>
+  network: NetworkType
   address: string
 }
 
 const ERR = 'ハードウェアウォアレットの接続を確認してください'
 
-const Component: React.FC<Props> = ({ setName, setAddress, address }) => {
+const Component: React.FC<Props> = ({
+  setName,
+  setAddress,
+  setPublicKey,
+  setPrivateKey,
+  network,
+  address,
+}) => {
   const [t] = useTranslation()
   const [num, setNum] = useState(0)
 
@@ -44,7 +54,7 @@ const Component: React.FC<Props> = ({ setName, setAddress, address }) => {
     TransportWebHID.create(5000, 5000).then(async (transport) => {
       const ledger = new SymbolLedger(transport, 'XYM')
       try {
-        const ledgerNetworkType = LedgerNetworkType.MAIN_NET
+        const ledgerNetworkType = network as number as LedgerNetworkType
         const path = LedgerDerivationPath.getPath(ledgerNetworkType, index)
         const publicKey = await ledger.getAccount(
           path,
@@ -53,9 +63,9 @@ const Component: React.FC<Props> = ({ setName, setAddress, address }) => {
           false,
           false
         )
-        setAddress(
-          Address.createFromPublicKey(publicKey, NetworkType.MAIN_NET).plain()
-        )
+        setAddress(Address.createFromPublicKey(publicKey, network).plain())
+        setPublicKey(publicKey)
+        setPrivateKey(path)
       } catch {
         setAddress(ERR)
       } finally {
@@ -81,9 +91,7 @@ const Component: React.FC<Props> = ({ setName, setAddress, address }) => {
           </IconButton>
         </Wrapper>
       </Center>
-      {/* <TFWrapper> */}
       <TextField label="Name" setText={setName} variant="text" />
-      {/* </TFWrapper> */}
     </Root>
   )
 }
