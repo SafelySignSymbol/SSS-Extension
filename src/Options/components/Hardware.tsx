@@ -10,13 +10,32 @@ import {
   SymbolLedger,
 } from 'symbol-ledger-typescript'
 import { Address, NetworkType } from 'symbol-sdk'
-import { IconButton } from '@mui/material'
+import {
+  FormControl,
+  IconButton,
+  InputLabel,
+  MenuItem,
+  OutlinedInput,
+  Select,
+} from '@mui/material'
 import { IconContext } from 'react-icons'
 import { MdArrowLeft, MdArrowRight } from 'react-icons/md'
 import TextField from '../../_general/components/TextField'
 
+const networks = [
+  {
+    name: 'TEST NET',
+    value: 152,
+  },
+  {
+    name: 'MAIN NET',
+    value: 104,
+  },
+]
+
 export type Props = {
   setName: Dispatch<string>
+  setNet: Dispatch<NetworkType>
   setAddress: Dispatch<string>
   setPublicKey: Dispatch<string>
   setPrivateKey: Dispatch<string>
@@ -28,6 +47,7 @@ const ERR = 'ハードウェアウォアレットの接続を確認してくだ�
 
 const Component: React.FC<Props> = ({
   setName,
+  setNet,
   setAddress,
   setPublicKey,
   setPrivateKey,
@@ -40,7 +60,7 @@ const Component: React.FC<Props> = ({
   useEffect(() => {
     getAccount(0)
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [network])
   const next = () => {
     getAccount(num + 1)
     setNum((prev) => prev + 1)
@@ -77,6 +97,21 @@ const Component: React.FC<Props> = ({
     <Root>
       <Center>
         <Typography variant="h5" text={t('accmodal_hardware')} />
+        <FormControl sx={{ width: '100%' }}>
+          <InputLabel id="demo-multiple-name-label">Network</InputLabel>
+          <Select
+            labelId="demo-multiple-name-label"
+            id="demo-multiple-name"
+            value={network}
+            onChange={(e) => setNet(e.target.value as unknown as NetworkType)}
+            input={<OutlinedInput label="Name" />}>
+            {networks.map((n) => (
+              <MenuItem key={n.name} value={n.value}>
+                {n.name}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
         <Wrapper>
           <IconButton onClick={back} disabled={num === 0 || address === ERR}>
             <IconContext.Provider value={{ size: '24px' }}>

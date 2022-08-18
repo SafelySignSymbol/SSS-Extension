@@ -58,14 +58,6 @@ const Component: React.VFC<Props> = ({ state, setState, reload }) => {
 
   const [t] = useTranslation()
 
-  useEffect(() => {
-    if (method === 'CREATE') {
-      const acc = Account.generateNewAccount(nettype)
-      setAddress(acc.address.plain())
-      setPrikey(acc.privateKey)
-    }
-  }, [method, nettype])
-
   const closeModal = () => {
     setState(0)
   }
@@ -204,6 +196,10 @@ const Component: React.VFC<Props> = ({ state, setState, reload }) => {
           <CreateAccount
             setPassword={setPass}
             setName={setName}
+            setNet={setNettype}
+            setAddress={setAddress}
+            setPrikey={setPrikey}
+            net={nettype}
             address={address}
           />
         )
@@ -213,6 +209,7 @@ const Component: React.VFC<Props> = ({ state, setState, reload }) => {
         return (
           <Hardware
             setName={setName}
+            setNet={setNettype}
             setAddress={setAddress}
             setPublicKey={setPubkey}
             setPrivateKey={setPrikey}

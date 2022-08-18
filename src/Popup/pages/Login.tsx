@@ -25,13 +25,14 @@ const Login: React.VFC<Props> = ({ extensionAccount, loginSuccess }) => {
   const [t] = useTranslation()
 
   useEffect(() => {
-    const timer = setInterval(() => {
-      console.log('interval')
-      connectHardwareWallet()
-    }, 1000)
+    if (extensionAccount.type === 'HARD') {
+      const timer = setInterval(() => {
+        connectHardwareWallet()
+      }, 1000)
 
-    return () => {
-      clearInterval(timer)
+      return () => {
+        clearInterval(timer)
+      }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
@@ -56,7 +57,6 @@ const Login: React.VFC<Props> = ({ extensionAccount, loginSuccess }) => {
 
   const connectHardwareWallet = () => {
     TransportWebHID.create(100, 100).then(async (transport) => {
-      console.log('then')
       const ledger = new SymbolLedger(transport, 'XYM')
       try {
         const ledgerNetworkType = LedgerNetworkType.MAIN_NET

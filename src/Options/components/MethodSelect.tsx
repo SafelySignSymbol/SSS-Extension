@@ -30,33 +30,16 @@ const Component: React.FC<Props> = ({ setMethod, setState, setNettype }) => {
       <ListItemButton
         onClick={() => {
           handleClick('CREATE')
-          setNettype(NetworkType.TEST_NET)
-        }}>
-        <Typography variant="h5" text={t('accmodal_create_testnet')} />
-      </ListItemButton>
-      <Divider />
-      <ListItemButton
-        onClick={() => {
-          handleClick('CREATE')
           setNettype(NetworkType.MAIN_NET)
         }}>
-        <Typography variant="h5" text={t('accmodal_create_mainnet')} />
+        <Typography variant="h5" text={t('accmodal_create')} />
       </ListItemButton>
       <Divider />
       <ListItemButton
         onClick={() => {
           handleClick('HARDWARE')
-          setNettype(NetworkType.TEST_NET)
         }}>
-        <Typography variant="h5" text={t('accmodal_hardware_testnet')} />
-      </ListItemButton>
-      <Divider />
-      <ListItemButton
-        onClick={() => {
-          handleClick('HARDWARE')
-          setNettype(NetworkType.MAIN_NET)
-        }}>
-        <Typography variant="h5" text={t('accmodal_hardware_mainnet')} />
+        <Typography variant="h5" text={t('accmodal_hardware')} />
       </ListItemButton>
       <Divider />
     </Root>

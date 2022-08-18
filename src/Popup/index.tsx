@@ -58,6 +58,7 @@ const Popup: React.VFC = () => {
 
   const [pass, setPass] = useState('')
   useEffect(() => {
+    console.log('popup')
     getSetting().then((s) => {
       setPageSetting(s)
       getActiveAccountV2(s.networkType)
