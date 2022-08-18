@@ -24,6 +24,18 @@ const Login: React.VFC<Props> = ({ extensionAccount, loginSuccess }) => {
 
   const [t] = useTranslation()
 
+  useEffect(() => {
+    const timer = setInterval(() => {
+      console.log('interval')
+      connectHardwareWallet()
+    }, 1000)
+
+    return () => {
+      clearInterval(timer)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
   const address = Address.createFromRawAddress(
     extensionAccount.address
   ).pretty()
@@ -43,7 +55,8 @@ const Login: React.VFC<Props> = ({ extensionAccount, loginSuccess }) => {
   }
 
   const connectHardwareWallet = () => {
-    TransportWebHID.create(5000, 5000).then(async (transport) => {
+    TransportWebHID.create(100, 100).then(async (transport) => {
+      console.log('then')
       const ledger = new SymbolLedger(transport, 'XYM')
       try {
         const ledgerNetworkType = LedgerNetworkType.MAIN_NET
@@ -88,11 +101,15 @@ const Login: React.VFC<Props> = ({ extensionAccount, loginSuccess }) => {
               <Typography text={address} variant="h6" />
             </Container>
           </Spacer>
-          <Spacer margin="48px 0px">
-            <Flex>
-              <Button text="CONNECTED" onClick={connectHardwareWallet} />
-            </Flex>
-          </Spacer>
+          <Wrapper>
+            <Typography
+              text="1. ハードウェアウォレットを接続してください"
+              variant="h6"
+            />
+          </Wrapper>
+          <Wrapper>
+            <Typography text="2. Symbolアプリを起動してください" variant="h6" />
+          </Wrapper>
         </Spacer>
       </Container>
     )
