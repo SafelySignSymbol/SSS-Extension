@@ -58,7 +58,13 @@ const Component: React.FC<Props> = ({
   const [num, setNum] = useState(0)
 
   useEffect(() => {
-    getAccount(0)
+    const timer = setInterval(() => {
+      getAccount(num)
+    }, 1000)
+
+    return () => {
+      clearInterval(timer)
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [network])
   const next = () => {
@@ -71,7 +77,7 @@ const Component: React.FC<Props> = ({
   }
 
   const getAccount = (index: number) => {
-    TransportWebHID.create(5000, 5000).then(async (transport) => {
+    TransportWebHID.create(100, 100).then(async (transport) => {
       const ledger = new SymbolLedger(transport, 'XYM')
       try {
         const ledgerNetworkType = network as number as LedgerNetworkType

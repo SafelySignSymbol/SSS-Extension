@@ -3,7 +3,7 @@ import styled from '@emotion/styled'
 
 import { ExtensionAccount } from '../../_general/model/ExtensionAccount'
 import Typography from '../../_general/components/Typography'
-import { Address, NetworkType } from 'symbol-sdk'
+import { Address } from 'symbol-sdk'
 import Spacer from '../../_general/components/Spacer'
 import Button from '../../_general/components/Button'
 import { checkPassword } from '../../_general/lib/validator'
@@ -45,8 +45,7 @@ const Login: React.VFC<Props> = ({ extensionAccount, loginSuccess }) => {
     const check = checkPassword(
       extensionAccount.encriptedPrivateKey,
       pass,
-      extensionAccount.address,
-      extensionAccount.seed
+      extensionAccount.address
     )
     if (check) {
       loginSuccess(pass)

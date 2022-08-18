@@ -1,4 +1,4 @@
-import React, { Dispatch, useEffect, useState } from 'react'
+import React, { Dispatch, useState } from 'react'
 import styled from '@emotion/styled'
 import { encrypt } from '../../_general/lib/Crypto'
 
@@ -79,8 +79,7 @@ const Component: React.VFC<Props> = ({ state, setState, reload }) => {
       prikey,
       pubKey,
       address,
-      'HARD',
-      -1
+      'HARD'
     )
 
     getExtensionAccounts().then((accs) => {
@@ -131,16 +130,14 @@ const Component: React.VFC<Props> = ({ state, setState, reload }) => {
       setMessage(t('accmodal_wrong_keypair'))
       setOpenSB(true)
     } else {
-      const seed = Math.floor((Math.random() * 10000) % 1000)
-      const enpk = encrypt(prikey, pass, seed)
+      const enpk = encrypt(prikey, pass)
 
       const extensionAccount = new ExtensionAccount(
         name,
         enpk,
         acc.publicKey,
         acc.address.plain(),
-        'PASS',
-        seed
+        'PASS'
       )
 
       getExtensionAccounts().then((accs) => {

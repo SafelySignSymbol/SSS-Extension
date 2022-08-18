@@ -52,11 +52,7 @@ const Component: React.VFC<Props> = ({ activeAccount }) => {
 
   const showPrikey = () => {
     try {
-      const pk = decriptPrivateKey(
-        Array.from(String(activeAccount.seed)),
-        activeAccount.encriptedPrivateKey,
-        pass
-      )
+      const pk = decriptPrivateKey(activeAccount.encriptedPrivateKey, pass)
       const acc = Account.createFromPrivateKey(
         pk,
         getNetworkTypeByAddress(activeAccount.address)
