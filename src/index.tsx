@@ -11,7 +11,7 @@ if (process.env.REACT_APP_TARGET === 'popup') {
     <React.StrictMode>
       <Popup />
     </React.StrictMode>,
-    document.getElementById('popup') || document.createElement('div')
+    document.getElementById('root') || document.createElement('div')
   )
 }
 
@@ -20,7 +20,7 @@ if (process.env.REACT_APP_TARGET === 'options') {
     <React.StrictMode>
       <Options />
     </React.StrictMode>,
-    document.getElementById('options') || document.createElement('div')
+    document.getElementById('root') || document.createElement('div')
   )
 }
 

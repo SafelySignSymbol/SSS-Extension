@@ -42,7 +42,7 @@ export const getActiveAccountV2 = (
     getStorage('activeAccounts').then((data) => {
       const activeAccounts: ActiveAccount[] = data as ActiveAccount[]
       if (activeAccounts === undefined || activeAccounts.length === 0) {
-        reject('NOT SET ACTIVE ACCOUNT')
+        reject(`NOT SET ACTIVE ACCOUNT ${activeAccounts}`)
       } else {
         const accs = activeAccounts.filter((a) => a.net_type === network)
         if (accs.length === 0) {
