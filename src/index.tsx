@@ -6,19 +6,23 @@ import reportWebVitals from './reportWebVitals'
 
 import './style.css'
 
-ReactDOM.render(
-  <React.StrictMode>
-    <Popup />
-  </React.StrictMode>,
-  document.getElementById('popup') || document.createElement('div')
-)
+if (process.env.REACT_APP_TARGET === 'popup') {
+  ReactDOM.render(
+    <React.StrictMode>
+      <Popup />
+    </React.StrictMode>,
+    document.getElementById('popup') || document.createElement('div')
+  )
+}
 
-ReactDOM.render(
-  <React.StrictMode>
-    <Options />
-  </React.StrictMode>,
-  document.getElementById('options') || document.createElement('div')
-)
+if (process.env.REACT_APP_TARGET === 'options') {
+  ReactDOM.render(
+    <React.StrictMode>
+      <Options />
+    </React.StrictMode>,
+    document.getElementById('options') || document.createElement('div')
+  )
+}
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))

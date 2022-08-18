@@ -35,8 +35,10 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "GENERATE_SOURCEMAP=false WEBPACK_ENV=production yarn build:react && yarn build:content_scripts && yarn build:background_scripts && yarn build:inject_scripts",
-    "build:react": "react-scripts build && yarn rename:popup && yarn rename:options",
+    "build": "yarn build:react && yarn build:content_scripts && yarn build:background_scripts && yarn build:inject_scripts",
+    "build:react": "yarn build:popup && yarn build:options",
+    "build:popup": "GENERATE_SOURCEMAP=true WEBPACK_ENV=production REACT_APP_TARGET=popup react-scripts build && yarn rename:popup",
+    "build:options": "GENERATE_SOURCEMAP=true WEBPACK_ENV=production REACT_APP_TARGET=options react-scripts build && yarn rename:options",
     "build:content_scripts": "webpack --config webpack.content_scripts.config.ts",
     "build:background_scripts": "webpack --config webpack.background_scripts.config.ts",
     "build:inject_scripts": "webpack --config webpack.inject_scripts.config.ts",
