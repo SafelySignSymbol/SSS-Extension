@@ -23,7 +23,7 @@ const Component: React.FC<Props> = ({
   return (
     <Root>
       <Center>
-        <Typography variant="h5" text={t('accmodal_import_input')} />
+        <Typography fontSize={24} text={t('accmodal_import_input')} />
       </Center>
       <TextField label="Name" setText={setName} variant="text" />
       <TextField label="Address" setText={setAddress} variant="text" />

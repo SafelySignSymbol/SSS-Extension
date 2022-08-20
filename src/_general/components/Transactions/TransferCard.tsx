@@ -14,11 +14,11 @@ const TransferCard: React.VFC<Props> = ({ transaction }) => {
   return (
     <Wrapper>
       <TxAddress address={transaction.recipientAddress} />
-      <Typography text="Message" variant="h5" />
+      <Typography text="Message" fontSize={20} />
       <Spacer MLeft="16px">
-        <Typography text={transaction.message.payload} variant="h5" />
+        <Typography text={transaction.message.payload} fontSize={20} />
       </Spacer>
-      <Typography text="Mosaics" variant="h5" />
+      <Typography text="Mosaics" fontSize={20} />
       {transaction.mosaics.map((mosaic) => {
         return <TxMosaic mosaic={mosaic} key={mosaic.id.toHex()} />
       })}

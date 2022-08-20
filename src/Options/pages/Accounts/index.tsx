@@ -67,6 +67,7 @@ export default Options
 const Root = styled('div')({
   display: 'flex',
   flexDirection: 'column',
+  width: '100%',
 })
 
 const Nettype = styled('div')({

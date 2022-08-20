@@ -102,7 +102,7 @@ const Component: React.FC<Props> = ({
   return (
     <Root>
       <Center>
-        <Typography variant="h5" text={t('accmodal_hardware')} />
+        <Typography fontSize={20} text={t('accmodal_hardware')} />
         <FormControl sx={{ width: '100%' }}>
           <InputLabel id="demo-multiple-name-label">Network</InputLabel>
           <Select
@@ -124,7 +124,7 @@ const Component: React.FC<Props> = ({
               <MdArrowLeft style={{ margin: '6px' }} />
             </IconContext.Provider>
           </IconButton>
-          <Typography text={address} variant="subtitle1" />
+          <Typography text={address} fontSize={20} />
           <IconButton onClick={next} disabled={address === ERR}>
             <IconContext.Provider value={{ size: '24px' }}>
               <MdArrowRight style={{ margin: '6px' }} />

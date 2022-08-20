@@ -56,8 +56,8 @@ const Component: React.FC<Props> = ({
   return (
     <Root>
       <Center>
-        <Typography variant="h5" text={t('accmodal_create_generated_addr')} />
-        <Typography variant="h6" text={address} />
+        <Typography fontSize={24} text={t('accmodal_create_generated_addr')} />
+        <Typography fontSize={20} text={address} />
       </Center>
       <FormControl sx={{ width: '100%' }}>
         <InputLabel id="demo-multiple-name-label">Network</InputLabel>

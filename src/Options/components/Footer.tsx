@@ -85,12 +85,12 @@ const FooterWrapper = styled('div')({
 })
 
 const LogoWrapper = styled('div')({
-  margin: '0px 220px',
+  margin: '0px 64px',
 })
 const Wrapper = styled('div')({
   width: '200px',
   height: 'calc(100% - 80px)',
-  marginTop: '80px',
+  marginTop: '20px',
 })
 
 const Title = styled('div')({
@@ -102,7 +102,7 @@ const Link = styled('a')({
   textDecoration: 'none',
   color: Color.blue,
   display: 'block',
-  margin: '0px 8px',
+  margin: '4px 8px',
   fontSize: '14px',
 })
 const Text = styled('div')({

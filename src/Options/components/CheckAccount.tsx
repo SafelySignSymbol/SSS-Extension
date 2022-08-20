@@ -17,7 +17,7 @@ const Component: React.FC<Props> = ({ name, address, password }) => {
   return (
     <Root>
       <Center>
-        <Typography variant="h5" text={t('accmodal_check')} />
+        <Typography fontSize={24} text={t('accmodal_check')} />
       </Center>
       <InactiveTextField label="Name" value={name} variant="text" />
       <InactiveTextField label="Address" value={address} variant="text" />

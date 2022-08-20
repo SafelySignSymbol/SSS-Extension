@@ -43,7 +43,7 @@ const Component: React.VFC<Props> = ({ address }) => {
         <Title>
           <Typography
             text={t('recent_transaction')}
-            variant="h5"
+            fontSize={20}
             color={Color.grayscale}
           />
           <Pagination>
@@ -62,7 +62,7 @@ const Component: React.VFC<Props> = ({ address }) => {
             <Margin>
               <Typography
                 text={String(pageNum)}
-                variant="subtitle2"
+                fontSize={20}
                 color={Color.base_black}
               />
             </Margin>

@@ -83,7 +83,7 @@ const Component: React.VFC<Props> = ({ activeAccount }) => {
         <Name>
           <AvatarWrapper>
             <Avatar
-              size={32}
+              size={40}
               name={activeAccount.address}
               variant="beam"
               colors={
@@ -94,24 +94,24 @@ const Component: React.VFC<Props> = ({ activeAccount }) => {
               }
             />
           </AvatarWrapper>
-          <Typography text={activeAccount.name} variant="h5" />
+          <Typography text={activeAccount.name} fontSize={32} />
         </Name>
-        <Flex>
-          <div>
-            <Typography text="Address" variant="h5" />
-            <Typography text={activeAccount.address} variant="h6" />
-          </div>
+        <Flex isLast={false}>
+          <VerticalMargin>
+            <Typography text="Address" fontSize={24} />
+            <Typography text={activeAccount.address} fontSize={20} />
+          </VerticalMargin>
           <IconButton size="small" onClick={() => copy(activeAccount.address)}>
             <IconContext.Provider value={{ size: '24px' }}>
               <HiOutlineClipboardCopy style={{ margin: '6px' }} />
             </IconContext.Provider>
           </IconButton>
         </Flex>
-        <Flex>
-          <div>
-            <Typography text="PublicKey" variant="h5" />
-            <Typography text={activeAccount.publicKey} variant="h6" />
-          </div>
+        <Flex isLast={activeAccount.type === 'HARD'}>
+          <VerticalMargin>
+            <Typography text="PublicKey" fontSize={24} />
+            <Typography text={activeAccount.publicKey} fontSize={20} />
+          </VerticalMargin>
           <IconButton
             size="small"
             onClick={() => copy(activeAccount.publicKey)}>
@@ -121,11 +121,11 @@ const Component: React.VFC<Props> = ({ activeAccount }) => {
           </IconButton>
         </Flex>
         {activeAccount.type !== 'HARD' && (
-          <Flex>
-            <div>
-              <Typography text="PrivateKey" variant="h5" />
-              <Typography text={prikey} variant="h6" />
-            </div>
+          <Flex isLast={true}>
+            <VerticalMargin>
+              <Typography text="PrivateKey" fontSize={24} />
+              <Typography text={prikey} fontSize={20} />
+            </VerticalMargin>
             {prikey === asterisk ? (
               <IconButton size="small" onClick={() => setOpen(true)}>
                 <IconContext.Provider value={{ size: '24px' }}>
@@ -145,7 +145,7 @@ const Component: React.VFC<Props> = ({ activeAccount }) => {
       <Modal open={open} onClose={() => setOpen(false)}>
         <ModalWrapper>
           <ModalHeader>
-            <Typography variant="h5" text={t('enter_password')} />
+            <Typography fontSize={20} text={t('enter_password')} />
             <IconButton size="small" onClick={() => setOpen(false)}>
               <IconContext.Provider value={{ size: '24px' }}>
                 <IoMdClose style={{ margin: '6px' }} />
@@ -180,26 +180,27 @@ const Component: React.VFC<Props> = ({ activeAccount }) => {
 export default Component
 
 const Wrapper = styled('div')({
-  background: 'white',
-  padding: '16px',
-  margin: '8px',
+  background: Color.pure_white,
+  padding: '40px',
+  margin: '16px 8px',
 })
 
 const Root = styled('div')({
-  margin: '64px 10vw 0px',
+  margin: '32px 0px 0px',
   minWidth: '60vw',
   width: '800px',
 })
 
-const Flex = styled('div')({
+const Flex = styled('div')((p: { isLast: boolean }) => ({
   display: 'flex',
   flexDirection: 'row',
   justifyContent: 'space-between',
-  marginBottom: '8px',
-})
+  marginBottom: p.isLast ? '0px' : '12px',
+}))
 
 const Name = styled('div')({
-  marginBottom: '8px',
+  marginBottom: '16px',
+  height: '50px',
   display: 'flex',
   alignItems: 'center',
 })
@@ -240,4 +241,10 @@ const TFWrapper = styled('div')({
 
 const AvatarWrapper = styled('div')({
   marginRight: '16px',
+})
+
+const VerticalMargin = styled('div')({
+  ':nth-child(1)': {
+    marginBottom: '4px',
+  },
 })

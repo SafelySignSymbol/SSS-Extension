@@ -235,11 +235,15 @@ const Component: React.VFC<Props> = ({ state, setState, reload }) => {
                 <MdArrowLeft
                   style={{ color: Color.base_white, margin: '0px 16px' }}
                 />
-                <Typography variant="h4" text="Back" color={Color.base_white} />
+                <Typography
+                  fontSize={32}
+                  text="Back"
+                  color={Color.base_white}
+                />
               </IconContext.Provider>
             </BackButton>
             <NextButton onClick={nextImport}>
-              <Typography variant="h4" text="Next" color={Color.base_white} />
+              <Typography fontSize={32} text="Next" color={Color.base_white} />
               <IconContext.Provider value={{ size: '64px' }}>
                 <MdArrowRight
                   style={{ color: Color.base_white, margin: '0px 16px' }}
@@ -257,11 +261,15 @@ const Component: React.VFC<Props> = ({ state, setState, reload }) => {
                 <MdArrowLeft
                   style={{ color: Color.base_white, margin: '0px 16px' }}
                 />
-                <Typography variant="h4" text="Back" color={Color.base_white} />
+                <Typography
+                  fontSize={32}
+                  text="Back"
+                  color={Color.base_white}
+                />
               </IconContext.Provider>
             </BackButton>
             <NextButton onClick={nextCreate}>
-              <Typography variant="h4" text="Next" color={Color.base_white} />
+              <Typography fontSize={32} text="Next" color={Color.base_white} />
               <IconContext.Provider value={{ size: '64px' }}>
                 <MdArrowRight
                   style={{ color: Color.base_white, margin: '0px 16px' }}
@@ -279,11 +287,15 @@ const Component: React.VFC<Props> = ({ state, setState, reload }) => {
                 <MdArrowLeft
                   style={{ color: Color.base_white, margin: '0px 16px' }}
                 />
-                <Typography variant="h4" text="Back" color={Color.base_white} />
+                <Typography
+                  fontSize={32}
+                  text="Back"
+                  color={Color.base_white}
+                />
               </IconContext.Provider>
             </BackButton>
             <NextButton onClick={nextCreate}>
-              <Typography variant="h4" text="Next" color={Color.base_white} />
+              <Typography fontSize={32} text="Next" color={Color.base_white} />
               <IconContext.Provider value={{ size: '64px' }}>
                 <MdArrowRight
                   style={{ color: Color.base_white, margin: '0px 16px' }}
@@ -303,11 +315,11 @@ const Component: React.VFC<Props> = ({ state, setState, reload }) => {
               <MdArrowLeft
                 style={{ color: Color.base_white, margin: '0px 16px' }}
               />
-              <Typography variant="h4" text="Back" color={Color.base_white} />
+              <Typography fontSize={32} text="Back" color={Color.base_white} />
             </IconContext.Provider>
           </BackButton>
           <NextButton onClick={submit}>
-            <Typography variant="h4" text="Done" color={Color.base_white} />
+            <Typography fontSize={32} text="Done" color={Color.base_white} />
             <IconContext.Provider value={{ size: '64px' }}>
               <MdArrowRight
                 style={{ color: Color.base_white, margin: '0px 16px' }}
@@ -356,7 +368,7 @@ const Component: React.VFC<Props> = ({ state, setState, reload }) => {
       <Modal open={state !== 0} onClose={closeModal}>
         <Wrapper>
           <ModalHeader>
-            <Typography variant="h5" text={t('accmodal_signup')} />
+            <Typography fontSize={28} text={t('accmodal_signup')} />
             <IconButton size="small" onClick={() => setState(0)}>
               <IconContext.Provider value={{ size: '24px' }}>
                 <IoMdClose style={{ margin: '6px' }} />
@@ -414,7 +426,7 @@ const ModalHeader = styled('div')({
   display: 'flex',
   justifyContent: 'space-between',
   alignItems: 'center',
-  padding: '16px',
+  padding: '24px 32px',
 })
 
 const Contents = styled('div')({

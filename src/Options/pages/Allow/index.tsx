@@ -23,8 +23,8 @@ const Options: React.VFC<Props> = ({ reload, update }) => {
   return (
     <Wrapper>
       <Wrap>
-        <Typography text={t('allowlist_title')} variant="h5" />
-        <Typography text={t('allowlist_title_e')} variant="subtitle1" />
+        <Typography text={t('allowlist_title')} fontSize={20} />
+        <Typography text={t('allowlist_title_e')} fontSize={20} />
       </Wrap>
       <AllowList allowlist={allowList} reload={reload} />
     </Wrapper>
@@ -34,9 +34,9 @@ const Options: React.VFC<Props> = ({ reload, update }) => {
 export default Options
 
 const Wrapper = styled('div')({
-  margin: '32px 10vw',
+  margin: '32px 0px',
   minWidth: '60vw',
-  width: '600px',
+  width: '1000px',
 })
 const Wrap = styled('div')({
   margin: '8px',

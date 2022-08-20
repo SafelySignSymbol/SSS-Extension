@@ -24,7 +24,7 @@ const Component: React.VFC<Props> = ({ transaction }) => {
     <Wrapper>
       <Header>
         <TxType>
-          <Typography text={getTransactionType(tx.type)} variant="h5" />
+          <Typography text={getTransactionType(tx.type)} fontSize={20} />
           <Tooltip title="MAX FEE">
             <Chip label={`${Number(tx.maxFee.toString()) / 1000000} XYM`} />
           </Tooltip>

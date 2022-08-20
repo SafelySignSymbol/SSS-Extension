@@ -23,8 +23,11 @@ const Component: React.FC<Props> = ({ setMethod, setState, setNettype }) => {
 
   return (
     <Root>
+      <Divider />
       <ListItemButton onClick={() => handleClick('IMPORT')}>
-        <Typography variant="h5" text={t('accmodal_import')} />
+        <TextWrapper>
+          <Typography fontSize={20} text={t('accmodal_import')} />
+        </TextWrapper>
       </ListItemButton>
       <Divider />
       <ListItemButton
@@ -32,14 +35,18 @@ const Component: React.FC<Props> = ({ setMethod, setState, setNettype }) => {
           handleClick('CREATE')
           setNettype(NetworkType.MAIN_NET)
         }}>
-        <Typography variant="h5" text={t('accmodal_create')} />
+        <TextWrapper>
+          <Typography fontSize={20} text={t('accmodal_create')} />
+        </TextWrapper>
       </ListItemButton>
       <Divider />
       <ListItemButton
         onClick={() => {
           handleClick('HARDWARE')
         }}>
-        <Typography variant="h5" text={t('accmodal_hardware')} />
+        <TextWrapper>
+          <Typography fontSize={20} text={t('accmodal_hardware')} />
+        </TextWrapper>
       </ListItemButton>
       <Divider />
     </Root>
@@ -51,4 +58,11 @@ export default Component
 const Root = styled('div')({
   width: '100%',
   height: '400px',
+})
+
+const TextWrapper = styled('div')({
+  marginLeft: '16px',
+  height: '40px',
+  display: 'flex',
+  alignItems: 'center',
 })

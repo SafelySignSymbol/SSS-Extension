@@ -50,10 +50,10 @@ const TxAddress: React.VFC<Props> = ({ address }) => {
     <Wrapper>
       <Typography
         text={address instanceof NamespaceId ? 'NameSpace' : 'Address'}
-        variant="h5"
+        fontSize={20}
       />
       <Center>
-        <Typography text={addr} variant="h6" />
+        <Typography text={addr} fontSize={20} />
       </Center>
     </Wrapper>
   )

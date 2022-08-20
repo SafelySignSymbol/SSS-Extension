@@ -88,7 +88,7 @@ const TransactionCard: React.VFC<Props> = ({ transaction }) => {
 
   return (
     <Center>
-      <Typography text="Can not preview this Transaction." variant="h4" />
+      <Typography text="Can not preview this Transaction." fontSize={20} />
     </Center>
   )
 }

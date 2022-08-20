@@ -142,8 +142,8 @@ const Options: React.VFC<Props> = ({ reload, update, setting, setSetting }) => {
     <Root>
       <Wrapper>
         <Column>
-          <Typography text={t('setting_sign_history')} variant="h5" />
-          <Typography text={t('setting_sign_history_e')} variant="subtitle1" />
+          <Typography text={t('setting_sign_history')} fontSize={24} />
+          <Typography text={t('setting_sign_history_e')} fontSize={16} />
         </Column>
         <Center>
           <Button text={t('setting_sign_history_btn')} onClick={save} />
@@ -152,11 +152,8 @@ const Options: React.VFC<Props> = ({ reload, update, setting, setSetting }) => {
 
       <Wrapper>
         <Column>
-          <Typography text={t('setting_change_network')} variant="h5" />
-          <Typography
-            text={t('setting_change_network_e')}
-            variant="subtitle1"
-          />
+          <Typography text={t('setting_change_network')} fontSize={24} />
+          <Typography text={t('setting_change_network_e')} fontSize={16} />
         </Column>
         <Center>
           <FormControl sx={{ width: 160 }}>
@@ -179,11 +176,8 @@ const Options: React.VFC<Props> = ({ reload, update, setting, setSetting }) => {
 
       <Wrapper>
         <Column>
-          <Typography text={t('setting_change_langage')} variant="h5" />
-          <Typography
-            text={t('setting_change_langage_e')}
-            variant="subtitle1"
-          />
+          <Typography text={t('setting_change_langage')} fontSize={24} />
+          <Typography text={t('setting_change_langage_e')} fontSize={16} />
         </Column>
         <Center>
           <FormControl sx={{ width: 160 }}>
@@ -214,12 +208,12 @@ const Options: React.VFC<Props> = ({ reload, update, setting, setSetting }) => {
             }
             aria-controls="panel1a-content"
             id="panel1a-header">
-            <Typography text={t('setting_delete')} variant="h5" />
+            <Typography text={t('setting_delete')} fontSize={24} />
           </AccordionSummary>
           <AccordionDetails>
             <Wrapper>
               <Column>
-                <Typography text={t('setting_delete_account')} variant="h5" />
+                <Typography text={t('setting_delete_account')} fontSize={24} />
               </Column>
               <Center>
                 <Button text="RESET" onClick={initAccount} />
@@ -227,7 +221,7 @@ const Options: React.VFC<Props> = ({ reload, update, setting, setSetting }) => {
             </Wrapper>
             <Wrapper>
               <Column>
-                <Typography text={t('setting_delete_domain')} variant="h5" />
+                <Typography text={t('setting_delete_domain')} fontSize={24} />
               </Column>
               <Center>
                 <Button text="RESET" onClick={initDomain} />
@@ -235,7 +229,7 @@ const Options: React.VFC<Props> = ({ reload, update, setting, setSetting }) => {
             </Wrapper>
             <Wrapper>
               <Column>
-                <Typography text={t('setting_delete_all')} variant="h5" />
+                <Typography text={t('setting_delete_all')} fontSize={24} />
               </Column>
               <Center>
                 <Button text="RESET" onClick={init} />
@@ -251,9 +245,9 @@ const Options: React.VFC<Props> = ({ reload, update, setting, setSetting }) => {
 export default Options
 
 const Root = styled('div')({
-  margin: '32px 10vw',
+  margin: '32px 0px',
   minWidth: '60vw',
-  width: '600px',
+  width: '1000px',
 })
 const Wrapper = styled('div')({
   display: 'flex',

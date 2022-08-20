@@ -93,7 +93,7 @@ const Component: React.VFC<Props> = ({ allowlist, reload }) => {
       {allowlist.map((e, i) => {
         return (
           <Wrap key={i}>
-            <Typography text={e} variant="h5" />
+            <Typography text={e} fontSize={24} />
             <IconWrapper>
               <IconButton
                 size="small"
@@ -133,7 +133,7 @@ const Wrap = styled('div')({
   justifyContent: 'space-between',
   alignItems: 'center',
   background: 'white',
-  padding: '16px',
+  padding: '16px 32px',
   margin: '8px',
 })
 const IconWrapper = styled('div')({

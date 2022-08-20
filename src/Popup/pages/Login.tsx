@@ -91,23 +91,26 @@ const Login: React.VFC<Props> = ({ extensionAccount, loginSuccess }) => {
         <Spacer margin="16px 8px">
           <Spacer margin="32px 0px">
             <Wrapper>
-              <Typography text="Login" variant="h4" />
+              <Typography text="Login" fontSize={20} />
             </Wrapper>
           </Spacer>
           <Spacer margin="16px 0px">
             <Container>
-              <Typography text={extensionAccount.name} variant="h4" />
-              <Typography text={address} variant="h6" />
+              <Typography text={extensionAccount.name} fontSize={20} />
+              <Typography text={address} fontSize={20} />
             </Container>
           </Spacer>
           <Wrapper>
             <Typography
               text="1. ハードウェアウォレットを接続してください"
-              variant="h6"
+              fontSize={20}
             />
           </Wrapper>
           <Wrapper>
-            <Typography text="2. Symbolアプリを起動してください" variant="h6" />
+            <Typography
+              text="2. Symbolアプリを起動してください"
+              fontSize={20}
+            />
           </Wrapper>
         </Spacer>
       </Container>
@@ -119,13 +122,13 @@ const Login: React.VFC<Props> = ({ extensionAccount, loginSuccess }) => {
       <Spacer margin="16px 8px">
         <Spacer margin="32px 0px">
           <Wrapper>
-            <Typography text="Login" variant="h4" />
+            <Typography text="Login" fontSize={20} />
           </Wrapper>
         </Spacer>
         <Spacer margin="16px 0px">
           <Container>
-            <Typography text={extensionAccount.name} variant="h4" />
-            <Typography text={address} variant="h6" />
+            <Typography text={extensionAccount.name} fontSize={20} />
+            <Typography text={address} fontSize={20} />
           </Container>
         </Spacer>
         <Spacer margin="48px 0px">

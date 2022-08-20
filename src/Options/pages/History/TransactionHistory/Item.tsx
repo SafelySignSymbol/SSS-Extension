@@ -50,7 +50,7 @@ export default Component
 const Wrap = styled('div')({
   display: 'flex',
   alignItems: 'center',
-  margin: '8px',
+  margin: '16px',
 })
 
 const Right = styled('div')({
@@ -70,7 +70,7 @@ const Time = styled('div')({
 })
 
 const SLink = styled(Link)({
-  fontSize: '16px',
+  fontSize: '20px',
   textDecoration: 'none',
   color: Color.base_black,
 })
@@ -79,6 +79,6 @@ const HashWrapper = styled('div')({
   display: 'flex',
   alignItems: 'center',
   '> :nth-child(1)': {
-    marginRight: '16px',
+    marginRight: '32px',
   },
 })

@@ -212,10 +212,10 @@ const Main: React.VFC<Props> = ({
         <Contents>
           <Center>
             <M>
-              <Typography text="Authentication To" variant="h2" />
+              <Typography text="Authentication To" fontSize={20} />
             </M>
-            <Typography text={addr.plain().substring(0, 19)} variant="h3" />
-            <Typography text={addr.plain().substring(19)} variant="h3" />
+            <Typography text={addr.plain().substring(0, 19)} fontSize={20} />
+            <Typography text={addr.plain().substring(19)} fontSize={20} />
           </Center>
         </Contents>
       )
@@ -242,7 +242,7 @@ const Main: React.VFC<Props> = ({
       <Header>
         <SquareLogo onClick={() => console.log('')} />
         <Grid>
-          <Typography text={extensionAccount.address} variant="h6" />
+          <Typography text={extensionAccount.address} fontSize={20} />
         </Grid>
         <IconButton onClick={() => setOpen(true)}>
           <IconContext.Provider value={{ size: '32px' }}>
@@ -251,7 +251,7 @@ const Main: React.VFC<Props> = ({
         </IconButton>
         <Modal open={open} onClose={() => setOpen(false)}>
           <SPaper>
-            <Typography variant="h3" text="Change Account" />
+            <Typography fontSize={20} text="Change Account" />
             <List
               sx={{
                 width: '100%',
@@ -262,7 +262,7 @@ const Main: React.VFC<Props> = ({
               {accounts.map((a, i) => {
                 return (
                   <SListItem onClick={() => handleClick(i)} key={a.address}>
-                    <Typography variant="h5" text={a.name} />
+                    <Typography fontSize={20} text={a.name} />
                     <Chip
                       label={
                         getNetworkTypeByAddress(a.address) === 152
@@ -282,7 +282,7 @@ const Main: React.VFC<Props> = ({
         <Spacer margin="8px">
           {extensionAccount.type === 'HARD' ? (
             <Typography
-              variant="h5"
+              fontSize={20}
               text="Please approve it in the hardware wallet"
             />
           ) : (

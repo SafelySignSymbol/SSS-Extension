@@ -149,4 +149,6 @@ const Root = styled('div')({
 const Contents = styled('div')({
   display: 'flex',
   minHeight: 'calc(100% - 320px)',
+  width: 'calc(100vw - 128px)',
+  margin: '0px 64px',
 })

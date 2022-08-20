@@ -6,7 +6,6 @@ import { Address, NetworkType } from 'symbol-sdk'
 
 import { getAddressXym } from '../../../../_general/lib/Symbol/SymbolService'
 import Color, {
-  addAlpha,
   MainNetColors,
   TestNetColors,
 } from '../../../../_general/utils/Color'
@@ -44,7 +43,7 @@ const Component: React.VFC<Props> = ({ address, name }) => {
                 : TestNetColors
             }
           />
-          <Typography text={name} variant="h5" />
+          <Typography text={name} fontSize={32} />
         </NameWrapper>
         <Wrap>
           <Amount color={Color.base_black} float={false}>
@@ -53,14 +52,14 @@ const Component: React.VFC<Props> = ({ address, name }) => {
           <Amount color={Color.base_black} float={false}>
             {amount.length === 2 && '.'}
           </Amount>
-          <Amount color={addAlpha(Color.base_black, 0.8)} float={true}>
+          <Amount color={Color.base_black} float={true}>
             {amount[1]}
           </Amount>
           <XYM>XYM</XYM>
         </Wrap>
       </HeaderWrapper>
       <AddressWrapper>
-        <Typography text={address.pretty()} variant="h5" />
+        <Typography text={address.pretty()} fontSize={24} />
       </AddressWrapper>
     </Root>
   )
@@ -69,7 +68,7 @@ const Component: React.VFC<Props> = ({ address, name }) => {
 export default Component
 
 const Root = styled('div')({
-  padding: '32px',
+  padding: '40px',
   width: '800px',
   background: Color.pure_white,
 })

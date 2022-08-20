@@ -6,9 +6,9 @@ const Color = {
   sky: 'rgb(38, 197, 243)',
   blue: 'rgb(58, 95, 168)',
   base_white: 'rgb(238, 238, 238)',
+  pure_white: 'rgb(255, 255, 255)',
   base_black: 'rgb(51, 51, 51)',
   gray_black: 'rgb(94, 94, 94)',
-  pure_white: 'rgb(255, 255, 255)',
 }
 export default Color
 

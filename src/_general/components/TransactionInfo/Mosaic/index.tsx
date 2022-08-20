@@ -74,10 +74,10 @@ const TxMosaic: React.VFC<Props> = ({ mosaic }) => {
   return (
     <Wrapper>
       <Center>
-        <Typography text={id} variant="h5" />
+        <Typography text={id} fontSize={20} />
         <Typography
           text={String(mosaic.amount.compact() / Math.pow(10, div))}
-          variant="subtitle1"
+          fontSize={20}
         />
       </Center>
     </Wrapper>

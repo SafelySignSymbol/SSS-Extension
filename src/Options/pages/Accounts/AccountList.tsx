@@ -55,26 +55,26 @@ const Component: React.VFC<Props> = ({
                     }
                   />
                 </AvatarWrapper>
-                <Typography text={name} variant="h5" />
+                <Typography text={name} fontSize={28} />
               </NameWrpper>
               <AccountMenu account={acc} reload={reload} setting={setting} />
             </Name>
-            <Flex>
-              <div>
-                <Typography text="Address" variant="h5" />
-                <Typography text={acc.address} variant="h6" />
-              </div>
+            <Flex isLast={false}>
+              <VerticalMargin>
+                <Typography text="Address" fontSize={24} />
+                <Typography text={acc.address} fontSize={20} />
+              </VerticalMargin>
               <IconButton size="small" onClick={() => copy(acc.address)}>
                 <IconContext.Provider value={{ size: '24px' }}>
                   <HiOutlineClipboardCopy style={{ margin: '6px' }} />
                 </IconContext.Provider>
               </IconButton>
             </Flex>
-            <Flex>
-              <div>
-                <Typography text="PublicKey" variant="h5" />
-                <Typography text={acc.publicKey} variant="h6" />
-              </div>
+            <Flex isLast={true}>
+              <VerticalMargin>
+                <Typography text="PublicKey" fontSize={24} />
+                <Typography text={acc.publicKey} fontSize={20} />
+              </VerticalMargin>
               <IconButton size="small" onClick={() => copy(acc.publicKey)}>
                 <IconContext.Provider value={{ size: '24px' }}>
                   <HiOutlineClipboardCopy style={{ margin: '6px' }} />
@@ -92,22 +92,21 @@ export default Component
 
 const Wrapper = styled('div')({
   background: 'white',
-  padding: '16px',
-  margin: '8px',
+  padding: '40px',
+  margin: '16px 8px',
 })
 
 const Root = styled('div')({
-  margin: '32px 10vw',
   minWidth: '60vw',
   width: '800px',
 })
 
-const Flex = styled('div')({
+const Flex = styled('div')((p: { isLast: boolean }) => ({
   display: 'flex',
   flexDirection: 'row',
   justifyContent: 'space-between',
-  marginBottom: '8px',
-})
+  marginBottom: p.isLast ? '0px' : '12px',
+}))
 
 const Name = styled('div')({
   marginBottom: '8px',
@@ -122,4 +121,10 @@ const AvatarWrapper = styled('div')({
 const NameWrpper = styled('div')({
   display: 'flex',
   alignItems: 'center',
+})
+
+const VerticalMargin = styled('div')({
+  ':nth-child(1)': {
+    marginBottom: '4px',
+  },
 })
