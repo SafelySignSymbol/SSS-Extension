@@ -38,8 +38,9 @@ const Options: React.VFC<Props> = ({ reload, update, setting }) => {
 export default Options
 
 const Root = styled('div')({
-  margin: '32px 0px',
   minWidth: '60vw',
   width: '1400px',
-  marginTop: '16px',
+  marginTop: '48px',
+  marginBottom: '32px',
+  marginLeft: '8px',
 })

@@ -7,6 +7,7 @@
   "accmodal_import_input": "アカウント情報を入力",
   "accmodal_create_generated_addr": "生成されたアドレス",
   "accmodal_check": "アカウントを確認",
+  "accmodal_check_hardware": "ハードウェアウォアレットの接続を確認してください",
   "accmodal_wrong_address_format": "アドレスのフォーマットが間違っています",
   "accmodal_wrong_prikey_format": "秘密鍵のフォーマットが間違っています",
   "accmodal_wrong_keypair": "秘密鍵とアドレスのペアが一致しません",

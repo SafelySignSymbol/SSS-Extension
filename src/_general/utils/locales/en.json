@@ -7,6 +7,7 @@
   "accmodal_import_input": "Enter account information",
   "accmodal_create_generated_addr": "Generated Address",
   "accmodal_check": "Check your Account",
+  "accmodal_check_hardware": "Check the hardware wallet connection",
   "accmodal_wrong_address_format": "Invalid address format",
   "accmodal_wrong_prikey_format": "Invalid private key format",
   "accmodal_wrong_keypair": "Private key does not match given address",

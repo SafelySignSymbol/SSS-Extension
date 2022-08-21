@@ -2,8 +2,8 @@ import React, { Dispatch } from 'react'
 import styled from '@emotion/styled'
 import { ListItemButton, Divider } from '@mui/material'
 
-import Typography from '../../_general/components/Typography'
-import { Method } from './AccountModal'
+import Typography from '../../../_general/components/Typography'
+import { Method } from '.'
 import { NetworkType } from 'symbol-sdk'
 import { useTranslation } from 'react-i18next'
 

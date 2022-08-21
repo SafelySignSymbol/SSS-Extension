@@ -1,9 +1,9 @@
 import React, { Dispatch } from 'react'
 import styled from '@emotion/styled'
 
-import TextField from '../../_general/components/TextField'
-import PasswordTextField from '../../_general/components/TextField/PasswordTextField'
-import Typography from '../../_general/components/Typography'
+import TextField from '../../../_general/components/TextField'
+import PasswordTextField from '../../../_general/components/TextField/PasswordTextField'
+import Typography from '../../../_general/components/Typography'
 import { useTranslation } from 'react-i18next'
 
 export type Props = {
@@ -36,7 +36,7 @@ const Component: React.FC<Props> = ({
 export default Component
 
 const Root = styled('div')({
-  width: 'calc(100% - 32px)',
+  width: 'calc(100% - 64px)',
   height: '400px',
   display: 'flex',
   flexDirection: 'column',

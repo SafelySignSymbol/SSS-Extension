@@ -1,20 +1,23 @@
 import React, { Dispatch, useEffect, useState } from 'react'
 import styled from '@emotion/styled'
 import { Box, Divider, IconButton, Menu, MenuItem } from '@mui/material'
-import Logo from '../../_general/components/Logo'
-import Spacer from '../../_general/components/Spacer'
-import { Page, Select } from '../index'
+import Logo from '../../../_general/components/Logo'
+import Spacer from '../../../_general/components/Spacer'
+import { Page, Select } from '../../index'
 import Avatar from 'boring-avatars'
 
 import { useTranslation } from 'react-i18next'
-import { ExtensionAccount } from '../../_general/model/ExtensionAccount'
+import { ExtensionAccount } from '../../../_general/model/ExtensionAccount'
 import {
   // getActiveAccount,
   getActiveAccountV2,
   Setting,
-} from '../../_general/lib/Storage'
-import Color, { MainNetColors, TestNetColors } from '../../_general/utils/Color'
-import { getNetworkTypeByAddress } from '../../_general/lib/Symbol/Config'
+} from '../../../_general/lib/Storage'
+import Color, {
+  MainNetColors,
+  TestNetColors,
+} from '../../../_general/utils/Color'
+import { getNetworkTypeByAddress } from '../../../_general/lib/Symbol/Config'
 import { NetworkType } from 'symbol-sdk'
 
 export interface Props {

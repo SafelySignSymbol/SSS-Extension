@@ -1,7 +1,7 @@
 import React, { Dispatch, useEffect, useState } from 'react'
 import styled from '@emotion/styled'
 
-import Typography from '../../_general/components/Typography'
+import Typography from '../../../_general/components/Typography'
 import { useTranslation } from 'react-i18next'
 import TransportWebHID from '@ledgerhq/hw-transport-webhid'
 import {
@@ -20,7 +20,7 @@ import {
 } from '@mui/material'
 import { IconContext } from 'react-icons'
 import { MdArrowLeft, MdArrowRight } from 'react-icons/md'
-import TextField from '../../_general/components/TextField'
+import TextField from '../../../_general/components/TextField'
 
 const networks = [
   {
@@ -61,6 +61,7 @@ const Component: React.FC<Props> = ({
     const timer = setInterval(() => {
       getAccount(num)
     }, 1000)
+    setAddress(t('accmodal_check_hardware'))
 
     return () => {
       clearInterval(timer)
@@ -93,7 +94,7 @@ const Component: React.FC<Props> = ({
         setPublicKey(publicKey)
         setPrivateKey(path)
       } catch {
-        setAddress(ERR)
+        setAddress(t('accmodal_check_hardware'))
       } finally {
         await ledger.close()
       }
@@ -102,7 +103,9 @@ const Component: React.FC<Props> = ({
   return (
     <Root>
       <Center>
-        <Typography fontSize={20} text={t('accmodal_hardware')} />
+        <TextWrapper>
+          <Typography fontSize={24} text={t('accmodal_hardware')} />
+        </TextWrapper>
         <FormControl sx={{ width: '100%' }}>
           <InputLabel id="demo-multiple-name-label">Network</InputLabel>
           <Select
@@ -119,14 +122,20 @@ const Component: React.FC<Props> = ({
           </Select>
         </FormControl>
         <Wrapper>
-          <IconButton onClick={back} disabled={num === 0 || address === ERR}>
-            <IconContext.Provider value={{ size: '24px' }}>
+          <IconButton
+            onClick={back}
+            disabled={num === 0 || address === ERR}
+            sx={{ marginLeft: '-24px' }}>
+            <IconContext.Provider value={{ size: '48px' }}>
               <MdArrowLeft style={{ margin: '6px' }} />
             </IconContext.Provider>
           </IconButton>
-          <Typography text={address} fontSize={20} />
-          <IconButton onClick={next} disabled={address === ERR}>
-            <IconContext.Provider value={{ size: '24px' }}>
+          <Typography text={address} fontSize={16} />
+          <IconButton
+            onClick={next}
+            disabled={address === ERR}
+            sx={{ marginRight: '-24px' }}>
+            <IconContext.Provider value={{ size: '48px' }}>
               <MdArrowRight style={{ margin: '6px' }} />
             </IconContext.Provider>
           </IconButton>
@@ -140,7 +149,7 @@ const Component: React.FC<Props> = ({
 export default Component
 
 const Root = styled('div')({
-  width: 'calc(100% - 32px)',
+  width: 'calc(100% - 64px)',
   display: 'flex',
   flexDirection: 'column',
   justifyContent: 'center',
@@ -151,9 +160,8 @@ const Center = styled('div')({
   flexDirection: 'column',
   justifyContent: 'center',
   alignItems: 'center',
-  margin: '16px 0px',
   '> *': {
-    margin: '4px',
+    margin: '4px 0px',
   },
 })
 
@@ -161,11 +169,9 @@ const Wrapper = styled('div')({
   display: 'flex',
   justifyContent: 'space-between',
   alignItems: 'center',
+  width: '100%',
 })
 
-const TFWrapper = styled('div')({
-  width: '100%',
-  '& > div': {
-    width: '100%',
-  },
+const TextWrapper = styled('div')({
+  marginBottom: '20px',
 })

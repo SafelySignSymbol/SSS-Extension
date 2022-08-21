@@ -3,7 +3,7 @@ import styled from '@emotion/styled'
 import { NetworkType, UInt64 } from 'symbol-sdk'
 import { getTimeStamp } from '../../../../_general/lib/Symbol/SymbolService'
 import { getExplorerLinkFromHash } from '../../../../_general/lib/Symbol/Config'
-import Color from '../../../../_general/utils/Color'
+import Color, { UtilColors } from '../../../../_general/utils/Color'
 import { Link } from '@mui/material'
 import Avatar from 'boring-avatars'
 export type Props = {
@@ -28,7 +28,7 @@ const Component: React.VFC<Props> = ({ type, hash, netType, height }) => {
   return (
     <Wrap>
       <HashWrapper>
-        <Avatar size={32} name={hash} variant="bauhaus" />
+        <Avatar size={32} name={hash} variant="bauhaus" colors={UtilColors} />
         <SLink href={getExplorerLinkFromHash(netType, hash)} target="_brank">
           {hash}
         </SLink>

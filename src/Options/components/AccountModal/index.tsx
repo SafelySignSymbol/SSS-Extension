@@ -1,6 +1,6 @@
 import React, { Dispatch, useState } from 'react'
 import styled from '@emotion/styled'
-import { encrypt } from '../../_general/lib/Crypto'
+import { encrypt } from '../../../_general/lib/Crypto'
 
 import {
   Alert,
@@ -19,18 +19,18 @@ import {
   addExtensionAccount,
   changeNetwork,
   getExtensionAccounts,
-} from '../../_general/lib/Storage'
-import { ExtensionAccount } from '../../_general/model/ExtensionAccount'
+} from '../../../_general/lib/Storage'
+import { ExtensionAccount } from '../../../_general/model/ExtensionAccount'
 import { useTranslation } from 'react-i18next'
-import Typography from '../../_general/components/Typography'
-import Color, { addAlpha } from '../../_general/utils/Color'
+import Typography from '../../../_general/components/Typography'
+import Color, { addAlpha } from '../../../_general/utils/Color'
 import { IconContext } from 'react-icons'
 import MethodSelect from './MethodSelect'
 import ImportPriKey from './ImportPriKey'
 import CreateAccount from './CreateAccount'
 
 import { MdArrowRight, MdArrowLeft } from 'react-icons/md'
-import { getNetworkTypeByAddress } from '../../_general/lib/Symbol/Config'
+import { getNetworkTypeByAddress } from '../../../_general/lib/Symbol/Config'
 import CheckAccount from './CheckAccount'
 import Hardware from './Hardware'
 
@@ -51,7 +51,7 @@ const Component: React.VFC<Props> = ({ state, setState, reload }) => {
   const [address, setAddress] = useState('')
   const [prikey, setPrikey] = useState('')
   const [pubKey, setPubkey] = useState('')
-  const [pass, setPass] = useState('default password')
+  const [pass, setPass] = useState('')
 
   const [method, setMethod] = useState<Method>('NONE')
   const [nettype, setNettype] = useState<NetworkType>(NetworkType.TEST_NET)

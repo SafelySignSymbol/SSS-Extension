@@ -1,9 +1,9 @@
 import React from 'react'
 import styled from '@emotion/styled'
 
-import Typography from '../../_general/components/Typography'
+import Typography from '../../../_general/components/Typography'
 
-import { InactiveTextField } from '../../_general/components/TextField'
+import { InactiveTextField } from '../../../_general/components/TextField'
 import { useTranslation } from 'react-i18next'
 export type Props = {
   name: string
@@ -14,6 +14,8 @@ export type Props = {
 const Component: React.FC<Props> = ({ name, address, password }) => {
   const [t] = useTranslation()
 
+  console.log({ password })
+
   return (
     <Root>
       <Center>
@@ -21,7 +23,9 @@ const Component: React.FC<Props> = ({ name, address, password }) => {
       </Center>
       <InactiveTextField label="Name" value={name} variant="text" />
       <InactiveTextField label="Address" value={address} variant="text" />
-      <InactiveTextField label="Password" value={password} variant="text" />
+      {!!password && (
+        <InactiveTextField label="Password" value={password} variant="text" />
+      )}
     </Root>
   )
 }
@@ -29,7 +33,7 @@ const Component: React.FC<Props> = ({ name, address, password }) => {
 export default Component
 
 const Root = styled('div')({
-  width: 'calc(100% - 32px)',
+  width: 'calc(100% - 64px)',
   display: 'flex',
   flexDirection: 'column',
   justifyContent: 'center',
@@ -40,7 +44,7 @@ const Center = styled('div')({
   flexDirection: 'column',
   justifyContent: 'center',
   alignItems: 'center',
-  margin: '16px 0px',
+  marginBottom: '32px',
   '> *': {
     margin: '4px',
   },

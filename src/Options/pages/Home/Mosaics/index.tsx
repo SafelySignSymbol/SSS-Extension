@@ -17,7 +17,7 @@ import {
 } from '../../../../_general/lib/Symbol/Config'
 
 import Avatar from 'boring-avatars'
-import Color from '../../../../_general/utils/Color'
+import Color, { UtilColors } from '../../../../_general/utils/Color'
 export type Props = {
   address: Address
 }
@@ -42,6 +42,7 @@ const Component: React.VFC<Props> = ({ address }) => {
   const [count, setCount] = useState(0)
 
   useEffect(() => {
+    console.log({ UtilColors })
     accountHttp.getAccountInfo(address).subscribe(
       (accountInfo) => {
         repositoryFactory
@@ -102,7 +103,7 @@ const Component: React.VFC<Props> = ({ address }) => {
             return (
               <AnimationWrapper>
                 <MosaicWrapper>
-                  <Typography text={val} fontSize={20} />
+                  <Typography text={val} fontSize={28} />
                 </MosaicWrapper>
               </AnimationWrapper>
             )
@@ -132,6 +133,7 @@ const Component: React.VFC<Props> = ({ address }) => {
                   <Avatar
                     size={24}
                     name={m.mosaic.id.id.toHex()}
+                    colors={UtilColors}
                     variant="marble"
                   />
                   {getText([m.mosaic.id.toHex(), ...m.namespaces])}
@@ -161,7 +163,7 @@ export default Component
 
 const Root = styled('div')({
   padding: '40px',
-  width: '800px',
+  width: '1000px',
   background: 'white',
   display: 'flex',
 })
@@ -170,14 +172,15 @@ const MosaicViewer = styled('div')({
   display: 'flex',
   justifyContent: 'space-between',
   alignItems: 'center',
-  width: '100%',
+  width: 'calc(100% - 16px)',
+  margin: '0px 8px',
 })
 
 const AmountWrapper = styled('div')({})
 
 const Amount = styled('span')((p: { color: string; float: boolean }) => ({
   color: p.color,
-  fontSize: p.float ? '12px' : '14px',
+  fontSize: p.float ? '16px' : '20px',
 }))
 
 const Wrapper = styled('div')({

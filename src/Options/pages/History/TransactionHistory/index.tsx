@@ -107,7 +107,7 @@ const Component: React.VFC<Props> = ({ address }) => {
 export default Component
 
 const Wrapper = styled('div')({
-  padding: '32px',
+  padding: '40px',
   background: 'white',
   maxHeight: 'calc(100% - 32px)',
   overflowY: 'scroll',

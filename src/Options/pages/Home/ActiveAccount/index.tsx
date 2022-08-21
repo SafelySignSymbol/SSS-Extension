@@ -34,7 +34,7 @@ const Component: React.VFC<Props> = ({ address, name }) => {
       <HeaderWrapper>
         <NameWrapper>
           <Avatar
-            size={40}
+            size={48}
             name={address.plain()}
             variant="beam"
             colors={
@@ -43,7 +43,7 @@ const Component: React.VFC<Props> = ({ address, name }) => {
                 : TestNetColors
             }
           />
-          <Typography text={name} fontSize={32} />
+          <Typography text={name} fontSize={48} />
         </NameWrapper>
         <Wrap>
           <Amount color={Color.base_black} float={false}>
@@ -59,7 +59,7 @@ const Component: React.VFC<Props> = ({ address, name }) => {
         </Wrap>
       </HeaderWrapper>
       <AddressWrapper>
-        <Typography text={address.pretty()} fontSize={24} />
+        <Typography text={address.pretty()} fontSize={32} />
       </AddressWrapper>
     </Root>
   )
@@ -69,7 +69,7 @@ export default Component
 
 const Root = styled('div')({
   padding: '40px',
-  width: '800px',
+  width: '1000px',
   background: Color.pure_white,
 })
 
@@ -95,7 +95,7 @@ const XYM = styled('span')({
 
 const Amount = styled('span')((p: { color: string; float: boolean }) => ({
   color: p.color,
-  fontSize: p.float ? '28px' : '32px',
+  fontSize: p.float ? '32px' : '40px',
 }))
 
 const Wrap = styled('div')({

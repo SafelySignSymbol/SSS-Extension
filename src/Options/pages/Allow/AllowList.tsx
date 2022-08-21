@@ -45,15 +45,17 @@ const Component: React.VFC<Props> = ({ allowlist, reload }) => {
 
   if (allowlist.length === 0)
     return (
-      <div>
-        <Text>{t('allowlist_howuse_e')}</Text>
-        <Spacer MBottom="40px" MTop="20px">
+      <Wrapper>
+        {/* <Text>{t('allowlist_howuse_e')}</Text> */}
+        <Spacer MBottom="20px">
           <Wrap>
-            <TextField
-              label="Domain Name"
-              setText={setDomainName}
-              variant="text"
-            />
+            <TFWrapper>
+              <TextField
+                label="Domain Name"
+                setText={setDomainName}
+                variant="text"
+              />
+            </TFWrapper>
             <IconButton size="small" onClick={allow}>
               <IconContext.Provider value={{ size: '24px' }}>
                 <RiAddFill style={{ margin: '6px' }} />
@@ -61,12 +63,12 @@ const Component: React.VFC<Props> = ({ allowlist, reload }) => {
             </IconButton>
           </Wrap>
         </Spacer>
-      </div>
+      </Wrapper>
     )
 
   return (
     <Wrapper>
-      <Spacer MBottom="40px" MTop="20px">
+      <Spacer MBottom="20px">
         <Wrap>
           <TFWrapper>
             <TextField
@@ -137,15 +139,14 @@ const Wrap = styled('div')({
   margin: '8px',
 })
 const IconWrapper = styled('div')({
-  margin: '8px',
-})
-
-const Text = styled('div')({
-  marginLeft: '16px',
+  '> :nth-child(1)': {
+    marginRight: '8px',
+  },
 })
 
 const TFWrapper = styled('div')({
   width: '100%',
+  marginBottom: '12px',
   '& > div': {
     width: '100%',
   },

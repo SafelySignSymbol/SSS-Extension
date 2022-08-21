@@ -16,6 +16,8 @@ export const addAlpha = (color: string, alpha: number): string => {
   return color.replace('rgb', 'rgba').replace(')', `, ${alpha})`)
 }
 
-export const TestNetColors = ['#A5DEE4', '#0F4C3A', '#1E88A8']
+export const TestNetColors = ['#3A81A8', '#0190E1', '#2AA5A8', '#01E12E']
 
-export const MainNetColors = ['#F596AA', '#E16B8C', '#9E7A7A']
+export const MainNetColors = ['#A83A6F', '#E1016D', '#A83A94', '#E19A01']
+
+export const UtilColors = [...MainNetColors, ...TestNetColors]

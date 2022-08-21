@@ -1,9 +1,9 @@
 import React, { Dispatch, useEffect } from 'react'
 import styled from '@emotion/styled'
 
-import Typography from '../../_general/components/Typography'
-import PasswordTextField from '../../_general/components/TextField/PasswordTextField'
-import TextField from '../../_general/components/TextField'
+import Typography from '../../../_general/components/Typography'
+import PasswordTextField from '../../../_general/components/TextField/PasswordTextField'
+import TextField from '../../../_general/components/TextField'
 import { useTranslation } from 'react-i18next'
 import {
   FormControl,
@@ -83,7 +83,7 @@ const Component: React.FC<Props> = ({
 export default Component
 
 const Root = styled('div')({
-  width: 'calc(100% - 32px)',
+  width: 'calc(100% - 64px)',
   display: 'flex',
   flexDirection: 'column',
   justifyContent: 'center',
@@ -94,7 +94,7 @@ const Center = styled('div')({
   flexDirection: 'column',
   justifyContent: 'center',
   alignItems: 'center',
-  margin: '16px 0px',
+  marginBottom: '32px',
   '> *': {
     margin: '4px',
   },

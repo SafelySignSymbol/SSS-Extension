@@ -245,7 +245,7 @@ const Options: React.VFC<Props> = ({ reload, update, setting, setSetting }) => {
 export default Options
 
 const Root = styled('div')({
-  margin: '32px 0px',
+  margin: '40px 0px',
   minWidth: '60vw',
   width: '1000px',
 })
@@ -254,7 +254,7 @@ const Wrapper = styled('div')({
   justifyContent: 'space-between',
   alignItems: 'center',
   margin: '8px',
-  padding: '16px',
+  padding: '24px',
   background: 'white',
 })
 const Column = styled('div')({

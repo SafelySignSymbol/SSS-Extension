@@ -1,7 +1,7 @@
 import React from 'react'
 import { Story, Meta } from '@storybook/react'
 
-import AccountModal, { Props } from './AccountModal'
+import AccountModal, { Props } from '.'
 
 export default {
   title: 'Components/AccountModal',
