@@ -396,7 +396,11 @@ const Component: React.VFC<Props> = ({ state, setState, reload }) => {
           {getFooter()}
         </Wrapper>
       </Modal>
-      <Snackbar open={openSB} autoHideDuration={6000} onClose={closeSB}>
+      <Snackbar
+        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+        open={openSB}
+        autoHideDuration={6000}
+        onClose={closeSB}>
         <Alert
           onClose={closeSB}
           severity={snackbarStatus}

@@ -43,5 +43,7 @@
   "alert_failed_sign": "トランザクションの署名に失敗しました",
   "iconmenu_setting": "設定",
   "iconmenu_account": "アカウント追加",
-  "enter_password": "パスワードを入力"
+  "enter_password": "パスワードを入力",
+  "show_prikey": "秘密鍵を表示します",
+  "failed_decryption": "復号に失敗しました"
 }

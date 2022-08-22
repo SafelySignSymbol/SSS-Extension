@@ -14,6 +14,7 @@ import Spacer from '../../../_general/components/Spacer'
 
 import { useTranslation } from 'react-i18next'
 import TextField from '../../../_general/components/TextField'
+import Color from '../../../_general/utils/Color'
 export type Props = {
   allowlist: string[]
   reload: () => void
@@ -84,7 +85,11 @@ const Component: React.VFC<Props> = ({ allowlist, reload }) => {
           </IconButton>
         </Wrap>
       </Spacer>
-      <Snackbar open={openSB} autoHideDuration={6000} onClose={closeSB}>
+      <Snackbar
+        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+        open={openSB}
+        autoHideDuration={6000}
+        onClose={closeSB}>
         <Alert
           onClose={closeSB}
           severity={snackbarStatus}
@@ -137,6 +142,7 @@ const Wrap = styled('div')({
   background: 'white',
   padding: '16px 32px',
   margin: '8px',
+  borderBottom: `solid 1px ${Color.grayscale}`,
 })
 const IconWrapper = styled('div')({
   '> :nth-child(1)': {

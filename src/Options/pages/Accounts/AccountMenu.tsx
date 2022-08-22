@@ -19,6 +19,7 @@ import { IconContext } from 'react-icons'
 import { RiSettings2Fill } from 'react-icons/ri'
 import { useTranslation } from 'react-i18next'
 import { ExtensionAccount } from '../../../_general/model/ExtensionAccount'
+import Color from '../../../_general/utils/Color'
 
 export type Props = {
   account: ExtensionAccount
@@ -36,6 +37,7 @@ const Component: React.VFC<Props> = ({ account, reload, setting }) => {
   const open = Boolean(anchorEl)
 
   const onClickActive = () => {
+    if (!window.confirm('realy ?')) return
     getAccountIndexByAddress(account.address).then((index) => {
       console.log('i', index)
       setActiveAccountV2(index, setting.networkType)
@@ -52,6 +54,7 @@ const Component: React.VFC<Props> = ({ account, reload, setting }) => {
   }
 
   const onClickDelete = () => {
+    if (!window.confirm('realy ?')) return
     getAccountIndexByAddress(account.address).then((index) => {
       deleteExtensionAccount(index, setting.networkType)
         .then(() => {
@@ -88,7 +91,7 @@ const Component: React.VFC<Props> = ({ account, reload, setting }) => {
     <>
       <IconButton onClick={handleOpen}>
         <IconContext.Provider value={{ size: '24px' }}>
-          <RiSettings2Fill style={{ margin: '6px' }} />
+          <RiSettings2Fill style={{ margin: '6px', color: Color.gray_black }} />
         </IconContext.Provider>
       </IconButton>
       <Menu open={open} anchorEl={anchorEl} onClose={handleClose}>
@@ -99,7 +102,11 @@ const Component: React.VFC<Props> = ({ account, reload, setting }) => {
           {t('accounts_remove_account')}
         </MenuItem>
       </Menu>
-      <Snackbar open={openSB} autoHideDuration={6000} onClose={closeSB}>
+      <Snackbar
+        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+        open={openSB}
+        autoHideDuration={6000}
+        onClose={closeSB}>
         <Alert
           onClose={closeSB}
           severity={snackbarStatus}

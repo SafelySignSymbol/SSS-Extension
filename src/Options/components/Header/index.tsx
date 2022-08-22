@@ -131,7 +131,7 @@ export default Component
 
 const Container = styled('div')({
   display: 'flex',
-  height: '80px',
+  height: '100px',
   alignItems: 'center',
   background: 'white',
 })

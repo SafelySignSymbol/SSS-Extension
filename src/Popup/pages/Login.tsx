@@ -143,6 +143,7 @@ const Login: React.VFC<Props> = ({ extensionAccount, loginSuccess }) => {
         </Spacer>
       </Spacer>
       <Snackbar
+        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
         open={open}
         autoHideDuration={6000}
         onClose={() => setOpen(false)}>

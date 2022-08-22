@@ -166,6 +166,7 @@ const Root = styled('div')({
   width: '1000px',
   background: 'white',
   display: 'flex',
+  borderBottom: `solid 1px ${Color.grayscale}`,
 })
 
 const MosaicViewer = styled('div')({

@@ -125,6 +125,7 @@ const Wrapper = styled('div')({
     width: '4px',
     borderRadius: '4px',
   },
+  borderBottom: `solid 1px ${Color.grayscale}`,
 })
 
 const Title = styled('div')({

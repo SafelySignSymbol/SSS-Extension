@@ -6,6 +6,7 @@ import { getExplorerLinkFromHash } from '../../../../_general/lib/Symbol/Config'
 import Color, { UtilColors } from '../../../../_general/utils/Color'
 import { Link } from '@mui/material'
 import Avatar from 'boring-avatars'
+
 export type Props = {
   type: string
   hash: string
@@ -73,12 +74,15 @@ const SLink = styled(Link)({
   fontSize: '20px',
   textDecoration: 'none',
   color: Color.base_black,
+  ':hover': {
+    color: Color.blue,
+  },
 })
 
 const HashWrapper = styled('div')({
   display: 'flex',
   alignItems: 'center',
   '> :nth-child(1)': {
-    marginRight: '32px',
+    marginRight: '20px',
   },
 })

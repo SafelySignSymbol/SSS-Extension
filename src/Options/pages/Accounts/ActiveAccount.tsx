@@ -12,7 +12,6 @@ import {
   Snackbar,
 } from '@mui/material'
 import { IconContext } from 'react-icons'
-import { HiOutlineClipboardCopy } from 'react-icons/hi'
 import { MdVisibility, MdVisibilityOff } from 'react-icons/md'
 import { Setting } from '../../../_general/lib/Storage'
 import { Account, NetworkType } from 'symbol-sdk'
@@ -46,8 +45,17 @@ const Component: React.VFC<Props> = ({ activeAccount }) => {
   const [openSB, setOpenSB] = useState(false)
   const [snackbarStatus, setSnackbarStatus] = useState<AlertColor>('success')
 
-  const copy = (value: string) => {
+  const copyAddress = (value: string) => {
     navigator.clipboard.writeText(value)
+    setSnackbarStatus('success')
+    setMessage(t('copied_address'))
+    setOpenSB(true)
+  }
+  const copyPubkey = (value: string) => {
+    navigator.clipboard.writeText(value)
+    setSnackbarStatus('success')
+    setMessage(t('copied_pubkey'))
+    setOpenSB(true)
   }
 
   const showPrikey = () => {
@@ -61,16 +69,16 @@ const Component: React.VFC<Props> = ({ activeAccount }) => {
       if (open && acc.address.plain() === activeAccount.address) {
         setPrikey(pk)
         setSnackbarStatus('success')
-        setMessage('秘密鍵を表示します')
+        setMessage(t('show_prikey'))
         setOpenSB(true)
       } else {
         setSnackbarStatus('error')
-        setMessage('復号に失敗しました')
+        setMessage(t('failed_decryption'))
         setOpenSB(true)
       }
     } catch {
       setSnackbarStatus('error')
-      setMessage('復号に失敗しました')
+      setMessage(t('failed_decryption'))
       setOpenSB(true)
     }
     setPass('')
@@ -94,40 +102,46 @@ const Component: React.VFC<Props> = ({ activeAccount }) => {
               }
             />
           </AvatarWrapper>
-          <Typography text={activeAccount.name} fontSize={32} />
+          <Typography
+            text={activeAccount.name || activeAccount.address}
+            fontSize={32}
+          />
         </Name>
         <Flex isLast={false}>
-          <VerticalMargin>
+          <VerticalMargin onClick={() => copyAddress(activeAccount.address)}>
             <Typography text="Address" fontSize={24} />
-            <Typography text={activeAccount.address} fontSize={20} />
+            <Typography
+              text={activeAccount.address}
+              fontSize={20}
+              color={Color.gray_black}
+            />
           </VerticalMargin>
-          <IconButton size="small" onClick={() => copy(activeAccount.address)}>
-            <IconContext.Provider value={{ size: '24px' }}>
-              <HiOutlineClipboardCopy style={{ margin: '6px' }} />
-            </IconContext.Provider>
-          </IconButton>
         </Flex>
         <Flex isLast={activeAccount.type === 'HARD'}>
-          <VerticalMargin>
+          <VerticalMargin onClick={() => copyPubkey(activeAccount.publicKey)}>
             <Typography text="PublicKey" fontSize={24} />
-            <Typography text={activeAccount.publicKey} fontSize={20} />
+            <Typography
+              text={activeAccount.publicKey}
+              fontSize={20}
+              color={Color.gray_black}
+            />
           </VerticalMargin>
-          <IconButton
-            size="small"
-            onClick={() => copy(activeAccount.publicKey)}>
-            <IconContext.Provider value={{ size: '24px' }}>
-              <HiOutlineClipboardCopy style={{ margin: '6px' }} />
-            </IconContext.Provider>
-          </IconButton>
         </Flex>
         {activeAccount.type !== 'HARD' && (
           <Flex isLast={true}>
-            <VerticalMargin>
+            <VerticalMarginPK>
               <Typography text="PrivateKey" fontSize={24} />
-              <Typography text={prikey} fontSize={20} />
-            </VerticalMargin>
+              <Typography
+                text={prikey}
+                fontSize={20}
+                color={Color.gray_black}
+              />
+            </VerticalMarginPK>
             {prikey === asterisk ? (
-              <IconButton size="small" onClick={() => setOpen(true)}>
+              <IconButton
+                size="small"
+                onClick={() => setOpen(true)}
+                sx={{ height: '100%' }}>
                 <IconContext.Provider value={{ size: '24px' }}>
                   <MdVisibility style={{ margin: '6px' }} />
                 </IconContext.Provider>
@@ -163,6 +177,7 @@ const Component: React.VFC<Props> = ({ activeAccount }) => {
         </ModalWrapper>
       </Modal>
       <Snackbar
+        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
         open={openSB}
         autoHideDuration={6000}
         onClose={() => setOpenSB(false)}>
@@ -183,6 +198,7 @@ const Wrapper = styled('div')({
   background: Color.pure_white,
   padding: '40px',
   margin: '16px 8px',
+  borderBottom: `solid 1px ${Color.grayscale}`,
 })
 
 const Root = styled('div')({
@@ -195,7 +211,7 @@ const Flex = styled('div')((p: { isLast: boolean }) => ({
   display: 'flex',
   flexDirection: 'row',
   justifyContent: 'space-between',
-  marginBottom: p.isLast ? '0px' : '12px',
+  marginBottom: p.isLast ? '0px' : '4px',
 }))
 
 const Name = styled('div')({
@@ -244,7 +260,19 @@ const AvatarWrapper = styled('div')({
 })
 
 const VerticalMargin = styled('div')({
-  ':nth-child(1)': {
-    marginBottom: '4px',
+  cursor: 'pointer',
+  padding: '8px 16px',
+  width: '100%',
+  '> :nth-child(1)': {
+    marginBottom: '8px',
+  },
+  ':hover': {
+    background: Color.base_white,
+  },
+})
+const VerticalMarginPK = styled('div')({
+  padding: '4px 16px',
+  '> :nth-child(1)': {
+    marginBottom: '8px',
   },
 })

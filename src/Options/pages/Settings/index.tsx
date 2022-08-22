@@ -28,6 +28,7 @@ import {
 
 import { MdExpandMore } from 'react-icons/md'
 import { IconContext } from 'react-icons'
+import Color from '../../../_general/utils/Color'
 interface Props {
   reload: () => void
   update: Date
@@ -256,6 +257,7 @@ const Wrapper = styled('div')({
   margin: '8px',
   padding: '24px',
   background: 'white',
+  borderBottom: `solid 1px ${Color.grayscale}`,
 })
 const Column = styled('div')({
   display: 'flex',

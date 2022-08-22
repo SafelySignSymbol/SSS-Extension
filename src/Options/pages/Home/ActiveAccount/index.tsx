@@ -10,7 +10,6 @@ import Color, {
   TestNetColors,
 } from '../../../../_general/utils/Color'
 
-import { useTranslation } from 'react-i18next'
 import { getNetworkTypeByAddress } from '../../../../_general/lib/Symbol/Config'
 import Avatar from 'boring-avatars'
 
@@ -20,8 +19,6 @@ export type Props = {
 }
 
 const Component: React.VFC<Props> = ({ address, name }) => {
-  const [t] = useTranslation()
-
   const [amount, setAmount] = useState(['0', '0'])
   useEffect(() => {
     getAddressXym(address).then((xym) => {
@@ -43,7 +40,7 @@ const Component: React.VFC<Props> = ({ address, name }) => {
                 : TestNetColors
             }
           />
-          <Typography text={name} fontSize={48} />
+          <Typography text={name} fontSize={40} />
         </NameWrapper>
         <Wrap>
           <Amount color={Color.base_black} float={false}>
@@ -71,6 +68,7 @@ const Root = styled('div')({
   padding: '40px',
   width: '1000px',
   background: Color.pure_white,
+  borderBottom: `solid 1px ${Color.grayscale}`,
 })
 
 const HeaderWrapper = styled('div')({
