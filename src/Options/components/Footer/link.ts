@@ -11,7 +11,7 @@ export const communityLinks: LinkType[] = [
   },
   {
     href: 'https://discord.gg/xymcity',
-    label: 'XYM Cit',
+    label: 'XYM City',
   },
   {
     href: 'https://discord.gg/kKfUNhDCEJ',
