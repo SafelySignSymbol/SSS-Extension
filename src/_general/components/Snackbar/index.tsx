@@ -96,11 +96,12 @@ const Root = styled('span')({
   top: '32px',
   right: '48px',
   display: 'flex',
-  justifyContent: 'center',
+  justifyContent: 'start',
   alignItems: 'center',
   background: Color.base_black,
   boxShadow: '5px 5px 5px 0px rgba(100,100,100,0.6)',
   borderRadius: '10px',
+  minWidth: '300px',
 })
 
 const Text = styled('div')({

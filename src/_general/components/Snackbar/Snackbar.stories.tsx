@@ -48,3 +48,9 @@ Info.args = {
   snackbarMessage: 'Snackbarを表示します',
   snackbarStatus: SnackbarType.INFO,
 }
+export const LongText = Template.bind({})
+LongText.args = {
+  isOpen: true,
+  snackbarMessage: 'Copy Address :  TC5FGDJ7K7N2T5DVSYDDC7PD64O3QPCKEPQF6XQ ',
+  snackbarStatus: SnackbarType.INFO,
+}
