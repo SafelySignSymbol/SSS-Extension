@@ -25,7 +25,11 @@ import { MdArrowRight, MdArrowLeft } from 'react-icons/md'
 import { getNetworkTypeByAddress } from '../../../_general/lib/Symbol/Config'
 import CheckAccount from './CheckAccount'
 import Hardware from './Hardware'
-import { Snackbar, SnackbarProps } from '../../../_general/components/Snackbar'
+import {
+  Snackbar,
+  SnackbarProps,
+  SnackbarType,
+} from '../../../_general/components/Snackbar'
 
 export type Props = {
   state: number
@@ -81,7 +85,7 @@ const Component: React.VFC<Props> = ({ state, setState, reload }) => {
           setSnackbar({
             isOpen: true,
             snackbarMessage: t('accmodal_success_register'),
-            snackbarStatus: 'success',
+            snackbarStatus: SnackbarType.SUCCESS,
           })
           resetInput()
           closeModal()
@@ -91,7 +95,7 @@ const Component: React.VFC<Props> = ({ state, setState, reload }) => {
           setSnackbar({
             isOpen: true,
             snackbarMessage: t('accmodal_allready_added'),
-            snackbarStatus: 'error',
+            snackbarStatus: SnackbarType.ERROR,
           })
         })
         .finally(() => {})
@@ -103,7 +107,7 @@ const Component: React.VFC<Props> = ({ state, setState, reload }) => {
       setSnackbar({
         isOpen: true,
         snackbarMessage: t('accmodal_wrong_address_format'),
-        snackbarStatus: 'error',
+        snackbarStatus: SnackbarType.ERROR,
       })
     }
 
@@ -115,7 +119,7 @@ const Component: React.VFC<Props> = ({ state, setState, reload }) => {
       setSnackbar({
         isOpen: true,
         snackbarMessage: t('accmodal_wrong_prikey_format'),
-        snackbarStatus: 'error',
+        snackbarStatus: SnackbarType.ERROR,
       })
     }
 
@@ -126,7 +130,7 @@ const Component: React.VFC<Props> = ({ state, setState, reload }) => {
       setSnackbar({
         isOpen: true,
         snackbarMessage: t('accmodal_wrong_keypair'),
-        snackbarStatus: 'error',
+        snackbarStatus: SnackbarType.ERROR,
       })
     } else {
       const enpk = encrypt(prikey, pass)
@@ -151,7 +155,7 @@ const Component: React.VFC<Props> = ({ state, setState, reload }) => {
             setSnackbar({
               isOpen: true,
               snackbarMessage: t('accmodal_success_register'),
-              snackbarStatus: 'success',
+              snackbarStatus: SnackbarType.SUCCESS,
             })
 
             resetInput()
@@ -162,7 +166,7 @@ const Component: React.VFC<Props> = ({ state, setState, reload }) => {
             setSnackbar({
               isOpen: true,
               snackbarMessage: t('accmodal_allready_added'),
-              snackbarStatus: 'error',
+              snackbarStatus: SnackbarType.ERROR,
             })
           })
           .finally(() => {})
@@ -341,7 +345,7 @@ const Component: React.VFC<Props> = ({ state, setState, reload }) => {
       setSnackbar({
         isOpen: true,
         snackbarMessage: t('accmodal_wrong_address_format'),
-        snackbarStatus: 'error',
+        snackbarStatus: SnackbarType.ERROR,
       })
 
       return
@@ -351,7 +355,7 @@ const Component: React.VFC<Props> = ({ state, setState, reload }) => {
       setSnackbar({
         isOpen: true,
         snackbarMessage: t('accmodal_wrong_prikey_format'),
-        snackbarStatus: 'error',
+        snackbarStatus: SnackbarType.ERROR,
       })
       return
     }
@@ -364,7 +368,7 @@ const Component: React.VFC<Props> = ({ state, setState, reload }) => {
       setSnackbar({
         isOpen: true,
         snackbarMessage: t('accmodal_wrong_keypair'),
-        snackbarStatus: 'error',
+        snackbarStatus: SnackbarType.ERROR,
       })
     } else {
       // TODO password check

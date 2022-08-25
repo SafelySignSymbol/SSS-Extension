@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 import styled from '@emotion/styled'
 import Typography from '../../../_general/components/Typography'
 import { ExtensionAccount } from '../../../_general/model/ExtensionAccount'
-import { Alert, AlertColor, IconButton, Modal, Paper } from '@mui/material'
+import { IconButton, Modal, Paper } from '@mui/material'
 import { IconContext } from 'react-icons'
 import { MdVisibility, MdVisibilityOff } from 'react-icons/md'
 import { Setting } from '../../../_general/lib/Storage'
@@ -19,7 +19,11 @@ import Color, {
   TestNetColors,
 } from '../../../_general/utils/Color'
 import Avatar from 'boring-avatars'
-import { Snackbar, SnackbarProps } from '../../../_general/components/Snackbar'
+import {
+  Snackbar,
+  SnackbarProps,
+  SnackbarType,
+} from '../../../_general/components/Snackbar'
 
 export type Props = {
   activeAccount: ExtensionAccount
@@ -45,7 +49,7 @@ const Component: React.VFC<Props> = ({ activeAccount }) => {
         '{{address}}',
         activeAccount.address
       ),
-      snackbarStatus: 'success',
+      snackbarStatus: SnackbarType.SUCCESS,
     })
   }
   const copyPubkey = (value: string) => {
@@ -57,7 +61,7 @@ const Component: React.VFC<Props> = ({ activeAccount }) => {
         '{{pubkey}}',
         activeAccount.publicKey
       ),
-      snackbarStatus: 'success',
+      snackbarStatus: SnackbarType.SUCCESS,
     })
   }
 
@@ -74,20 +78,20 @@ const Component: React.VFC<Props> = ({ activeAccount }) => {
         setSnackbar({
           isOpen: true,
           snackbarMessage: t('show_prikey'),
-          snackbarStatus: 'success',
+          snackbarStatus: SnackbarType.SUCCESS,
         })
       } else {
         setSnackbar({
           isOpen: true,
           snackbarMessage: t('failed_decryption'),
-          snackbarStatus: 'error',
+          snackbarStatus: SnackbarType.ERROR,
         })
       }
     } catch {
       setSnackbar({
         isOpen: true,
         snackbarMessage: t('failed_decryption'),
-        snackbarStatus: 'error',
+        snackbarStatus: SnackbarType.ERROR,
       })
     }
     setPass('')

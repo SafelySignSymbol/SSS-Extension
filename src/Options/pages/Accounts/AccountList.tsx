@@ -16,7 +16,11 @@ import Color, {
   TestNetColors,
 } from '../../../_general/utils/Color'
 import { useTranslation } from 'react-i18next'
-import { Snackbar, SnackbarProps } from '../../../_general/components/Snackbar'
+import {
+  Snackbar,
+  SnackbarProps,
+  SnackbarType,
+} from '../../../_general/components/Snackbar'
 export type Props = {
   extensionAccounts: ExtensionAccount[]
   setting: Setting
@@ -47,7 +51,7 @@ const Component: React.VFC<Props> = ({
               '{{address}}',
               acc.address
             ),
-            snackbarStatus: 'success',
+            snackbarStatus: SnackbarType.SUCCESS,
           })
         }
         const copyPubkey = (value: string) => {
@@ -59,7 +63,7 @@ const Component: React.VFC<Props> = ({
               '{{pubkey}}',
               acc.publicKey
             ),
-            snackbarStatus: 'success',
+            snackbarStatus: SnackbarType.SUCCESS,
           })
         }
 

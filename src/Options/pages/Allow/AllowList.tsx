@@ -15,7 +15,11 @@ import Spacer from '../../../_general/components/Spacer'
 import { useTranslation } from 'react-i18next'
 import TextField from '../../../_general/components/TextField'
 import Color from '../../../_general/utils/Color'
-import { Snackbar, SnackbarProps } from '../../../_general/components/Snackbar'
+import {
+  Snackbar,
+  SnackbarProps,
+  SnackbarType,
+} from '../../../_general/components/Snackbar'
 export type Props = {
   allowlist: string[]
   reload: () => void
@@ -97,7 +101,7 @@ const Component: React.VFC<Props> = ({ allowlist, reload }) => {
                     setSnackbar({
                       isOpen: true,
                       snackbarMessage: t('alert_copy_success'),
-                      snackbarStatus: 'success',
+                      snackbarStatus: SnackbarType.SUCCESS,
                     })
                   })
                 }}>

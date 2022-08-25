@@ -1,14 +1,19 @@
 const Color = {
   default: 'rgb(20, 20, 20)',
   grayscale: 'rgb(196, 196, 196)',
-  pink: 'rgb(180, 41, 249)',
-  purple: 'rgb(78, 44, 112)',
   sky: 'rgb(38, 197, 243)',
   blue: 'rgb(58, 95, 168)',
   base_white: 'rgb(238, 238, 238)',
   pure_white: 'rgb(255, 255, 255)',
   base_black: 'rgb(51, 51, 51)',
   gray_black: 'rgb(94, 94, 94)',
+  alert: {
+    default: '#333333',
+    error: '#CB1742',
+    warning: '#DC9918',
+    info: '#1753CB',
+    success: '#46CB17',
+  },
 }
 export default Color
 

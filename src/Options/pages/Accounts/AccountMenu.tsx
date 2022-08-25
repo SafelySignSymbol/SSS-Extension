@@ -13,7 +13,11 @@ import { RiSettings2Fill } from 'react-icons/ri'
 import { useTranslation } from 'react-i18next'
 import { ExtensionAccount } from '../../../_general/model/ExtensionAccount'
 import Color from '../../../_general/utils/Color'
-import { Snackbar, SnackbarProps } from '../../../_general/components/Snackbar'
+import {
+  Snackbar,
+  SnackbarProps,
+  SnackbarType,
+} from '../../../_general/components/Snackbar'
 
 export type Props = {
   account: ExtensionAccount
@@ -37,7 +41,7 @@ const Component: React.VFC<Props> = ({ account, reload, setting }) => {
           setSnackbar({
             isOpen: true,
             snackbarMessage: t('accounts_success_change_active'),
-            snackbarStatus: 'success',
+            snackbarStatus: SnackbarType.SUCCESS,
           })
         })
         .finally(() => {
@@ -55,14 +59,14 @@ const Component: React.VFC<Props> = ({ account, reload, setting }) => {
           setSnackbar({
             isOpen: true,
             snackbarMessage: t('accounts_success_remove_account'),
-            snackbarStatus: 'success',
+            snackbarStatus: SnackbarType.SUCCESS,
           })
         })
         .catch(() => {
           setSnackbar({
             isOpen: true,
             snackbarMessage: t('accounts_failed_remove_account'),
-            snackbarStatus: 'error',
+            snackbarStatus: SnackbarType.ERROR,
           })
         })
         .finally(() => {

@@ -11,7 +11,7 @@ import PasswordTextField from '../../_general/components/TextField/PasswordTextF
 import { useTranslation } from 'react-i18next'
 import TransportWebHID from '@ledgerhq/hw-transport-webhid'
 import { SymbolLedger, LedgerNetworkType } from 'symbol-ledger-typescript'
-import { Snackbar, SnackbarProps } from '../../_general/components/Snackbar'
+import { Snackbar, SnackbarType } from '../../_general/components/Snackbar'
 
 export interface Props {
   extensionAccount: ExtensionAccount
@@ -21,8 +21,6 @@ export interface Props {
 const Login: React.VFC<Props> = ({ extensionAccount, loginSuccess }) => {
   const [pass, setPass] = useState('default password')
   const [open, setOpen] = useState(false)
-
-  const [snackbar, setSnackbar] = useState<SnackbarProps>({} as SnackbarProps)
 
   const [t] = useTranslation()
 
@@ -147,7 +145,7 @@ const Login: React.VFC<Props> = ({ extensionAccount, loginSuccess }) => {
       <Snackbar
         isOpen={open}
         snackbarMessage={t('alert_wrong_pass')}
-        snackbarStatus="error"
+        snackbarStatus={SnackbarType.ERROR}
       />
     </Container>
   )
