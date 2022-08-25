@@ -35,7 +35,6 @@ const Component: React.VFC<Props> = ({ account, reload, setting }) => {
   const onClickActive = () => {
     if (!window.confirm('realy ?')) return
     getAccountIndexByAddress(account.address).then((index) => {
-      console.log('i', index)
       setActiveAccountV2(index, setting.networkType)
         .then(() => {
           setSnackbar({

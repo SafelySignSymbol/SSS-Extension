@@ -78,7 +78,7 @@ const Component: React.VFC<Props> = ({ activeAccount }) => {
         setSnackbar({
           isOpen: true,
           snackbarMessage: t('show_prikey'),
-          snackbarStatus: SnackbarType.SUCCESS,
+          snackbarStatus: SnackbarType.INFO,
         })
       } else {
         setSnackbar({
@@ -240,14 +240,15 @@ const ModalWrapper = styled(Paper)({
 const Right = styled('div')({
   display: 'flex',
   justifyContent: 'end',
-  marginTop: '16px',
+  marginTop: '24px',
+  marginRight: '12px',
 })
 const ModalHeader = styled('div')({
   background: Color.base_white,
   display: 'flex',
   justifyContent: 'space-between',
   alignItems: 'center',
-  padding: '16px',
+  padding: '24px 32px',
 })
 
 const Contents = styled('div')({
@@ -258,6 +259,7 @@ const TFWrapper = styled('div')({
   width: '100%',
   '& > div': {
     width: '100%',
+    margin: '0px !important',
   },
 })
 
