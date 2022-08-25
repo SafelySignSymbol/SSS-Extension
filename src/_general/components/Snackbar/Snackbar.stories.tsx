@@ -48,6 +48,12 @@ Info.args = {
   snackbarMessage: 'Snackbarを表示します',
   snackbarStatus: SnackbarType.INFO,
 }
+export const ShortText = Template.bind({})
+ShortText.args = {
+  isOpen: true,
+  snackbarMessage: 'Short Text',
+  snackbarStatus: SnackbarType.INFO,
+}
 export const LongText = Template.bind({})
 LongText.args = {
   isOpen: true,

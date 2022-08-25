@@ -49,7 +49,7 @@ const Component: React.VFC<Props> = ({ activeAccount }) => {
         '{{address}}',
         activeAccount.address
       ),
-      snackbarStatus: SnackbarType.SUCCESS,
+      snackbarStatus: SnackbarType.INFO,
     })
   }
   const copyPubkey = (value: string) => {
@@ -61,7 +61,7 @@ const Component: React.VFC<Props> = ({ activeAccount }) => {
         '{{pubkey}}',
         activeAccount.publicKey
       ),
-      snackbarStatus: SnackbarType.SUCCESS,
+      snackbarStatus: SnackbarType.INFO,
     })
   }
 
@@ -78,7 +78,7 @@ const Component: React.VFC<Props> = ({ activeAccount }) => {
         setSnackbar({
           isOpen: true,
           snackbarMessage: t('show_prikey'),
-          snackbarStatus: SnackbarType.INFO,
+          snackbarStatus: SnackbarType.SUCCESS,
         })
       } else {
         setSnackbar({

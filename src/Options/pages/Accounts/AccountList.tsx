@@ -51,7 +51,7 @@ const Component: React.VFC<Props> = ({
               '{{address}}',
               acc.address
             ),
-            snackbarStatus: SnackbarType.SUCCESS,
+            snackbarStatus: SnackbarType.INFO,
           })
         }
         const copyPubkey = (value: string) => {
@@ -63,7 +63,7 @@ const Component: React.VFC<Props> = ({
               '{{pubkey}}',
               acc.publicKey
             ),
-            snackbarStatus: SnackbarType.SUCCESS,
+            snackbarStatus: SnackbarType.INFO,
           })
         }
 
