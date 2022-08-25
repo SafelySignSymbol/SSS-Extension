@@ -2,15 +2,7 @@ import React, { Dispatch, useState } from 'react'
 import styled from '@emotion/styled'
 import { encrypt } from '../../../_general/lib/Crypto'
 
-import {
-  Alert,
-  AlertColor,
-  IconButton,
-  MobileStepper,
-  Modal,
-  Paper,
-  Snackbar,
-} from '@mui/material'
+import { IconButton, MobileStepper, Modal, Paper } from '@mui/material'
 
 import { IoMdClose } from 'react-icons/io'
 
@@ -33,6 +25,7 @@ import { MdArrowRight, MdArrowLeft } from 'react-icons/md'
 import { getNetworkTypeByAddress } from '../../../_general/lib/Symbol/Config'
 import CheckAccount from './CheckAccount'
 import Hardware from './Hardware'
+import { Snackbar, SnackbarProps } from '../../../_general/components/Snackbar'
 
 export type Props = {
   state: number
@@ -43,10 +36,6 @@ export type Props = {
 export type Method = 'IMPORT' | 'CREATE' | 'HARDWARE' | 'NONE'
 
 const Component: React.VFC<Props> = ({ state, setState, reload }) => {
-  const [message, setMessage] = useState('')
-  const [openSB, setOpenSB] = useState(false)
-  const [snackbarStatus, setSnackbarStatus] = useState<AlertColor>('success')
-
   const [name, setName] = useState('')
   const [address, setAddress] = useState('')
   const [prikey, setPrikey] = useState('')
@@ -56,14 +45,12 @@ const Component: React.VFC<Props> = ({ state, setState, reload }) => {
   const [method, setMethod] = useState<Method>('NONE')
   const [nettype, setNettype] = useState<NetworkType>(NetworkType.TEST_NET)
 
+  const [snackbar, setSnackbar] = useState<SnackbarProps>({} as SnackbarProps)
+
   const [t] = useTranslation()
 
   const closeModal = () => {
     setState(0)
-  }
-
-  const closeSB = () => {
-    setOpenSB(false)
   }
 
   const resetInput = () => {
@@ -91,17 +78,21 @@ const Component: React.VFC<Props> = ({ state, setState, reload }) => {
               reload()
             })
           }
-          setSnackbarStatus('success')
-          setMessage(t('accmodal_success_register'))
-          setOpenSB(true)
+          setSnackbar({
+            isOpen: true,
+            snackbarMessage: t('accmodal_success_register'),
+            snackbarStatus: 'success',
+          })
           resetInput()
           closeModal()
           reload()
         })
         .catch(() => {
-          setSnackbarStatus('error')
-          setMessage(t('accmodal_allready_added'))
-          setOpenSB(true)
+          setSnackbar({
+            isOpen: true,
+            snackbarMessage: t('accmodal_allready_added'),
+            snackbarStatus: 'error',
+          })
         })
         .finally(() => {})
     })
@@ -109,8 +100,11 @@ const Component: React.VFC<Props> = ({ state, setState, reload }) => {
 
   const submit = () => {
     if (address === '') {
-      setSnackbarStatus('error')
-      setMessage(t('accmodal_wrong_address_format'))
+      setSnackbar({
+        isOpen: true,
+        snackbarMessage: t('accmodal_wrong_address_format'),
+        snackbarStatus: 'error',
+      })
     }
 
     if (method === 'HARDWARE') {
@@ -118,17 +112,22 @@ const Component: React.VFC<Props> = ({ state, setState, reload }) => {
     }
 
     if (prikey === '') {
-      setSnackbarStatus('error')
-      setMessage(t('accmodal_wrong_prikey_format'))
+      setSnackbar({
+        isOpen: true,
+        snackbarMessage: t('accmodal_wrong_prikey_format'),
+        snackbarStatus: 'error',
+      })
     }
 
     const addr = Address.createFromRawAddress(address)
     const net = getNetworkTypeByAddress(addr.plain())
     const acc = Account.createFromPrivateKey(prikey, net)
     if (addr.plain() !== acc.address.plain()) {
-      setSnackbarStatus('error')
-      setMessage(t('accmodal_wrong_keypair'))
-      setOpenSB(true)
+      setSnackbar({
+        isOpen: true,
+        snackbarMessage: t('accmodal_wrong_keypair'),
+        snackbarStatus: 'error',
+      })
     } else {
       const enpk = encrypt(prikey, pass)
 
@@ -148,17 +147,23 @@ const Component: React.VFC<Props> = ({ state, setState, reload }) => {
                 reload()
               })
             }
-            setSnackbarStatus('success')
-            setMessage(t('accmodal_success_register'))
-            setOpenSB(true)
+
+            setSnackbar({
+              isOpen: true,
+              snackbarMessage: t('accmodal_success_register'),
+              snackbarStatus: 'success',
+            })
+
             resetInput()
             closeModal()
             reload()
           })
           .catch(() => {
-            setSnackbarStatus('error')
-            setMessage(t('accmodal_allready_added'))
-            setOpenSB(true)
+            setSnackbar({
+              isOpen: true,
+              snackbarMessage: t('accmodal_allready_added'),
+              snackbarStatus: 'error',
+            })
           })
           .finally(() => {})
       })
@@ -333,14 +338,21 @@ const Component: React.VFC<Props> = ({ state, setState, reload }) => {
 
   const nextImport = () => {
     if (!address) {
-      setSnackbarStatus('error')
-      setMessage(t('accmodal_wrong_address_format'))
+      setSnackbar({
+        isOpen: true,
+        snackbarMessage: t('accmodal_wrong_address_format'),
+        snackbarStatus: 'error',
+      })
+
       return
     }
 
     if (!prikey) {
-      setSnackbarStatus('error')
-      setMessage(t('accmodal_wrong_prikey_format'))
+      setSnackbar({
+        isOpen: true,
+        snackbarMessage: t('accmodal_wrong_prikey_format'),
+        snackbarStatus: 'error',
+      })
       return
     }
 
@@ -349,9 +361,11 @@ const Component: React.VFC<Props> = ({ state, setState, reload }) => {
     const acc = Account.createFromPrivateKey(prikey, nt)
 
     if (addr.plain() !== acc.address.plain()) {
-      setSnackbarStatus('error')
-      setMessage(t('accmodal_wrong_keypair'))
-      setOpenSB(true)
+      setSnackbar({
+        isOpen: true,
+        snackbarMessage: t('accmodal_wrong_keypair'),
+        snackbarStatus: 'error',
+      })
     } else {
       // TODO password check
       setState(state + 1)
@@ -397,17 +411,10 @@ const Component: React.VFC<Props> = ({ state, setState, reload }) => {
         </Wrapper>
       </Modal>
       <Snackbar
-        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-        open={openSB}
-        autoHideDuration={6000}
-        onClose={closeSB}>
-        <Alert
-          onClose={closeSB}
-          severity={snackbarStatus}
-          sx={{ width: '100%' }}>
-          {message}
-        </Alert>
-      </Snackbar>
+        isOpen={snackbar.isOpen}
+        snackbarMessage={snackbar.snackbarMessage}
+        snackbarStatus={snackbar.snackbarStatus}
+      />
     </>
   )
 }

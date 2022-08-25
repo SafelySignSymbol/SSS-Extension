@@ -15,8 +15,8 @@ import Color, {
   MainNetColors,
   TestNetColors,
 } from '../../../_general/utils/Color'
-import { Snackbar, Alert, AlertColor } from '@mui/material'
 import { useTranslation } from 'react-i18next'
+import { Snackbar, SnackbarProps } from '../../../_general/components/Snackbar'
 export type Props = {
   extensionAccounts: ExtensionAccount[]
   setting: Setting
@@ -28,14 +28,8 @@ const Component: React.VFC<Props> = ({
   reload,
   setting,
 }) => {
-  const [message, setMessage] = useState('')
-  const [openSB, setOpenSB] = useState(false)
-  const [snackbarStatus, setSnackbarStatus] = useState<AlertColor>('success')
   const [t] = useTranslation()
-
-  const closeSB = () => {
-    setOpenSB(false)
-  }
+  const [snackbar, setSnackbar] = useState<SnackbarProps>({} as SnackbarProps)
 
   useEffect(() => {}, [extensionAccounts, setting.networkType])
 
@@ -46,15 +40,27 @@ const Component: React.VFC<Props> = ({
       {extensionAccounts.map((acc, i) => {
         const copyAddress = (value: string) => {
           navigator.clipboard.writeText(value)
-          setSnackbarStatus('success')
-          setMessage(t('copied_address'))
-          setOpenSB(true)
+
+          setSnackbar({
+            isOpen: true,
+            snackbarMessage: t('copied_address').replace(
+              '{{address}}',
+              acc.address
+            ),
+            snackbarStatus: 'success',
+          })
         }
         const copyPubkey = (value: string) => {
           navigator.clipboard.writeText(value)
-          setSnackbarStatus('success')
-          setMessage(t('copied_pubkey'))
-          setOpenSB(true)
+
+          setSnackbar({
+            isOpen: true,
+            snackbarMessage: t('copied_pubkey').replace(
+              '{{pubkey}}',
+              acc.publicKey
+            ),
+            snackbarStatus: 'success',
+          })
         }
 
         const name = acc.name || `Account ${i + 1}`
@@ -103,17 +109,10 @@ const Component: React.VFC<Props> = ({
         )
       })}
       <Snackbar
-        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-        open={openSB}
-        autoHideDuration={6000}
-        onClose={closeSB}>
-        <Alert
-          onClose={closeSB}
-          severity={snackbarStatus}
-          sx={{ width: '100%' }}>
-          {message}
-        </Alert>
-      </Snackbar>
+        isOpen={snackbar.isOpen}
+        snackbarMessage={snackbar.snackbarMessage}
+        snackbarStatus={snackbar.snackbarStatus}
+      />
     </Root>
   )
 }

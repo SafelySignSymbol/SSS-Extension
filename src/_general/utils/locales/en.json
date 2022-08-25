@@ -55,8 +55,8 @@
   "iconmenu_setting": "Setting",
   "iconmenu_account": "Add account",
   "enter_password": "Enter the password",
-  "copied_address": "Copy Address",
-  "copied_pubkey": "Copy PublicKey",
+  "copied_address": "Copy Address : {{address}}",
+  "copied_pubkey": "Copy PublicKey : {{pubkey}}",
   "show_prikey": "Show Private Key",
   "failed_decryption": "Failed to decrypt"
 }

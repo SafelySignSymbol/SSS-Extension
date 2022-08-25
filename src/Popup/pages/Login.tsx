@@ -8,10 +8,10 @@ import Spacer from '../../_general/components/Spacer'
 import Button from '../../_general/components/Button'
 import { checkPassword } from '../../_general/lib/validator'
 import PasswordTextField from '../../_general/components/TextField/PasswordTextField'
-import { Snackbar, Alert } from '@mui/material'
 import { useTranslation } from 'react-i18next'
 import TransportWebHID from '@ledgerhq/hw-transport-webhid'
 import { SymbolLedger, LedgerNetworkType } from 'symbol-ledger-typescript'
+import { Snackbar, SnackbarProps } from '../../_general/components/Snackbar'
 
 export interface Props {
   extensionAccount: ExtensionAccount
@@ -21,6 +21,8 @@ export interface Props {
 const Login: React.VFC<Props> = ({ extensionAccount, loginSuccess }) => {
   const [pass, setPass] = useState('default password')
   const [open, setOpen] = useState(false)
+
+  const [snackbar, setSnackbar] = useState<SnackbarProps>({} as SnackbarProps)
 
   const [t] = useTranslation()
 
@@ -143,17 +145,10 @@ const Login: React.VFC<Props> = ({ extensionAccount, loginSuccess }) => {
         </Spacer>
       </Spacer>
       <Snackbar
-        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-        open={open}
-        autoHideDuration={6000}
-        onClose={() => setOpen(false)}>
-        <Alert
-          onClose={() => setOpen(false)}
-          severity="error"
-          sx={{ width: '100%' }}>
-          {t('alert_wrong_pass')}
-        </Alert>
-      </Snackbar>
+        isOpen={open}
+        snackbarMessage={t('alert_wrong_pass')}
+        snackbarStatus="error"
+      />
     </Container>
   )
 }

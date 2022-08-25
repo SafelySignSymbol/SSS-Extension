@@ -3,14 +3,7 @@ import React, { useState } from 'react'
 import styled from '@emotion/styled'
 import Typography from '../../../_general/components/Typography'
 import { ExtensionAccount } from '../../../_general/model/ExtensionAccount'
-import {
-  Alert,
-  AlertColor,
-  IconButton,
-  Modal,
-  Paper,
-  Snackbar,
-} from '@mui/material'
+import { Alert, AlertColor, IconButton, Modal, Paper } from '@mui/material'
 import { IconContext } from 'react-icons'
 import { MdVisibility, MdVisibilityOff } from 'react-icons/md'
 import { Setting } from '../../../_general/lib/Storage'
@@ -26,6 +19,7 @@ import Color, {
   TestNetColors,
 } from '../../../_general/utils/Color'
 import Avatar from 'boring-avatars'
+import { Snackbar, SnackbarProps } from '../../../_general/components/Snackbar'
 
 export type Props = {
   activeAccount: ExtensionAccount
@@ -41,21 +35,30 @@ const Component: React.VFC<Props> = ({ activeAccount }) => {
   const [pass, setPass] = useState('')
   const [prikey, setPrikey] = useState(asterisk)
 
-  const [message, setMessage] = useState('')
-  const [openSB, setOpenSB] = useState(false)
-  const [snackbarStatus, setSnackbarStatus] = useState<AlertColor>('success')
+  const [snackbar, setSnackbar] = useState<SnackbarProps>({} as SnackbarProps)
 
   const copyAddress = (value: string) => {
     navigator.clipboard.writeText(value)
-    setSnackbarStatus('success')
-    setMessage(t('copied_address'))
-    setOpenSB(true)
+    setSnackbar({
+      isOpen: true,
+      snackbarMessage: t('copied_address').replace(
+        '{{address}}',
+        activeAccount.address
+      ),
+      snackbarStatus: 'success',
+    })
   }
   const copyPubkey = (value: string) => {
     navigator.clipboard.writeText(value)
-    setSnackbarStatus('success')
-    setMessage(t('copied_pubkey'))
-    setOpenSB(true)
+
+    setSnackbar({
+      isOpen: true,
+      snackbarMessage: t('copied_pubkey').replace(
+        '{{pubkey}}',
+        activeAccount.publicKey
+      ),
+      snackbarStatus: 'success',
+    })
   }
 
   const showPrikey = () => {
@@ -68,18 +71,24 @@ const Component: React.VFC<Props> = ({ activeAccount }) => {
 
       if (open && acc.address.plain() === activeAccount.address) {
         setPrikey(pk)
-        setSnackbarStatus('success')
-        setMessage(t('show_prikey'))
-        setOpenSB(true)
+        setSnackbar({
+          isOpen: true,
+          snackbarMessage: t('show_prikey'),
+          snackbarStatus: 'success',
+        })
       } else {
-        setSnackbarStatus('error')
-        setMessage(t('failed_decryption'))
-        setOpenSB(true)
+        setSnackbar({
+          isOpen: true,
+          snackbarMessage: t('failed_decryption'),
+          snackbarStatus: 'error',
+        })
       }
     } catch {
-      setSnackbarStatus('error')
-      setMessage(t('failed_decryption'))
-      setOpenSB(true)
+      setSnackbar({
+        isOpen: true,
+        snackbarMessage: t('failed_decryption'),
+        snackbarStatus: 'error',
+      })
     }
     setPass('')
     setOpen(false)
@@ -177,17 +186,10 @@ const Component: React.VFC<Props> = ({ activeAccount }) => {
         </ModalWrapper>
       </Modal>
       <Snackbar
-        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-        open={openSB}
-        autoHideDuration={6000}
-        onClose={() => setOpenSB(false)}>
-        <Alert
-          onClose={() => setOpenSB(false)}
-          severity={snackbarStatus}
-          sx={{ width: '100%' }}>
-          {message}
-        </Alert>
-      </Snackbar>
+        isOpen={snackbar.isOpen}
+        snackbarMessage={snackbar.snackbarMessage}
+        snackbarStatus={snackbar.snackbarStatus}
+      />
     </Root>
   )
 }
