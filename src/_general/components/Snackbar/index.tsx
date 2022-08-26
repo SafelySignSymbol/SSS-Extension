@@ -3,6 +3,7 @@ import { ImCheckmark, ImInfo, ImNotification, ImWarning } from 'react-icons/im'
 import styled from '@emotion/styled'
 import { IconContext } from 'react-icons'
 import Color from '../../utils/Color'
+import { keyframes } from '@emotion/react'
 
 export interface SnackbarProps {
   isOpen: boolean
@@ -91,6 +92,23 @@ export const Snackbar = ({
   }
 }
 
+const feedIn = keyframes({
+  '0%': {
+    opacity: 0,
+    top: '34px',
+  },
+  '50%': {
+    opacity: 1,
+    top: '34px',
+  },
+  '75%': {
+    top: '30px',
+  },
+  '100%': {
+    top: '32px',
+  },
+})
+
 const Root = styled('span')({
   position: 'absolute',
   top: '32px',
@@ -102,6 +120,7 @@ const Root = styled('span')({
   boxShadow: '5px 5px 5px 0px rgba(100,100,100,0.6)',
   borderRadius: '10px',
   minWidth: '300px',
+  animation: `${feedIn} 2s cubic-bezier(0.33, 1, 0.68, 1) 1 forwards`,
 })
 
 const Text = styled('div')({
