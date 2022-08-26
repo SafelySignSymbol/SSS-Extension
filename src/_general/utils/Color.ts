@@ -10,7 +10,7 @@ const Color = {
   alert: {
     default: '#333333',
     error: '#CB1742',
-    warning: '#DC9918',
+    warning: '#DCBB18',
     info: '#1753CB',
     success: '#46CB17',
   },
