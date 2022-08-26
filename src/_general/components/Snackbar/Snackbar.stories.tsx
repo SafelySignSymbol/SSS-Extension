@@ -57,6 +57,7 @@ ShortText.args = {
 export const LongText = Template.bind({})
 LongText.args = {
   isOpen: true,
-  snackbarMessage: 'Copy Address :  TC5FGDJ7K7N2T5DVSYDDC7PD64O3QPCKEPQF6XQ ',
+  snackbarMessage:
+    'テスト用のプログラムでスナックバーに表示されるとても長いテキストです',
   snackbarStatus: SnackbarType.INFO,
 }
