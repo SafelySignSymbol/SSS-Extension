@@ -10,7 +10,7 @@ const Color = {
   alert: {
     default: '#333333',
     error: '#CB1742',
-    warning: '#DCBB18',
+    warning: '#CAAC16',
     info: '#1753CB',
     success: '#46CB17',
   },
@@ -21,8 +21,8 @@ export const addAlpha = (color: string, alpha: number): string => {
   return color.replace('rgb', 'rgba').replace(')', `, ${alpha})`)
 }
 
-export const TestNetColors = ['#3A81A8', '#0190E1', '#2AA5A8', '#01E12E']
+export const TestNetColors = ['#3A81A8', '#3AA5A8', '#0190E1', '#01E12E']
 
-export const MainNetColors = ['#A83A6F', '#E1016D', '#A83A94', '#E19A01']
+export const MainNetColors = ['#A83A6F', '#A7394A', '#DF01B7', '#E19A01']
 
 export const UtilColors = [...MainNetColors, ...TestNetColors]
