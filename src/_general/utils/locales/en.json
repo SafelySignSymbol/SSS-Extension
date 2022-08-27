@@ -47,7 +47,7 @@
   "settings": "SETTINGS",
   "history": "ACTIVITY",
   "add_account": "ADD ACCOUNT",
-  "recent_transaction": "Recent Transaction",
+  "recent_transaction": "Activity Log",
   "active_account_infomation": "ActiveAccount Information",
   "address": "Address",
   "xym_balance": "XYM Balance",
