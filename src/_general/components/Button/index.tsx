@@ -2,7 +2,7 @@ import React from 'react'
 import styled from '@emotion/styled'
 
 import { Button } from '@mui/material'
-import { addAlpha } from '../../utils/Color'
+import Color from '../../utils/Color'
 
 export interface Props {
   text: string
@@ -19,24 +19,10 @@ const Component: React.VFC<Props> = ({ text, onClick }) => {
 
 export default Component
 
-const SButton = styled(Button)`
-  color: black !important;
-  border-color: black !important;
-  font-family: Roboto, Noto Sans JP, Times New Roman;
-
-  :hover {
-    border-color: black !important;
-    background-color: ${addAlpha('rgb(0, 0, 0)', 0.6)} !important;
-    color: white !important;
-  }
-`
-// const SButton = styled(Button)`
-//   color: ${Color.pink} !important;
-//   border-color: ${Color.pink} !important;
-
-//   :hover {
-//     border-color: ${Color.pink} !important;
-//     background-color: ${addAlpha(Color.pink, 0.6)} !important;
-//     color: white !important;
-//   }
-// `
+const SButton = styled(Button)({
+  color: Color.blue,
+  ':hover': {
+    background: Color.blue,
+    color: Color.base_white,
+  },
+})
