@@ -18,6 +18,7 @@ Please install from the link below
 
 - [SSS DEMO](https://inatatsu-tatsuhiro.github.io/SSS-Demo/)
 - [SSS Wiki](https://github.com/inatatsu-tatsuhiro/SSS-Extension/wiki)
+- [SSS Docs](https://docs.sss-symbol.com)
 
 # Build
 
@@ -44,6 +45,27 @@ $ mv .env.sample .env
 
 ```
 $ yarn build
+```
+
+## Environment
+
+environment sample (docker)
+
+docker-compose.yml
+
+```
+version: "3"
+
+services:
+  extension:
+    image: node:16
+    working_dir: /app
+    volumes:
+      - ./extension:/app
+    ports:
+      - 6006:6006
+    command: yarn storybook
+
 ```
 
 # Licence
