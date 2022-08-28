@@ -21,7 +21,6 @@ import {
   FormControl,
   InputLabel,
   Select,
-  OutlinedInput,
   MenuItem,
   Accordion,
   AccordionDetails,
@@ -72,27 +71,21 @@ const langs = [
 const sessionTimes = [
   {
     key: '0',
-    value: 0,
+  },
+  {
+    key: '1 min',
   },
   {
     key: '5 min',
-    value: 5,
   },
   {
     key: '10 min',
-    value: 10,
   },
   {
     key: '15 min',
-    value: 15,
   },
   {
     key: '30 min',
-    value: 39,
-  },
-  {
-    key: '60 min',
-    value: 60,
   },
 ]
 
@@ -168,9 +161,11 @@ const Options: React.VFC<Props> = ({ reload, update, setting, setSetting }) => {
     })
   }
 
-  const changeSessionTime = (min: number) => {
-    changeSession(min * 60 * 1000)
-    resetLocalSession()
+  const changeSessionTime = (min: string) => {
+    changeSession(Number(min.split(' ')[0]) * 60 * 1000).then(() => {
+      resetLocalSession()
+      reload()
+    })
   }
 
   return (
@@ -194,34 +189,13 @@ const Options: React.VFC<Props> = ({ reload, update, setting, setSetting }) => {
           <FormControl sx={{ width: 160 }}>
             <InputLabel id="demo-multiple-name-label">Network</InputLabel>
             <Select
-              labelId="demo-multiple-name-label"
-              id="demo-multiple-name"
-              // value={setting.networkType}
+              labelId="setting-network-label"
+              id="setting-network-name"
+              value={setting.networkType}
               onChange={(e) => changeNet(e.target.value as NetworkType)}>
               {networks.map((n) => (
                 <MenuItem key={n.name} value={n.value}>
                   {n.name}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-        </Center>
-      </Wrapper>
-      <Wrapper>
-        <Column>
-          <Typography text={t('setting_change_session')} fontSize={24} />
-          <Typography text={t('setting_change_session_e')} fontSize={16} />
-        </Column>
-        <Center>
-          <FormControl sx={{ width: 160 }}>
-            <InputLabel id="demo-multiple-name-label">Session Time</InputLabel>
-            <Select
-              labelId="demo-multiple-name-label"
-              id="demo-multiple-name"
-              onChange={(e) => changeSessionTime(Number(e.target.value))}>
-              {sessionTimes.map((n) => (
-                <MenuItem key={n.key} value={n.value}>
-                  {n.key}
                 </MenuItem>
               ))}
             </Select>
@@ -238,9 +212,9 @@ const Options: React.VFC<Props> = ({ reload, update, setting, setSetting }) => {
           <FormControl sx={{ width: 160 }}>
             <InputLabel id="demo-multiple-name-label">Langage</InputLabel>
             <Select
-              labelId="demo-multiple-name-label"
-              id="demo-multiple-name"
-              // value={setting.lang}
+              labelId="setting-lang-label"
+              id="setting-lang-name"
+              value={setting.lang}
               onChange={(e) => changeLanguage(e.target.value as string)}>
               {langs.map((l) => (
                 <MenuItem key={l.key} value={l.value}>
@@ -251,6 +225,34 @@ const Options: React.VFC<Props> = ({ reload, update, setting, setSetting }) => {
           </FormControl>
         </Center>
       </Wrapper>
+
+      <Wrapper>
+        <Column>
+          <Typography text={t('setting_change_session')} fontSize={24} />
+          <Typography text={t('setting_change_session_e')} fontSize={16} />
+        </Column>
+        <Center>
+          <FormControl sx={{ width: 160 }}>
+            <InputLabel id="demo-multiple-name-label">Session Time</InputLabel>
+            <Select
+              labelId="setting-session-label"
+              id="setting-session"
+              value={
+                setting.session === 0
+                  ? '0'
+                  : `${setting.session / (1000 * 60)} min`
+              }
+              onChange={(e) => changeSessionTime(String(e.target.value))}>
+              {sessionTimes.map((n) => (
+                <MenuItem key={n.key} value={n.key}>
+                  {n.key}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+        </Center>
+      </Wrapper>
+
       <SDivider />
       <Wrapper>
         <SAccordion>
@@ -270,7 +272,13 @@ const Options: React.VFC<Props> = ({ reload, update, setting, setSetting }) => {
                 <Typography text={t('setting_delete_account')} fontSize={24} />
               </Column>
               <Center>
-                <Button text="RESET" onClick={initAccount} />
+                <Button
+                  text="RESET"
+                  onClick={() => {
+                    initAccount()
+                    reload()
+                  }}
+                />
               </Center>
             </Wrapper>
             <Wrapper>
@@ -278,7 +286,13 @@ const Options: React.VFC<Props> = ({ reload, update, setting, setSetting }) => {
                 <Typography text={t('setting_delete_domain')} fontSize={24} />
               </Column>
               <Center>
-                <Button text="RESET" onClick={initDomain} />
+                <Button
+                  text="RESET"
+                  onClick={() => {
+                    initDomain()
+                    reload()
+                  }}
+                />
               </Center>
             </Wrapper>
             <Wrapper>
@@ -286,7 +300,13 @@ const Options: React.VFC<Props> = ({ reload, update, setting, setSetting }) => {
                 <Typography text={t('setting_delete_all')} fontSize={24} />
               </Column>
               <Center>
-                <Button text="RESET" onClick={init} />
+                <Button
+                  text="RESET"
+                  onClick={() => {
+                    init()
+                    reload()
+                  }}
+                />
               </Center>
             </Wrapper>
           </AccordionDetails>

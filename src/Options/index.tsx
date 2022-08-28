@@ -57,7 +57,6 @@ const Options: React.VFC = () => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
 
   useEffect(() => {
-    console.log('option')
     getSetting().then((s) => {
       if (s.lang === 'INIT') {
         const l = navigator.language.toUpperCase()
