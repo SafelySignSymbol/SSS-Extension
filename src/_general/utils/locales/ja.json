@@ -32,6 +32,8 @@
   "setting_delete_domain": "すべてのアプリケーションとの連携を解除する",
   "setting_delete_account": "すべてのアカウントの登録を解除する",
   "setting_delete_all": "SSS_Extension上のすべての設定をリセットする",
+  "setting_change_session": "SSSをロックする時間",
+  "setting_change_session_e": "SSSのログインを保持する時間を設定する",
   "alert_copy_success": "コピーに成功しました",
   "alert_wrong_pass": "パスワードが間違っています",
   "alert_connected_sss": "SSSと連携しました",

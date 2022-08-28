@@ -12,6 +12,12 @@ import { useTranslation } from 'react-i18next'
 import TransportWebHID from '@ledgerhq/hw-transport-webhid'
 import { SymbolLedger, LedgerNetworkType } from 'symbol-ledger-typescript'
 import { Snackbar, SnackbarType } from '../../_general/components/Snackbar'
+import {
+  checkLoginSession,
+  getSession,
+  resetLocalSession,
+} from '../../_general/lib/Storage'
+import { decrypt, encrypt } from '../../_general/lib/Crypto'
 
 export interface Props {
   extensionAccount: ExtensionAccount
@@ -19,8 +25,9 @@ export interface Props {
 }
 
 const Login: React.VFC<Props> = ({ extensionAccount, loginSuccess }) => {
-  const [pass, setPass] = useState('default password')
+  const [pass, setPass] = useState('')
   const [open, setOpen] = useState(false)
+  const [session, setSession] = useState(0)
 
   const [t] = useTranslation()
 
@@ -33,7 +40,28 @@ const Login: React.VFC<Props> = ({ extensionAccount, loginSuccess }) => {
       return () => {
         clearInterval(timer)
       }
+    } else {
+      getSession().then((data) => {
+        setSession(data)
+
+        if (0 < data) {
+          const login_session = JSON.parse(
+            localStorage.getItem('login_session') || '{}'
+          )
+          if (checkLoginSession()) {
+            const p = decrypt(
+              login_session.sessionPass,
+              String(login_session.session)
+            )
+            setPass(p)
+            login(p)
+          } else {
+            resetLocalSession()
+          }
+        }
+      })
     }
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
@@ -41,14 +69,26 @@ const Login: React.VFC<Props> = ({ extensionAccount, loginSuccess }) => {
     extensionAccount.address
   ).pretty()
 
-  const login = () => {
+  const login = (p: string) => {
     const check = checkPassword(
       extensionAccount.encriptedPrivateKey,
-      pass,
+      p,
       extensionAccount.address
     )
     if (check) {
-      loginSuccess(pass)
+      loginSuccess(p)
+      if (0 < session) {
+        const now = new Date().getTime()
+        const s = now + session
+        const sessionPass = encrypt(p, String(s))
+        localStorage.setItem(
+          'login_session',
+          JSON.stringify({
+            session: s,
+            sessionPass: sessionPass,
+          })
+        )
+      }
     } else {
       setOpen(true)
     }
@@ -80,7 +120,7 @@ const Login: React.VFC<Props> = ({ extensionAccount, loginSuccess }) => {
 
   useEffect(() => {
     if (extensionAccount.type === 'NOPASS') {
-      login()
+      login(pass)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [extensionAccount.type])
@@ -91,12 +131,12 @@ const Login: React.VFC<Props> = ({ extensionAccount, loginSuccess }) => {
         <Spacer margin="16px 8px">
           <Spacer margin="32px 0px">
             <Wrapper>
-              <Typography text="Login" fontSize={20} />
+              <Typography text="Login" fontSize={32} />
             </Wrapper>
           </Spacer>
           <Spacer margin="16px 0px">
             <Container>
-              <Typography text={extensionAccount.name} fontSize={20} />
+              <Typography text={extensionAccount.name} fontSize={28} />
               <Typography text={address} fontSize={20} />
             </Container>
           </Spacer>
@@ -122,12 +162,12 @@ const Login: React.VFC<Props> = ({ extensionAccount, loginSuccess }) => {
       <Spacer margin="16px 8px">
         <Spacer margin="32px 0px">
           <Wrapper>
-            <Typography text="Login" fontSize={20} />
+            <Typography text="Login" fontSize={32} />
           </Wrapper>
         </Spacer>
         <Spacer margin="16px 0px">
           <Container>
-            <Typography text={extensionAccount.name} fontSize={20} />
+            <Typography text={extensionAccount.name} fontSize={28} />
             <Typography text={address} fontSize={20} />
           </Container>
         </Spacer>
@@ -138,7 +178,7 @@ const Login: React.VFC<Props> = ({ extensionAccount, loginSuccess }) => {
         </Spacer>
         <Spacer margin="48px 0px">
           <Flex>
-            <Button text="LOGIN" onClick={login} />
+            <Button text="LOGIN" onClick={() => login(pass)} />
           </Flex>
         </Spacer>
       </Spacer>

@@ -32,6 +32,8 @@
   "setting_delete_domain": "Reset domain settings",
   "setting_delete_account": "Reset account settings",
   "setting_delete_all": "Reset all settings",
+  "setting_change_session": "Time to Lock SSS",
+  "setting_change_session_e": "Set the time to keep the SSS login",
   "alert_copy_success": "Successfully copied",
   "alert_wrong_pass": "Incorrect password",
   "alert_connected_sss": "Linked with SSS",
@@ -58,5 +60,6 @@
   "copied_address": "Copy Address : {{address}}",
   "copied_pubkey": "Copy PublicKey : {{pubkey}}",
   "show_prikey": "Show Private Key",
-  "failed_decryption": "Failed to decrypt"
+  "failed_decryption": "Failed to decrypt",
+  "authntication_to": "Authentication to"
 }

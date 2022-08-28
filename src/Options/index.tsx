@@ -17,7 +17,12 @@ import Settings from './pages/Settings'
 import Allow from './pages/Allow'
 import History from './pages/History'
 import Accounts from './pages/Accounts'
-import { Setting, getSetting } from '../_general/lib/Storage/Setting'
+import {
+  Setting,
+  getSetting,
+  checkLoginSession,
+  resetLocalSession,
+} from '../_general/lib/Storage/Setting'
 import Footer from './components/Footer'
 import { getExtensionAccounts } from '../_general/lib/Storage'
 
@@ -62,10 +67,13 @@ const Options: React.VFC = () => {
         setPageSetting(setting)
       } else {
         i18n.changeLanguage(s.lang)
-        console.log({ s })
         setPageSetting(s)
       }
     })
+
+    if (!checkLoginSession()) {
+      resetLocalSession()
+    }
   }, [update])
 
   useEffect(() => {

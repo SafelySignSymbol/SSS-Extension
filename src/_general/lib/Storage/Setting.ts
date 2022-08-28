@@ -57,3 +57,33 @@ export const changeNetwork = (netType: NetworkType): Promise<Setting> => {
     })
   })
 }
+export const changeSession = (session: number): Promise<Setting> => {
+  return new Promise((resolve) => {
+    getSetting().then((data) => {
+      const newData = data
+      newData.session = session
+      setSetting(newData)
+      resolve(newData)
+    })
+  })
+}
+export const getSession = (): Promise<number> => {
+  return new Promise((resolve) => {
+    getSetting().then((data) => {
+      resolve(data.session)
+    })
+  })
+}
+
+export const resetLocalSession = (): void => {
+  localStorage.removeItem('login_session')
+}
+
+export const checkLoginSession = (): boolean => {
+  const now = new Date().getTime()
+  const session = JSON.parse(
+    localStorage.getItem('login_session') || '{}'
+  ).session
+
+  return now < session
+}

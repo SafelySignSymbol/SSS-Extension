@@ -22,6 +22,7 @@ import {
   addHistory,
   getData,
   getExtensionAccounts,
+  resetLocalSession,
   setActiveAccount,
 } from '../../_general/lib/Storage'
 import { TransactionURI } from 'symbol-uri-scheme'
@@ -45,6 +46,7 @@ import MessageEncription from './components/MessageEncription'
 import { getNetworkTypeByAddress } from '../../_general/lib/Symbol/Config'
 import TransportWebHID from '@ledgerhq/hw-transport-webhid'
 import { SymbolLedger, LedgerNetworkType } from 'symbol-ledger-typescript'
+import { useTranslation } from 'react-i18next'
 
 export interface Props {
   extensionAccount: ExtensionAccount
@@ -66,6 +68,8 @@ const Main: React.VFC<Props> = ({
   const [open, setOpen] = useState(false)
   const [accounts, setAccounts] = useState<ExtensionAccount[]>([])
 
+  const [t] = useTranslation()
+
   useEffect(() => {
     getData().then((data) => {
       if (data.dataType === TRANSACTION && !!data.transaction) {
@@ -83,12 +87,10 @@ const Main: React.VFC<Props> = ({
 
       if (extensionAccount.type === 'HARD') {
         TransportWebHID.create(5000, 5000).then(async (transport) => {
-          console.log('then')
           const ledger = new SymbolLedger(transport, 'XYM')
           try {
             const ledgerNetworkType = LedgerNetworkType.MAIN_NET
             const path = extensionAccount.encriptedPrivateKey
-            console.log({ path })
             const publicKey = await ledger.getAccount(
               path,
               ledgerNetworkType,
@@ -98,7 +100,6 @@ const Main: React.VFC<Props> = ({
             )
             const gh = extensionAccount.getGenerationHash()
 
-            console.log({ gh })
             const t = data.transaction || ''
             const tx = TransactionURI.fromURI(
               t,
@@ -164,7 +165,6 @@ const Main: React.VFC<Props> = ({
             //     })
             // }
           } catch {
-            console.log('catch')
           } finally {
             await ledger.close()
             setTimeout(() => {
@@ -174,7 +174,7 @@ const Main: React.VFC<Props> = ({
         })
       }
     })
-  }, [])
+  }, [extensionAccount, type])
 
   const hundleClick = () => {
     if (
@@ -212,10 +212,10 @@ const Main: React.VFC<Props> = ({
         <Contents>
           <Center>
             <M>
-              <Typography text="Authentication To" fontSize={20} />
+              <Typography text={t('authntication_to')} fontSize={48} />
             </M>
-            <Typography text={addr.plain().substring(0, 19)} fontSize={20} />
-            <Typography text={addr.plain().substring(19)} fontSize={20} />
+            <Typography text={addr.plain().substring(0, 19)} fontSize={32} />
+            <Typography text={addr.plain().substring(19)} fontSize={32} />
           </Center>
         </Contents>
       )
@@ -233,6 +233,7 @@ const Main: React.VFC<Props> = ({
 
   const handleClick = (i: number) => {
     setActiveAccount(i).then(() => {
+      resetLocalSession()
       logout()
     })
   }
@@ -242,7 +243,7 @@ const Main: React.VFC<Props> = ({
       <Header>
         <SquareLogo onClick={() => console.log('')} />
         <Grid>
-          <Typography text={extensionAccount.address} fontSize={20} />
+          <Typography text={extensionAccount.address} fontSize={24} />
         </Grid>
         <IconButton onClick={() => setOpen(true)}>
           <IconContext.Provider value={{ size: '32px' }}>
@@ -262,7 +263,7 @@ const Main: React.VFC<Props> = ({
               {accounts.map((a, i) => {
                 return (
                   <SListItem onClick={() => handleClick(i)} key={a.address}>
-                    <Typography fontSize={20} text={a.name} />
+                    <Typography fontSize={24} text={a.name} />
                     <Chip
                       label={
                         getNetworkTypeByAddress(a.address) === 152
@@ -282,7 +283,7 @@ const Main: React.VFC<Props> = ({
         <Spacer margin="8px">
           {extensionAccount.type === 'HARD' ? (
             <Typography
-              fontSize={20}
+              fontSize={16}
               text="Please approve it in the hardware wallet"
             />
           ) : (

@@ -14,6 +14,8 @@ import {
   Setting,
   changeLang,
   changeNetwork,
+  changeSession,
+  resetLocalSession,
 } from '../../../_general/lib/Storage/Setting'
 import {
   FormControl,
@@ -65,6 +67,33 @@ const langs = [
   //   key: 'ウクライナ',
   //   value: 'UK',
   // },
+]
+
+const sessionTimes = [
+  {
+    key: '0',
+    value: 0,
+  },
+  {
+    key: '5 min',
+    value: 5,
+  },
+  {
+    key: '10 min',
+    value: 10,
+  },
+  {
+    key: '15 min',
+    value: 15,
+  },
+  {
+    key: '30 min',
+    value: 39,
+  },
+  {
+    key: '60 min',
+    value: 60,
+  },
 ]
 
 const networks = [
@@ -139,6 +168,11 @@ const Options: React.VFC<Props> = ({ reload, update, setting, setSetting }) => {
     })
   }
 
+  const changeSessionTime = (min: number) => {
+    changeSession(min * 60 * 1000)
+    resetLocalSession()
+  }
+
   return (
     <Root>
       <Wrapper>
@@ -162,12 +196,32 @@ const Options: React.VFC<Props> = ({ reload, update, setting, setSetting }) => {
             <Select
               labelId="demo-multiple-name-label"
               id="demo-multiple-name"
-              value={setting.networkType}
-              onChange={(e) => changeNet(e.target.value as NetworkType)}
-              input={<OutlinedInput label="Name" />}>
+              // value={setting.networkType}
+              onChange={(e) => changeNet(e.target.value as NetworkType)}>
               {networks.map((n) => (
                 <MenuItem key={n.name} value={n.value}>
                   {n.name}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+        </Center>
+      </Wrapper>
+      <Wrapper>
+        <Column>
+          <Typography text={t('setting_change_session')} fontSize={24} />
+          <Typography text={t('setting_change_session_e')} fontSize={16} />
+        </Column>
+        <Center>
+          <FormControl sx={{ width: 160 }}>
+            <InputLabel id="demo-multiple-name-label">Session Time</InputLabel>
+            <Select
+              labelId="demo-multiple-name-label"
+              id="demo-multiple-name"
+              onChange={(e) => changeSessionTime(Number(e.target.value))}>
+              {sessionTimes.map((n) => (
+                <MenuItem key={n.key} value={n.value}>
+                  {n.key}
                 </MenuItem>
               ))}
             </Select>
@@ -186,9 +240,8 @@ const Options: React.VFC<Props> = ({ reload, update, setting, setSetting }) => {
             <Select
               labelId="demo-multiple-name-label"
               id="demo-multiple-name"
-              value={setting.lang}
-              onChange={(e) => changeLanguage(e.target.value)}
-              input={<OutlinedInput label="Name" />}>
+              // value={setting.lang}
+              onChange={(e) => changeLanguage(e.target.value as string)}>
               {langs.map((l) => (
                 <MenuItem key={l.key} value={l.value}>
                   {l.key}
