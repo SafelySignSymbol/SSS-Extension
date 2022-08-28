@@ -192,6 +192,7 @@ const Options: React.VFC<Props> = ({ reload, update, setting, setSetting }) => {
               labelId="setting-network-label"
               id="setting-network-name"
               value={setting.networkType}
+              label="Network"
               onChange={(e) => changeNet(e.target.value as NetworkType)}>
               {networks.map((n) => (
                 <MenuItem key={n.name} value={n.value}>
@@ -215,6 +216,7 @@ const Options: React.VFC<Props> = ({ reload, update, setting, setSetting }) => {
               labelId="setting-lang-label"
               id="setting-lang-name"
               value={setting.lang}
+              label="Language"
               onChange={(e) => changeLanguage(e.target.value as string)}>
               {langs.map((l) => (
                 <MenuItem key={l.key} value={l.value}>
@@ -237,6 +239,7 @@ const Options: React.VFC<Props> = ({ reload, update, setting, setSetting }) => {
             <Select
               labelId="setting-session-label"
               id="setting-session"
+              label="Session Time"
               value={
                 setting.session === 0
                   ? '0'
