@@ -61,5 +61,6 @@
   "copied_pubkey": "Copy PublicKey : {{pubkey}}",
   "show_prikey": "Show Private Key",
   "failed_decryption": "Failed to decrypt",
-  "authntication_to": "Authentication to"
+  "authntication_to": "Authentication to",
+  "change_account": "Change Account"
 }

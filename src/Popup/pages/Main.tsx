@@ -252,7 +252,7 @@ const Main: React.VFC<Props> = ({
         </IconButton>
         <Modal open={open} onClose={() => setOpen(false)}>
           <SPaper>
-            <Typography fontSize={20} text="Change Account" />
+            <Typography fontSize={20} text={t('change_account')} />
             <List
               sx={{
                 width: '100%',
@@ -325,16 +325,16 @@ const Contents = styled('div')({
   margin: '16px 32px',
   width: 'calc(100vw - 64px)',
   height: 'calc(100vh - 32px - 80px - 80px)',
-  border: 'solid ' + addAlpha(Color.sky, 0.4),
+  border: 'solid ' + addAlpha(Color.blue, 0.4),
   borderWidth: '4px 0px 4px 4px',
   boxSizing: 'border-box',
   overflowY: 'scroll',
   '::-webkit-scrollbar-track': {
-    background: addAlpha(Color.sky, 0.4),
+    background: addAlpha(Color.blue, 0.4),
   },
   '::-webkit-scrollbar-thumb': {
     borderRadius: '4px',
-    background: addAlpha(Color.sky, 0.9),
+    background: addAlpha(Color.blue, 0.9),
   },
   '::-webkit-scrollbar': {
     width: '4px',
