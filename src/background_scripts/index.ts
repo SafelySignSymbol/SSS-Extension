@@ -3,6 +3,7 @@ import { getData, setMessageV2 } from './../_general/lib/Storage/Data'
 import {
   IS_ALLOW_DOMAIN,
   OPEN_POPUP,
+  RELOAD_PAGE,
   REMOVE_DATA,
   SET_MESSAGE,
   SET_TRANSACTION,
@@ -83,13 +84,13 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (message.type === SET_TRANSACTION) {
     chrome.tabs.query({ active: true, currentWindow: true }).then((data) => {
       const [tab] = data
-      setTransactionV2(message.transaction, tab.id)
+      setTransactionV2(message.transaction, tab.id || 0)
     })
   }
   if (message.type === SET_MESSAGE) {
     chrome.tabs.query({ active: true, currentWindow: true }).then((data) => {
       const [tab] = data
-      setMessageV2(message.message, message.publicKey, tab.id)
+      setMessageV2(message.message, message.publicKey, tab.id || 0)
     })
   }
 
@@ -101,4 +102,12 @@ chrome.contextMenus.onClicked.addListener((info, tab) => {
   const protocol = info.pageUrl.split('://')[0]
   const domain = info.pageUrl.split('://')[1].split('/')[0]
   addAllowList(protocol + '://' + domain)
+  console.log({ tab })
+  chrome.tabs.query({ active: true, currentWindow: true }).then((data) => {
+    console.log({ data })
+    const [tab] = data
+    chrome.tabs.sendMessage(tab.id || 0, {
+      type: RELOAD_PAGE,
+    })
+  })
 })

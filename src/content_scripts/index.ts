@@ -2,6 +2,7 @@ import {
   FOCUS_PAGE,
   INJECT_SSS,
   IS_ALLOW_DOMAIN,
+  RELOAD_PAGE,
   REMOVE_DATA,
   REQUEST_ACTIVE_ACCOUNT_TOKEN,
   REQUEST_MESSAGE_ENCODE,
@@ -155,6 +156,10 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
       },
       window.opener
     )
+  }
+
+  if (message.type === RELOAD_PAGE) {
+    window.location.reload()
   }
 
   return true
