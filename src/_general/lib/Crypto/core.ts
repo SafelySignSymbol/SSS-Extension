@@ -1,3 +1,4 @@
+import { SECRET_KEY } from './../../utils/Config'
 import CryptoJS from 'crypto-js'
 import crypto from 'crypto'
 
@@ -5,7 +6,7 @@ const algorithm = 'aes-256-cbc'
 const delimiter = '$'
 
 const getKey = () => {
-  const key = process.env.REACT_APP_PUBLIC_KEY || ''
+  const key = SECRET_KEY || ''
   return key
 }
 const getSeed = () => {
