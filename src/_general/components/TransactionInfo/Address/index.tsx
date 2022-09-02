@@ -50,7 +50,7 @@ const TxAddress: React.VFC<Props> = ({ address }) => {
     <Wrapper>
       <Typography
         text={address instanceof NamespaceId ? 'NameSpace' : 'Address'}
-        fontSize={20}
+        fontSize={24}
       />
       <Center>
         <Typography text={addr} fontSize={20} />
@@ -61,9 +61,7 @@ const TxAddress: React.VFC<Props> = ({ address }) => {
 
 export default TxAddress
 
-const Wrapper = styled('div')({
-  margin: '8px',
-})
+const Wrapper = styled('div')({})
 
 const Center = styled('div')({
   display: 'flex',

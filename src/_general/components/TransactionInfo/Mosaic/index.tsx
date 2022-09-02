@@ -77,7 +77,7 @@ const TxMosaic: React.VFC<Props> = ({ mosaic }) => {
         <Typography text={id} fontSize={20} />
         <Typography
           text={String(mosaic.amount.compact() / Math.pow(10, div))}
-          fontSize={20}
+          fontSize={16}
         />
       </Center>
     </Wrapper>

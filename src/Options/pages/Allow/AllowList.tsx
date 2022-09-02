@@ -101,7 +101,7 @@ const Component: React.VFC<Props> = ({ allowlist, reload }) => {
                     setSnackbar({
                       isOpen: true,
                       snackbarMessage: t('alert_copy_success'),
-                      snackbarStatus: SnackbarType.SUCCESS,
+                      snackbarStatus: SnackbarType.INFO,
                     })
                   })
                 }}>

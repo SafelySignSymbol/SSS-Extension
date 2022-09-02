@@ -6,7 +6,7 @@ import Typography from '../../../_general/components/Typography'
 const Component: React.VFC = () => {
   return (
     <Wrapper>
-      <Typography text="NOT FOUND" fontSize={20} />
+      <Typography text="NOT FOUND" fontSize={28} />
     </Wrapper>
   )
 }

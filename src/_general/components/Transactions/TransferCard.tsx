@@ -16,7 +16,7 @@ const TransferCard: React.VFC<Props> = ({ transaction }) => {
       <TxAddress address={transaction.recipientAddress} />
       <Typography text="Message" fontSize={20} />
       <Spacer MLeft="16px">
-        <Typography text={transaction.message.payload} fontSize={20} />
+        <Typography text={transaction.message.payload} fontSize={16} />
       </Spacer>
       <Typography text="Mosaics" fontSize={20} />
       {transaction.mosaics.map((mosaic) => {
