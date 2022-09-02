@@ -4,6 +4,8 @@ import styled from '@emotion/styled'
 import { IconContext } from 'react-icons'
 import Color from '../../utils/Color'
 import { keyframes } from '@emotion/react'
+import { IconButton } from '@mui/material'
+import { MdClear } from 'react-icons/md'
 
 export interface SnackbarProps {
   isOpen: boolean
@@ -86,7 +88,14 @@ export const Snackbar = ({
             {getIcon()}
           </IconContext.Provider>
         </IconWrapper>
-        <Text>{msg}</Text>
+        <Wrapper>
+          <Text>{msg}</Text>
+          <IconButton size="small" onClick={closeSnackbar}>
+            <IconContext.Provider value={{ size: '24px' }}>
+              <MdClear style={{ margin: '6px', color: Color.base_white }} />
+            </IconContext.Provider>
+          </IconButton>
+        </Wrapper>
       </Root>
     )
   }
@@ -128,6 +137,14 @@ const Text = styled('div')({
   color: Color.base_white,
   borderRadius: '0px 10px 10px 0px',
   marginBottom: '1px',
+})
+
+const Wrapper = styled('div')({
+  display: 'flex',
+  justifyContent: 'space-between',
+  alignItems: 'center',
+  width: '100%',
+  marginRight: '8px',
 })
 
 const IconWrapper = styled('div')((p: { color: string }) => ({
