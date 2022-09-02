@@ -1,7 +1,7 @@
 import React from 'react'
 import { Story, Meta } from '@storybook/react'
 
-import Header, { Props } from './Header'
+import Header, { Props } from '.'
 
 export default {
   title: 'Components/Header',

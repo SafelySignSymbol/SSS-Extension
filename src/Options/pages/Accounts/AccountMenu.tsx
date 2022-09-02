@@ -1,65 +1,78 @@
 import React, { useState } from 'react'
 
 // import styled from '@emotion/styled'
-import {
-  Alert,
-  AlertColor,
-  IconButton,
-  Menu,
-  MenuItem,
-  Snackbar,
-} from '@mui/material'
+import { IconButton, Menu, MenuItem } from '@mui/material'
 import {
   deleteExtensionAccount,
-  setActiveAccount,
+  getAccountIndexByAddress,
+  setActiveAccountV2,
+  Setting,
 } from '../../../_general/lib/Storage'
 import { IconContext } from 'react-icons'
 import { RiSettings2Fill } from 'react-icons/ri'
 import { useTranslation } from 'react-i18next'
+import { ExtensionAccount } from '../../../_general/model/ExtensionAccount'
+import Color from '../../../_general/utils/Color'
+import {
+  Snackbar,
+  SnackbarProps,
+  SnackbarType,
+} from '../../../_general/components/Snackbar'
 
 export type Props = {
-  index: number
+  account: ExtensionAccount
   reload: () => void
+  setting: Setting
 }
 
-const Component: React.VFC<Props> = ({ index, reload }) => {
-  const [message, setMessage] = useState('')
-  const [openSB, setOpenSB] = useState(false)
-  const [snackbarStatus, setSnackbarStatus] = useState<AlertColor>('success')
+const Component: React.VFC<Props> = ({ account, reload, setting }) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
 
   const [t] = useTranslation()
   const open = Boolean(anchorEl)
+  const [snackbar, setSnackbar] = useState<SnackbarProps>({} as SnackbarProps)
 
   const onClickActive = () => {
-    setActiveAccount(index)
-      .then(() => {
-        setSnackbarStatus('success')
-        setMessage(t('accounts_success_change_active'))
-        setOpenSB(true)
-      })
-      .finally(() => {
-        reload()
-        handleClose()
-      })
+    if (!window.confirm('realy ?')) return
+    getAccountIndexByAddress(account.address).then((index) => {
+      setActiveAccountV2(index, setting.networkType)
+        .then(() => {
+          setSnackbar({
+            isOpen: true,
+            snackbarMessage: t('accounts_success_change_active'),
+            snackbarStatus: SnackbarType.SUCCESS,
+          })
+        })
+        .finally(() => {
+          reload()
+          handleClose()
+        })
+    })
   }
 
   const onClickDelete = () => {
-    deleteExtensionAccount(index)
-      .then(() => {
-        setSnackbarStatus('success')
-        setMessage(t('accounts_success_remove_account'))
-        setOpenSB(true)
-      })
-      .catch(() => {
-        setSnackbarStatus('error')
-        setMessage(t('accounts_failed_remove_account'))
-        setOpenSB(true)
-      })
-      .finally(() => {
-        reload()
-        handleClose()
-      })
+    if (!window.confirm('realy ?')) return
+    getAccountIndexByAddress(account.address).then((index) => {
+      deleteExtensionAccount(index, setting.networkType)
+        .then(() => {
+          setSnackbar({
+            isOpen: true,
+            snackbarMessage: t('accounts_success_remove_account'),
+            snackbarStatus: SnackbarType.SUCCESS,
+          })
+        })
+        .catch(() => {
+          setSnackbar({
+            isOpen: true,
+            snackbarMessage: t('accounts_failed_remove_account'),
+            snackbarStatus: SnackbarType.ERROR,
+          })
+        })
+        .finally(() => {
+          reload()
+          handleClose()
+        })
+    })
   }
 
   const handleOpen = (event: {
@@ -72,14 +85,11 @@ const Component: React.VFC<Props> = ({ index, reload }) => {
     setAnchorEl(null)
   }
 
-  const closeSB = () => {
-    setOpenSB(false)
-  }
   return (
     <>
       <IconButton onClick={handleOpen}>
         <IconContext.Provider value={{ size: '24px' }}>
-          <RiSettings2Fill style={{ margin: '6px' }} />
+          <RiSettings2Fill style={{ margin: '6px', color: Color.gray_black }} />
         </IconContext.Provider>
       </IconButton>
       <Menu open={open} anchorEl={anchorEl} onClose={handleClose}>
@@ -90,14 +100,11 @@ const Component: React.VFC<Props> = ({ index, reload }) => {
           {t('accounts_remove_account')}
         </MenuItem>
       </Menu>
-      <Snackbar open={openSB} autoHideDuration={6000} onClose={closeSB}>
-        <Alert
-          onClose={closeSB}
-          severity={snackbarStatus}
-          sx={{ width: '100%' }}>
-          {message}
-        </Alert>
-      </Snackbar>
+      <Snackbar
+        isOpen={snackbar.isOpen}
+        snackbarMessage={snackbar.snackbarMessage}
+        snackbarStatus={snackbar.snackbarStatus}
+      />
     </>
   )
 }

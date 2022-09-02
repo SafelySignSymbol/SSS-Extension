@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import styled from '@emotion/styled'
-import Typography from '../../../../_general/components/Typography'
 import { NetworkType, UInt64 } from 'symbol-sdk'
 import { getTimeStamp } from '../../../../_general/lib/Symbol/SymbolService'
+import { getExplorerLinkFromHash } from '../../../../_general/lib/Symbol/Config'
+import Color, { UtilColors } from '../../../../_general/utils/Color'
+import { Link } from '@mui/material'
+import Avatar from 'boring-avatars'
 
 export type Props = {
   type: string
@@ -24,15 +27,18 @@ const Component: React.VFC<Props> = ({ type, hash, netType, height }) => {
   }, [height, netType])
 
   return (
-    <Column>
+    <Wrap>
+      <HashWrapper>
+        <Avatar size={32} name={hash} variant="bauhaus" colors={UtilColors} />
+        <SLink href={getExplorerLinkFromHash(netType, hash)} target="_brank">
+          {hash}
+        </SLink>
+      </HashWrapper>
       <Right>
         <Text>{type}</Text>
+        <Time>{time}</Time>
       </Right>
-      <Wrap>
-        <Typography text={hash} variant="h5" />
-        <Typography text={time} variant="subtitle1" />
-      </Wrap>
-    </Column>
+    </Wrap>
   )
 }
 
@@ -44,25 +50,39 @@ export default Component
 
 const Wrap = styled('div')({
   display: 'flex',
-  justifyContent: 'space-between',
   alignItems: 'center',
-  margin: '8px',
-})
-
-const Column = styled('div')({
-  display: 'flex',
-  flexDirection: 'column',
-  justifyContent: 'center',
-  margin: '2px',
+  margin: '16px',
 })
 
 const Right = styled('div')({
   display: 'flex',
   justifyContent: 'end',
-  margin: '8px',
-  marginBottom: '0px',
+  alignItems: 'center',
+  width: '100%',
 })
 
-const Text = styled('span')({
+const Text = styled('div')({
+  fontSize: '16px',
+})
+const Time = styled('div')({
+  fontSize: '16px',
+  width: '140px',
+  textAlign: 'end',
+})
+
+const SLink = styled(Link)({
   fontSize: '20px',
+  textDecoration: 'none',
+  color: Color.base_black,
+  ':hover': {
+    color: Color.blue,
+  },
+})
+
+const HashWrapper = styled('div')({
+  display: 'flex',
+  alignItems: 'center',
+  '> :nth-child(1)': {
+    marginRight: '20px',
+  },
 })

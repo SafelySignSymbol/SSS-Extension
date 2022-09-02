@@ -35,11 +35,10 @@ export const validatePrivateKey = (priKey: string): string => {
 export const checkPassword = (
   encriptedPrivateKey: string,
   pass: string,
-  address: string,
-  seed: number
+  address: string
 ): boolean => {
   try {
-    const priKey = decrypt(encriptedPrivateKey, pass, seed)
+    const priKey = decrypt(encriptedPrivateKey, pass)
     const net_type =
       address.charAt(0) === 'T' ? NetworkType.TEST_NET : NetworkType.MAIN_NET
 

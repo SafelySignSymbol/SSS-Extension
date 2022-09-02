@@ -1,30 +1,29 @@
 import React, { useEffect, useState } from 'react'
 import styled from '@emotion/styled'
 
-import { Grid } from '@mui/material'
-
 import Spacer from '../../../_general/components/Spacer'
 
-import { getActiveAccount } from '../../../_general/lib/Storage'
+import { getActiveAccountV2, Setting } from '../../../_general/lib/Storage'
 import { ExtensionAccount } from '../../../_general/model/ExtensionAccount'
 import Mosaics from './Mosaics'
-import { Address } from 'symbol-sdk'
+import { Address, NetworkType } from 'symbol-sdk'
 import ActiveAccount from './ActiveAccount'
-import TransactionHistory from './TransactionHistory'
 
 interface Props {
   reload: () => void
   update: Date
+  setting: Setting
 }
 
-const Options: React.VFC<Props> = ({ reload, update }) => {
+const Options: React.VFC<Props> = ({ reload, update, setting }) => {
   const [account, setAccount] = useState<ExtensionAccount | null>(null)
 
   useEffect(() => {
-    getActiveAccount().then((acc) => {
-      setAccount(acc)
+    getActiveAccountV2(setting.networkType).then((acc) => {
+      const account = ExtensionAccount.createExtensionAccount(acc)
+      setAccount(account)
     })
-  }, [update])
+  }, [setting.networkType, update])
 
   if (account === null) {
     return <></>
@@ -34,23 +33,15 @@ const Options: React.VFC<Props> = ({ reload, update }) => {
 
   return (
     <Wrapper>
-      <Grid container>
-        <Grid item xs={4}>
-          <Spacer margin="32px 8px">
-            <ActiveAccount address={adr} />
-          </Spacer>
-          <Spacer margin="32px 8px">
-            <Mosaics address={adr} />
-          </Spacer>
-        </Grid>
-        <Grid item xs={8}>
-          <Spacer margin="32px 8px">
-            <Wrap>
-              <TransactionHistory address={adr} />
-            </Wrap>
-          </Spacer>
-        </Grid>
-      </Grid>
+      <Spacer margin="48px 8px 40px">
+        <ActiveAccount address={adr} name={account.name} />
+      </Spacer>
+      <Spacer margin="32px 8px">
+        <Mosaics address={adr} />
+      </Spacer>
+      <Nettype>
+        {setting.networkType === NetworkType.TEST_NET ? 'TEST NET' : 'MAIN NET'}
+      </Nettype>
     </Wrapper>
   )
 }
@@ -58,10 +49,16 @@ const Options: React.VFC<Props> = ({ reload, update }) => {
 export default Options
 
 const Wrapper = styled('div')({
-  margin: '16px 80px',
-  width: 'calc(100vw - 64px)',
+  minWidth: '60vw',
+  width: '1000px',
 })
 
-const Wrap = styled('div')({
-  height: 'calc(100vh - 176px)',
+const Nettype = styled('div')({
+  position: 'absolute',
+  right: '100px',
+  top: '100px',
+  fontSize: '96px',
+  fontWeight: '900',
+  zIndex: '-1',
+  color: 'white',
 })

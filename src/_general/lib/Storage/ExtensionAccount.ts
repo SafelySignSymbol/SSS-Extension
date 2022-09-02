@@ -1,4 +1,7 @@
-import { getStorage, getActiveAccount, setStorage } from '.'
+import { getNetworkTypeByAddress } from './../Symbol/Config'
+import { getActiveAccountV2, setActiveAccountV2 } from './ActiveAccount'
+import { NetworkType } from 'symbol-sdk'
+import { getStorage, setStorage } from '.'
 import {
   IExtensionAccount,
   ExtensionAccount,
@@ -20,17 +23,29 @@ export const addExtensionAccount = (account: IExtensionAccount) => {
         ]
         const newAccountsCount: number = data.accountsCount + 1
 
-        if (data.accountsCount === 0) {
-          chrome.storage.local.set({
-            activeAccount: account,
+        chrome.storage.local
+          .set({
+            extensionAccounts: newExtensionAccounts,
+            accountsCount: newAccountsCount,
           })
-        }
+          .then(() => {
+            // 追加したアカウントと同じネットワークのアカウントが一つもなかったらアクティブアカウントにする
+            const nt = getNetworkTypeByAddress(account.address)
+            const arr = data.extensionAccounts.filter(
+              (e: ExtensionAccount) => getNetworkTypeByAddress(e.address) === nt
+            )
 
-        chrome.storage.local.set({
-          extensionAccounts: newExtensionAccounts,
-          accountsCount: newAccountsCount,
-        })
-        resolve(account)
+            if (arr.length === 0) {
+              console.log({ newAccountsCount })
+              setActiveAccountV2(
+                data.accountsCount,
+                getNetworkTypeByAddress(account.address)
+              )
+            }
+            //
+
+            resolve(account)
+          })
       }
     })
   })
@@ -57,10 +72,13 @@ export const getExtensionAccount = (
   })
 }
 
-export const deleteExtensionAccount = (arrayNum: number) => {
+export const deleteExtensionAccount = (
+  arrayNum: number,
+  network: NetworkType
+) => {
   return new Promise((resolve, reject) => {
     chrome.storage.local.get(['extensionAccounts', 'accountsCount'], (data) => {
-      getActiveAccount().then((acc) => {
+      getActiveAccountV2(network).then((acc) => {
         if (
           acc.address === data.extensionAccounts[arrayNum].address &&
           data.extensionAccounts.length !== 1
@@ -88,5 +106,5 @@ export const deleteExtensionAccount = (arrayNum: number) => {
 }
 
 export const deleteAllAccount = () => {
-  setStorage({ activeAccount: null, extensionAccounts: [] })
+  setStorage({ activeAccounts: [], extensionAccounts: [] })
 }

@@ -11,9 +11,9 @@ export type Props = {
 const TxMessage: React.VFC<Props> = ({ message }) => {
   return (
     <Wrapper>
-      <Typography text="Message" variant="h5" />
+      <Typography text="Message" fontSize={24} />
       <Wrapper>
-        <Typography text={message.payload.toString()} variant="subtitle1" />
+        <Typography text={message.payload.toString()} fontSize={20} />
       </Wrapper>
     </Wrapper>
   )

@@ -20,7 +20,7 @@ const TextField: React.VFC<Props> = ({
 }) => {
   if (variant === 'text') {
     return (
-      <FormControl sx={{ m: 1, width: '100%' }} variant="outlined">
+      <FormControl sx={{ m: 1 }} variant="outlined">
         <InputLabel>{label}</InputLabel>
         <Input onChange={(e) => setText(e.target.value)} />
       </FormControl>
@@ -28,7 +28,7 @@ const TextField: React.VFC<Props> = ({
   }
   if (variant === 'filled') {
     return (
-      <FormControl sx={{ m: 1, width: '100%' }} variant="outlined">
+      <FormControl sx={{ m: 1 }} variant="outlined">
         <InputLabel>{label}</InputLabel>
         <FilledInput onChange={(e) => setText(e.target.value)} />
       </FormControl>
@@ -36,9 +36,43 @@ const TextField: React.VFC<Props> = ({
   }
 
   return (
-    <FormControl sx={{ m: 1, width: '100%' }} variant="outlined">
+    <FormControl sx={{ m: 1 }} variant="outlined">
       <InputLabel>{label}</InputLabel>
       <OutlinedInput label={label} onChange={(e) => setText(e.target.value)} />
+    </FormControl>
+  )
+}
+interface InactiveTextFieldProps {
+  label: string
+  value: string
+  variant?: 'outlined' | 'text' | 'filled'
+}
+export const InactiveTextField: React.FC<InactiveTextFieldProps> = ({
+  label,
+  value,
+  variant = 'outlined',
+}) => {
+  if (variant === 'text') {
+    return (
+      <FormControl sx={{ m: 1 }} variant="outlined">
+        <InputLabel>{label}</InputLabel>
+        <Input value={value} disabled />
+      </FormControl>
+    )
+  }
+  if (variant === 'filled') {
+    return (
+      <FormControl sx={{ m: 1 }} variant="outlined">
+        <InputLabel>{label}</InputLabel>
+        <FilledInput value={value} disabled />
+      </FormControl>
+    )
+  }
+
+  return (
+    <FormControl sx={{ m: 1 }} variant="outlined">
+      <InputLabel>{label}</InputLabel>
+      <OutlinedInput value={value} disabled />
     </FormControl>
   )
 }

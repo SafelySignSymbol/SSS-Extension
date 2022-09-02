@@ -33,3 +33,11 @@ export const getNodeUrl = (type: NetworkType) => {
 export const getNetworkTypeByAddress = (address: string) => {
   return address.charAt(0) === 'T' ? NetworkType.TEST_NET : NetworkType.MAIN_NET
 }
+
+export const getExplorerLinkFromHash = (type: NetworkType, hash: string) => {
+  if (type === NetworkType.TEST_NET) {
+    return `https://testnet.symbol.fyi/transactions/${hash}`
+  } else {
+    return `https://symbol.fyi/transactions/${hash}`
+  }
+}

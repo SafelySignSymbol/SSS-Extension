@@ -2,6 +2,7 @@ import {
   FOCUS_PAGE,
   INJECT_SSS,
   IS_ALLOW_DOMAIN,
+  RELOAD_PAGE,
   REMOVE_DATA,
   REQUEST_ACTIVE_ACCOUNT_TOKEN,
   REQUEST_MESSAGE_ENCODE,
@@ -15,9 +16,10 @@ import {
   SIGN_TRANSACTION,
 } from './../_general/model/MessageType'
 import {
-  getActiveAccount,
+  // getActiveAccount,
   setCosignatories,
   setSignStatus,
+  getActiveAccountV2,
 } from '../_general/lib/Storage'
 import { getSetting } from '../_general/lib/Storage/Setting'
 
@@ -46,8 +48,8 @@ const injectStylefile = function (file: string, node: string) {
 }
 
 const injectSSS = () => {
-  getActiveAccount().then((activeAccount) => {
-    getSetting().then((setting) => {
+  getSetting().then((setting) => {
+    getActiveAccountV2(setting.networkType).then((activeAccount) => {
       setTimeout(() => {
         window.postMessage(
           {
@@ -154,6 +156,10 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
       },
       window.opener
     )
+  }
+
+  if (message.type === RELOAD_PAGE) {
+    window.location.reload()
   }
 
   return true

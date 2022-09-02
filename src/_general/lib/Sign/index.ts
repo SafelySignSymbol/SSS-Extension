@@ -1,7 +1,5 @@
-import { getGenerationHash } from './../Symbol/Config'
 import {
   Transaction,
-  NetworkType,
   Account,
   AggregateTransaction,
   CosignatureTransaction,
@@ -9,17 +7,18 @@ import {
 } from 'symbol-sdk'
 import { addHistory } from '../Storage'
 import { SIGN_MESSAGE, SIGN_TRANSACTION } from '../../model/MessageType'
+import { ExtensionAccount } from '../../model/ExtensionAccount'
 
 export const encription = (
   message: string,
   pubKey: string,
-  priKey: string,
-  networkType: NetworkType
+  extensionAccount: ExtensionAccount,
+  password: string
 ) => {
-  const acc = Account.createFromPrivateKey(priKey, networkType)
+  const acc = extensionAccount.getAccount(password)
   const msg = acc.encryptMessage(
     message,
-    PublicAccount.createFromPublicKey(pubKey, networkType)
+    PublicAccount.createFromPublicKey(pubKey, extensionAccount.getNetworktype())
   )
   chrome.runtime.sendMessage({
     type: SIGN_MESSAGE,
@@ -29,12 +28,11 @@ export const encription = (
 
 export const sign = (
   transaction: Transaction,
-  priKey: string,
-  networkType: NetworkType
+  extensionAccount: ExtensionAccount,
+  password: string
 ) => {
-  const acc = Account.createFromPrivateKey(priKey, networkType)
-
-  const generationHash = getGenerationHash(networkType)
+  const generationHash = extensionAccount.getGenerationHash()
+  const acc = extensionAccount.getAccount(password)
 
   const signedTx = acc.sign(transaction, generationHash)
   addHistory(signedTx)
@@ -46,16 +44,16 @@ export const sign = (
 
 export const signCosignatureTransaction = (
   payload: string,
-  priKey: string,
-  networkType: NetworkType
+  extensionAccount: ExtensionAccount,
+  password: string
 ) => {
-  const acc = Account.createFromPrivateKey(priKey, networkType)
+  const acc = extensionAccount.getAccount(password)
+  const generationHash = extensionAccount.getGenerationHash()
   const signedTx = CosignatureTransaction.signTransactionPayload(
     acc,
     payload,
-    getGenerationHash(networkType)
+    generationHash
   )
-  // removeTransaction()
   chrome.runtime.sendMessage({
     type: SIGN_TRANSACTION,
     signedTx: signedTx,
@@ -65,12 +63,12 @@ export const signCosignatureTransaction = (
 export const signWithCosignatories = (
   transaction: AggregateTransaction,
   accounts: Account[],
-  priKey: string,
-  networkType: NetworkType
+  extensionAccount: ExtensionAccount,
+  password: string
 ) => {
-  const acc = Account.createFromPrivateKey(priKey, networkType)
+  const acc = extensionAccount.getAccount(password)
 
-  const generationHash = getGenerationHash(networkType)
+  const generationHash = extensionAccount.getGenerationHash()
 
   const signedTx = acc.signTransactionWithCosignatories(
     transaction,
@@ -78,7 +76,6 @@ export const signWithCosignatories = (
     generationHash
   )
   addHistory(signedTx)
-  // removeTransaction()
   chrome.runtime.sendMessage({
     type: SIGN_TRANSACTION,
     signedTx: signedTx,

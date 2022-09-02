@@ -4,7 +4,7 @@ import styled from '@emotion/styled'
 
 import Typography from '../../../_general/components/Typography'
 
-import { Alert, AlertColor, IconButton, Snackbar } from '@mui/material'
+import { IconButton } from '@mui/material'
 import { IconContext } from 'react-icons'
 import { RiAddFill } from 'react-icons/ri'
 import { BsClipboardCheck, BsXSquare } from 'react-icons/bs'
@@ -14,6 +14,12 @@ import Spacer from '../../../_general/components/Spacer'
 
 import { useTranslation } from 'react-i18next'
 import TextField from '../../../_general/components/TextField'
+import Color from '../../../_general/utils/Color'
+import {
+  Snackbar,
+  SnackbarProps,
+  SnackbarType,
+} from '../../../_general/components/Snackbar'
 export type Props = {
   allowlist: string[]
   reload: () => void
@@ -23,9 +29,7 @@ const Component: React.VFC<Props> = ({ allowlist, reload }) => {
   const [t] = useTranslation()
   const [domainName, setDomainName] = useState('')
 
-  const [message, setMessage] = useState('')
-  const [openSB, setOpenSB] = useState(false)
-  const [snackbarStatus, setSnackbarStatus] = useState<AlertColor>('success')
+  const [snackbar, setSnackbar] = useState<SnackbarProps>({} as SnackbarProps)
 
   const deny = (num: number) => {
     deleteAllowList(num).then(() => {
@@ -39,21 +43,19 @@ const Component: React.VFC<Props> = ({ allowlist, reload }) => {
     })
   }
 
-  const closeSB = () => {
-    setOpenSB(false)
-  }
-
   if (allowlist.length === 0)
     return (
-      <div>
-        <Text>{t('allowlist_howuse_e')}</Text>
-        <Spacer MBottom="40px" MTop="20px">
+      <Wrapper>
+        {/* <Text>{t('allowlist_howuse_e')}</Text> */}
+        <Spacer MBottom="20px">
           <Wrap>
-            <TextField
-              label="Domain Name"
-              setText={setDomainName}
-              variant="text"
-            />
+            <TFWrapper>
+              <TextField
+                label="Domain Name"
+                setText={setDomainName}
+                variant="text"
+              />
+            </TFWrapper>
             <IconButton size="small" onClick={allow}>
               <IconContext.Provider value={{ size: '24px' }}>
                 <RiAddFill style={{ margin: '6px' }} />
@@ -61,18 +63,20 @@ const Component: React.VFC<Props> = ({ allowlist, reload }) => {
             </IconButton>
           </Wrap>
         </Spacer>
-      </div>
+      </Wrapper>
     )
 
   return (
     <Wrapper>
-      <Spacer MBottom="40px" MTop="20px">
+      <Spacer MBottom="20px">
         <Wrap>
-          <TextField
-            label="Domain Name"
-            setText={setDomainName}
-            variant="text"
-          />
+          <TFWrapper>
+            <TextField
+              label="Domain Name"
+              setText={setDomainName}
+              variant="text"
+            />
+          </TFWrapper>
           <IconButton size="small" onClick={allow}>
             <IconContext.Provider value={{ size: '24px' }}>
               <RiAddFill style={{ margin: '6px' }} />
@@ -80,26 +84,25 @@ const Component: React.VFC<Props> = ({ allowlist, reload }) => {
           </IconButton>
         </Wrap>
       </Spacer>
-      <Snackbar open={openSB} autoHideDuration={6000} onClose={closeSB}>
-        <Alert
-          onClose={closeSB}
-          severity={snackbarStatus}
-          sx={{ width: '100%' }}>
-          {message}
-        </Alert>
-      </Snackbar>
+      <Snackbar
+        isOpen={snackbar.isOpen}
+        snackbarMessage={snackbar.snackbarMessage}
+        snackbarStatus={snackbar.snackbarStatus}
+      />
       {allowlist.map((e, i) => {
         return (
           <Wrap key={i}>
-            <Typography text={e} variant="h5" />
+            <Typography text={e} fontSize={24} />
             <IconWrapper>
               <IconButton
                 size="small"
                 onClick={() => {
                   navigator.clipboard.writeText(e).then(() => {
-                    setMessage(t('alert_copy_success'))
-                    setOpenSB(true)
-                    setSnackbarStatus('success')
+                    setSnackbar({
+                      isOpen: true,
+                      snackbarMessage: t('alert_copy_success'),
+                      snackbarStatus: SnackbarType.INFO,
+                    })
                   })
                 }}>
                 <IconContext.Provider value={{ size: '24px' }}>
@@ -131,13 +134,20 @@ const Wrap = styled('div')({
   justifyContent: 'space-between',
   alignItems: 'center',
   background: 'white',
-  padding: '16px',
+  padding: '16px 32px',
   margin: '8px',
+  borderBottom: `solid 1px ${Color.grayscale}`,
 })
 const IconWrapper = styled('div')({
-  margin: '8px',
+  '> :nth-child(1)': {
+    marginRight: '16px',
+  },
 })
 
-const Text = styled('div')({
-  marginLeft: '16px',
+const TFWrapper = styled('div')({
+  width: '100%',
+  marginBottom: '12px',
+  '& > div': {
+    width: '100%',
+  },
 })

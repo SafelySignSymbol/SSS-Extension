@@ -55,7 +55,7 @@ const init = () => {
   setStorage({
     extensionAccounts: [],
     accountsCount: 0,
-    activeAccount: null,
+    activeAccounts: [],
     signStatus: '',
     cosignatories: [],
     history: [],

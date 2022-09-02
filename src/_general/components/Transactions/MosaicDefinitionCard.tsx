@@ -12,27 +12,27 @@ const MosaicDefinitionCard: React.VFC<Props> = ({ transaction }) => {
     <Wrapper>
       <Typography
         text={`MosaicID: ${transaction.mosaicId.toHex()}`}
-        variant="h5"
+        fontSize={20}
       />
       <Typography
         text={`Divisibillity: ${transaction.divisibility}`}
-        variant="h5"
+        fontSize={20}
       />
       <Typography
         text={`Restrictable: ${transaction.flags.restrictable}`}
-        variant="h5"
+        fontSize={20}
       />
       <Typography
         text={`SupplyMutable: ${transaction.flags.supplyMutable}`}
-        variant="h5"
+        fontSize={20}
       />
       <Typography
         text={`Transferable: ${transaction.flags.transferable}`}
-        variant="h5"
+        fontSize={20}
       />
       <Typography
         text={`Revokable: ${transaction.flags.revokable}`}
-        variant="h5"
+        fontSize={20}
       />
     </Wrapper>
   )

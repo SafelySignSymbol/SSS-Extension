@@ -8,7 +8,11 @@ import {
   RepositoryFactoryHttp,
   UnresolvedAddress,
 } from 'symbol-sdk'
-import { getActiveAccount } from '../../../lib/Storage'
+import {
+  // getActiveAccount,
+  getActiveAccountV2,
+  getSetting,
+} from '../../../lib/Storage'
 import { getNetworkTypeByAddress, getNodeUrl } from '../../../lib/Symbol/Config'
 
 export type Props = {
@@ -18,36 +22,38 @@ export type Props = {
 const TxAddress: React.VFC<Props> = ({ address }) => {
   const [addr, setAddr] = useState('')
   useEffect(() => {
-    getActiveAccount().then((extensionAccount) => {
-      if (address instanceof NamespaceId) {
-        const addr = extensionAccount.address
-        const url = getNodeUrl(getNetworkTypeByAddress(addr))
-        const rep = new RepositoryFactoryHttp(url)
-        const nsRep = rep.createNamespaceRepository()
-        const nsService = new NamespaceService(nsRep)
+    getSetting().then((s) => {
+      getActiveAccountV2(s.networkType).then((extensionAccount) => {
+        if (address instanceof NamespaceId) {
+          const addr = extensionAccount.address
+          const url = getNodeUrl(getNetworkTypeByAddress(addr))
+          const rep = new RepositoryFactoryHttp(url)
+          const nsRep = rep.createNamespaceRepository()
+          const nsService = new NamespaceService(nsRep)
 
-        const nsId = NamespaceId.createFromEncoded(address.toHex())
-        nsService.namespace(nsId).subscribe(
-          (x) => {
-            setAddr(x.name)
-          },
-          (err) => {
-            setAddr('NameSpace Not Found')
-          }
-        )
-      } else {
-        setAddr(address.plain())
-      }
+          const nsId = NamespaceId.createFromEncoded(address.toHex())
+          nsService.namespace(nsId).subscribe(
+            (x) => {
+              setAddr(x.name)
+            },
+            (err) => {
+              setAddr('NameSpace Not Found')
+            }
+          )
+        } else {
+          setAddr(address.plain())
+        }
+      })
     })
   }, [address])
   return (
     <Wrapper>
       <Typography
         text={address instanceof NamespaceId ? 'NameSpace' : 'Address'}
-        variant="h5"
+        fontSize={24}
       />
       <Center>
-        <Typography text={addr} variant="h6" />
+        <Typography text={addr} fontSize={20} />
       </Center>
     </Wrapper>
   )
@@ -55,9 +61,7 @@ const TxAddress: React.VFC<Props> = ({ address }) => {
 
 export default TxAddress
 
-const Wrapper = styled('div')({
-  margin: '8px',
-})
+const Wrapper = styled('div')({})
 
 const Center = styled('div')({
   display: 'flex',

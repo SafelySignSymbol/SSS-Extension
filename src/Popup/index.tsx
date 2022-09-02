@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
 import styled from '@emotion/styled'
-import { decrypt } from '../_general/lib/Crypto'
 
 import './global.css'
 import {
@@ -12,17 +11,22 @@ import {
 } from 'symbol-sdk'
 
 import {
-  getActiveAccount,
+  getActiveAccountV2,
   getCosignatories,
+  getSetting,
   getSignStatus,
+  Setting,
 } from '../_general/lib/Storage'
+
 import { ExtensionAccount } from '../_general/model/ExtensionAccount'
+
 import Login from './pages/Login'
 import Main from './pages/Main'
+
 import {
   encription,
-  sign,
   signCosignatureTransaction,
+  sign,
   signWithCosignatories,
 } from '../_general/lib/Sign'
 import {
@@ -32,7 +36,6 @@ import {
   REQUEST_SIGN_COSIGNATURE,
   REQUEST_SIGN_WITH_COSIGNATORIES,
 } from '../_general/model/MessageType'
-import { getNetworkTypeByAddress } from '../_general/lib/Symbol/Config'
 
 const LOGIN = 'LOGIN'
 const MAIN = 'MAIN'
@@ -44,6 +47,8 @@ const Popup: React.VFC = () => {
     useState<ExtensionAccount | null>(null)
   const [status, setStatus] = useState<PopupStatus>(LOGIN)
   const [signStatus, setSignStatus] = useState<string>('')
+  const [update, setUpdate] = useState(new Date())
+  const [pageSetting, setPageSetting] = useState<Setting>({} as Setting)
 
   window.onbeforeunload = () => {
     chrome.runtime.sendMessage({
@@ -53,18 +58,23 @@ const Popup: React.VFC = () => {
 
   const [pass, setPass] = useState('')
   useEffect(() => {
-    getActiveAccount().then((acc) => {
-      if (acc === null) {
-        chrome.runtime.openOptionsPage()
-      } else {
-        setExtensionAccount(acc)
-      }
+    console.log('popup')
+    getSetting().then((s) => {
+      setPageSetting(s)
+      getActiveAccountV2(s.networkType)
+        .then((acc) => {
+          const account = ExtensionAccount.createExtensionAccount(acc)
+          setExtensionAccount(account)
+        })
+        .catch(() => {
+          chrome.runtime.openOptionsPage()
+        })
     })
 
     getSignStatus().then((status) => {
       setSignStatus(status)
     })
-  }, [])
+  }, [update])
 
   const loginSuccess = (p: string) => {
     setPass(p)
@@ -75,13 +85,10 @@ const Popup: React.VFC = () => {
     if (extensionAccount === null) {
       return
     }
-    const priKey = decrypt(
-      extensionAccount.encriptedPrivateKey,
-      pass,
-      extensionAccount.seed
-    )
 
-    const net_type = getNetworkTypeByAddress(extensionAccount.address)
+    const priKey = extensionAccount.decrypt(pass)
+
+    const net_type = extensionAccount.getNetworktype()
 
     if (signStatus === REQUEST_ACTIVE_ACCOUNT_TOKEN) {
       const msg = JSON.parse(message)
@@ -95,9 +102,9 @@ const Popup: React.VFC = () => {
           ).payload
         : undefined
       msg.encryptedMessage = encryptedMessage
-      encription(JSON.stringify(msg), pubkey, priKey, net_type)
+      encription(JSON.stringify(msg), pubkey, extensionAccount, pass)
     } else {
-      encription(message, pubkey, priKey, net_type)
+      encription(message, pubkey, extensionAccount, pass)
     }
   }
 
@@ -105,19 +112,17 @@ const Popup: React.VFC = () => {
     if (extensionAccount === null || transaction === null) {
       return
     }
-    const priKey = decrypt(
-      extensionAccount.encriptedPrivateKey,
-      pass,
-      extensionAccount.seed
-    )
-
-    const net_type = getNetworkTypeByAddress(extensionAccount.address)
+    const net_type = extensionAccount.getNetworktype()
 
     if (signStatus === REQUEST_SIGN) {
-      sign(transaction, priKey, net_type)
+      sign(transaction, extensionAccount, pass)
     }
     if (signStatus === REQUEST_SIGN_COSIGNATURE) {
-      signCosignatureTransaction(transaction.serialize(), priKey, net_type)
+      signCosignatureTransaction(
+        transaction.serialize(),
+        extensionAccount,
+        pass
+      )
     }
     if (signStatus === REQUEST_SIGN_WITH_COSIGNATORIES) {
       getCosignatories().then((accounts) => {
@@ -127,8 +132,8 @@ const Popup: React.VFC = () => {
         signWithCosignatories(
           transaction as AggregateTransaction,
           accs,
-          priKey,
-          net_type
+          extensionAccount,
+          pass
         )
       })
     }
@@ -155,6 +160,10 @@ const Popup: React.VFC = () => {
           signTx={signTx}
           encriptMessage={encriptMessage}
           type={signStatus}
+          logout={() => {
+            setStatus(LOGIN)
+            setUpdate(new Date())
+          }}
         />
       )
     }

@@ -1,38 +1,40 @@
 import {
   FormControl,
   InputLabel,
-  OutlinedInput,
   InputAdornment,
   IconButton,
+  Input,
 } from '@mui/material'
-import { Dispatch } from 'react'
+import { Dispatch, useState } from 'react'
 import { VisibilityOff, Visibility } from '@mui/icons-material'
 
 interface Props {
   label: string
-  isVisible: boolean
   autoFocus?: boolean
-  updateIsVisible: () => void
   setPass: Dispatch<string>
 }
 
 const PasswordTextField: React.VFC<Props> = ({
   label,
-  isVisible,
   autoFocus = false,
-  updateIsVisible,
   setPass,
   ...props
 }) => {
+  const [isVisible, setIsVisible] = useState(false)
+
+  const updateIsVisible = () => {
+    setIsVisible((prev) => !prev)
+  }
+
   return (
-    <FormControl sx={{ m: 1, width: '100%' }} variant="outlined">
+    <FormControl sx={{ m: 1 }} variant="outlined">
       <InputLabel>{label}</InputLabel>
-      <OutlinedInput
+      <Input
         type={isVisible ? 'text' : 'password'}
         onChange={(e) => setPass(e.target.value)}
         autoFocus={autoFocus}
         endAdornment={
-          <InputAdornment position="end">
+          <InputAdornment position="end" sx={{ marginRight: '16px' }}>
             <IconButton
               onClick={updateIsVisible}
               onMouseDown={updateIsVisible}
@@ -41,7 +43,6 @@ const PasswordTextField: React.VFC<Props> = ({
             </IconButton>
           </InputAdornment>
         }
-        label="Password"
       />
     </FormControl>
   )

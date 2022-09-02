@@ -11,7 +11,7 @@ type Props = {
 const AccountMetadataCard: React.VFC<Props> = ({ transaction }) => {
   return (
     <Wrapper>
-      <Typography text={transaction.targetMosaicId.toHex()} variant="h5" />
+      <Typography text={transaction.targetMosaicId.toHex()} fontSize={24} />
       <Wrapper>
         <Metadata
           metadataKey={transaction.scopedMetadataKey.toHex()}

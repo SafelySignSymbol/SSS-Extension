@@ -4,83 +4,119 @@ import styled from '@emotion/styled'
 
 import Typography from '../../../_general/components/Typography'
 
-import Color from '../../../_general/utils/Color'
-
 import { ExtensionAccount } from '../../../_general/model/ExtensionAccount'
-import { Chip, IconButton } from '@mui/material'
-import { IconContext } from 'react-icons'
-import { HiOutlineClipboardCopy } from 'react-icons/hi'
 import AccountMenu from './AccountMenu'
-import { getActiveAccount } from '../../../_general/lib/Storage'
+import { Setting } from '../../../_general/lib/Storage'
 
+import Avatar from 'boring-avatars'
+import { NetworkType } from 'symbol-sdk'
+import { getNetworkTypeByAddress } from '../../../_general/lib/Symbol/Config'
+import Color, {
+  MainNetColors,
+  TestNetColors,
+} from '../../../_general/utils/Color'
+import { useTranslation } from 'react-i18next'
+import {
+  Snackbar,
+  SnackbarProps,
+  SnackbarType,
+} from '../../../_general/components/Snackbar'
 export type Props = {
   extensionAccounts: ExtensionAccount[]
+  setting: Setting
   reload: () => void
 }
 
-const Component: React.VFC<Props> = ({ extensionAccounts, reload }) => {
-  const [activeAccount, setActiveAccount] = useState<string>('')
+const Component: React.VFC<Props> = ({
+  extensionAccounts,
+  reload,
+  setting,
+}) => {
+  const [t] = useTranslation()
+  const [snackbar, setSnackbar] = useState<SnackbarProps>({} as SnackbarProps)
 
-  useEffect(() => {
-    getActiveAccount().then((acc) => {
-      setActiveAccount(acc.address)
-    })
-  }, [extensionAccounts])
+  useEffect(() => {}, [extensionAccounts, setting.networkType])
 
   if (extensionAccounts.length === 0) return <div></div>
 
   return (
     <Root>
       {extensionAccounts.map((acc, i) => {
-        const net_type = acc.address.charAt(0) === 'T' ? 'TEST NET' : 'MAIN NET'
-        const color: string = (() => {
-          if (net_type === 'TEST NET') {
-            return 'black'
-          } else {
-            return Color.sky
-          }
-        })()
-        const copy = (value: string) => {
+        const copyAddress = (value: string) => {
           navigator.clipboard.writeText(value)
+
+          setSnackbar({
+            isOpen: true,
+            snackbarMessage: t('copied_address').replace(
+              '{{address}}',
+              acc.address
+            ),
+            snackbarStatus: SnackbarType.INFO,
+          })
+        }
+        const copyPubkey = (value: string) => {
+          navigator.clipboard.writeText(value)
+
+          setSnackbar({
+            isOpen: true,
+            snackbarMessage: t('copied_pubkey').replace(
+              '{{pubkey}}',
+              acc.publicKey
+            ),
+            snackbarStatus: SnackbarType.INFO,
+          })
         }
 
         const name = acc.name || `Account ${i + 1}`
         return (
           <Wrapper>
             <Name>
-              <IsActive isActive={acc.address === activeAccount}>
-                <Typography text={name} variant="h5" />
-              </IsActive>
-              <div>
-                <SChip label={net_type} clr={color} />
-                <AccountMenu index={i} reload={reload} />
-              </div>
+              <NameWrpper>
+                <AvatarWrapper>
+                  <Avatar
+                    size={32}
+                    name={acc.address}
+                    variant="beam"
+                    colors={
+                      getNetworkTypeByAddress(acc.address) ===
+                      NetworkType.MAIN_NET
+                        ? MainNetColors
+                        : TestNetColors
+                    }
+                  />
+                </AvatarWrapper>
+                <Typography text={name} fontSize={28} />
+              </NameWrpper>
+              <AccountMenu account={acc} reload={reload} setting={setting} />
             </Name>
-            <Flex>
-              <div>
-                <Typography text="Address" variant="h5" />
-                <Typography text={acc.address} variant="h6" />
-              </div>
-              <IconButton size="small" onClick={() => copy(acc.address)}>
-                <IconContext.Provider value={{ size: '24px' }}>
-                  <HiOutlineClipboardCopy style={{ margin: '6px' }} />
-                </IconContext.Provider>
-              </IconButton>
+            <Flex isLast={false}>
+              <VerticalMargin onClick={() => copyAddress(acc.address)}>
+                <Typography text="Address" fontSize={24} />
+                <Typography
+                  text={acc.address}
+                  fontSize={20}
+                  color={Color.gray_black}
+                />
+              </VerticalMargin>
             </Flex>
-            <Flex>
-              <div>
-                <Typography text="PublicKey" variant="h5" />
-                <Typography text={acc.publicKey} variant="h6" />
-              </div>
-              <IconButton size="small" onClick={() => copy(acc.publicKey)}>
-                <IconContext.Provider value={{ size: '24px' }}>
-                  <HiOutlineClipboardCopy style={{ margin: '6px' }} />
-                </IconContext.Provider>
-              </IconButton>
+            <Flex isLast={true}>
+              <VerticalMargin onClick={() => copyPubkey(acc.address)}>
+                <Typography text="PublicKey" fontSize={24} />
+                <Typography
+                  text={acc.publicKey}
+                  fontSize={20}
+                  color={Color.gray_black}
+                />
+              </VerticalMargin>
             </Flex>
           </Wrapper>
         )
       })}
+      <Snackbar
+        isOpen={snackbar.isOpen}
+        snackbarMessage={snackbar.snackbarMessage}
+        snackbarStatus={snackbar.snackbarStatus}
+      />
     </Root>
   )
 }
@@ -89,22 +125,22 @@ export default Component
 
 const Wrapper = styled('div')({
   background: 'white',
-  padding: '16px',
-  margin: '8px',
+  padding: '40px',
+  margin: '16px 8px',
+  borderBottom: `solid 1px ${Color.grayscale}`,
 })
 
 const Root = styled('div')({
-  margin: '32px 10vw',
   minWidth: '60vw',
   width: '800px',
 })
 
-const Flex = styled('div')({
+const Flex = styled('div')((p: { isLast: boolean }) => ({
   display: 'flex',
   flexDirection: 'row',
   justifyContent: 'space-between',
-  marginBottom: '8px',
-})
+  marginBottom: p.isLast ? '0px' : '4px',
+}))
 
 const Name = styled('div')({
   marginBottom: '8px',
@@ -112,17 +148,23 @@ const Name = styled('div')({
   justifyContent: 'space-between',
 })
 
-const SChip = styled(Chip)((p: { clr: string }) => ({
-  margin: '0px 16px',
-  color: p.clr,
-}))
+const AvatarWrapper = styled('div')({
+  marginRight: '16px',
+})
 
-const IsActive = styled('span')((p: { isActive: boolean }) => ({
+const NameWrpper = styled('div')({
   display: 'flex',
-  ':after': {
-    content: '"*"',
-    fontSize: '32px',
-    marginLeft: '16px',
-    color: `${p.isActive ? Color.sky : 'white'}`,
+  alignItems: 'center',
+})
+
+const VerticalMargin = styled('div')({
+  cursor: 'pointer',
+  padding: '8px 16px',
+  width: '100%',
+  '> :nth-child(1)': {
+    marginBottom: '8px',
   },
-}))
+  ':hover': {
+    background: Color.base_white,
+  },
+})

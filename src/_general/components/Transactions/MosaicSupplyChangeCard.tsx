@@ -12,11 +12,11 @@ const MosaicSupplyChangeCard: React.VFC<Props> = ({ transaction }) => {
     <Wrapper>
       <Typography
         text={`MosaicID: ${transaction.mosaicId.toHex()}`}
-        variant="h5"
+        fontSize={20}
       />
       <Typography
         text={`Supply: ${transaction.delta.compact()}`}
-        variant="h5"
+        fontSize={20}
       />
     </Wrapper>
   )

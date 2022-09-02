@@ -13,18 +13,21 @@ import itJson from '../_general/utils/locales/it.json'
 import Home from './pages/Home'
 import Header from './components/Header'
 import AccountModal from './components/AccountModal'
-import { getActiveAccount } from '../_general/lib/Storage'
 import Settings from './pages/Settings'
 import Allow from './pages/Allow'
+import History from './pages/History'
 import Accounts from './pages/Accounts'
 import {
   Setting,
   getSetting,
-  changeLang,
+  checkLoginSession,
+  resetLocalSession,
 } from '../_general/lib/Storage/Setting'
 import Footer from './components/Footer'
+import { getExtensionAccounts } from '../_general/lib/Storage'
 
-export type Page = 'SETTING' | 'ALLOW' | 'HOME' | 'ACCOUNTS'
+export type Page = 'SETTING' | 'ALLOW' | 'HOME' | 'ACCOUNTS' | 'HISTORY'
+export type Select = 'SETTING' | 'ACCOUNT' | 'NONE'
 
 i18n.use(initReactI18next).init({
   debug: true,
@@ -45,35 +48,40 @@ i18n.use(initReactI18next).init({
 const Options: React.VFC = () => {
   const [page, setPage] = useState<Page>('HOME')
 
-  const [openModal, setOpenModal] = useState(false)
+  const [state, setState] = useState(0)
 
   const [update, setUpdate] = useState(new Date())
 
   const [pageSetting, setPageSetting] = useState<Setting>({} as Setting)
 
-  useEffect(() => {
-    getActiveAccount().then((acc) => {
-      if (acc === null) setOpenModal(true)
-    })
-  }, [])
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
 
   useEffect(() => {
     getSetting().then((s) => {
-      const lang = (() => {
-        if (s.lang === 'INIT') return window.navigator.language.toUpperCase()
-        if (s.lang.toUpperCase() === 'KR') return 'KO'
-        return s.lang.toUpperCase()
-      })()
-      if (s.lang !== lang) {
-        const st = s
-        s.lang = lang
-        setPageSetting(st)
-        changeLang(lang)
-        reload()
+      if (s.lang === 'INIT') {
+        const l = navigator.language.toUpperCase()
+        i18n.changeLanguage(l)
+        const setting = s
+        setting.lang = l
+        setPageSetting(setting)
+      } else {
+        i18n.changeLanguage(s.lang)
+        setPageSetting(s)
       }
-      i18n.changeLanguage(lang)
     })
+
+    if (!checkLoginSession()) {
+      resetLocalSession()
+    }
   }, [update])
+
+  useEffect(() => {
+    getExtensionAccounts().then((accs) => {
+      if (accs.length === 0) {
+        setState(1)
+      }
+    })
+  }, [])
 
   const reload = () => {
     setUpdate(new Date())
@@ -95,22 +103,44 @@ const Options: React.VFC = () => {
       return <Allow reload={reload} update={update} />
     }
     if (page === 'ACCOUNTS') {
-      return <Accounts reload={reload} update={update} />
+      return <Accounts reload={reload} update={update} setting={pageSetting} />
     }
 
     if (page === 'HOME') {
-      return <Home reload={reload} update={update} />
+      return <Home reload={reload} update={update} setting={pageSetting} />
+    }
+    if (page === 'HISTORY') {
+      return <History reload={reload} update={update} setting={pageSetting} />
     }
   }
 
-  const handleOpen = () => {
-    setOpenModal(true)
-    reload()
+  const handleOpen = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setAnchorEl(event.currentTarget)
   }
+
+  const handleClose = (select: Select) => {
+    if (select === 'SETTING') {
+      setPage('SETTING')
+    }
+
+    if (select === 'ACCOUNT') {
+      setState(1)
+    }
+    setAnchorEl(null)
+  }
+
   return (
     <Root>
-      <Header page={page} setPage={setPage} handleOpen={handleOpen} />
-      <AccountModal open={openModal} setOpen={setOpenModal} reload={reload} />
+      <Header
+        page={page}
+        setPage={setPage}
+        handleOpen={handleOpen}
+        handleClose={handleClose}
+        anchorEl={anchorEl}
+        setting={pageSetting}
+        update={update}
+      />
+      <AccountModal state={state} setState={setState} reload={reload} />
       <Contents>{getBody()}</Contents>
       <Footer />
     </Root>
@@ -126,4 +156,6 @@ const Root = styled('div')({
 const Contents = styled('div')({
   display: 'flex',
   minHeight: 'calc(100% - 320px)',
+  width: 'calc(100vw - 128px)',
+  margin: '0px 64px',
 })

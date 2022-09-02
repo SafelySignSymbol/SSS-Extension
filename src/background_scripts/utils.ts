@@ -3,7 +3,7 @@ export const openPopup = () => {
   setTimeout(() => {
     chrome.windows
       .create({
-        url: '/popup.html',
+        url: '/popup/popup.html',
         type: 'popup',
         width: 816, // 800
         height: 639, // 600
