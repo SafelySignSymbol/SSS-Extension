@@ -3,7 +3,7 @@
 exports[`/components/Snackbar 活性時 適切にレンダーできる: <DEFAULT> 1`] = `
 <div>
   <span
-    class="css-1y2dszf"
+    class="css-33mmzo"
   >
     <div
       class="css-y9ug4i"
@@ -43,7 +43,7 @@ exports[`/components/Snackbar 活性時 適切にレンダーできる: <DEFAULT
 exports[`/components/Snackbar 活性時 適切にレンダーできる: <ERROR> 1`] = `
 <div>
   <span
-    class="css-1y2dszf"
+    class="css-33mmzo"
   >
     <div
       class="css-m6igfi"
@@ -77,7 +77,7 @@ exports[`/components/Snackbar 活性時 適切にレンダーできる: <ERROR> 
 exports[`/components/Snackbar 活性時 適切にレンダーできる: <INFO> 1`] = `
 <div>
   <span
-    class="css-1y2dszf"
+    class="css-33mmzo"
   >
     <div
       class="css-j4cgke"
@@ -117,7 +117,7 @@ exports[`/components/Snackbar 活性時 適切にレンダーできる: <INFO> 1
 exports[`/components/Snackbar 活性時 適切にレンダーできる: <SUCCESS> 1`] = `
 <div>
   <span
-    class="css-1y2dszf"
+    class="css-33mmzo"
   >
     <div
       class="css-xye49e"
@@ -151,7 +151,7 @@ exports[`/components/Snackbar 活性時 適切にレンダーできる: <SUCCESS
 exports[`/components/Snackbar 活性時 適切にレンダーできる: <WARN> 1`] = `
 <div>
   <span
-    class="css-1y2dszf"
+    class="css-33mmzo"
   >
     <div
       class="css-ykjjq7"
@@ -191,7 +191,7 @@ exports[`/components/Snackbar 活性時 適切にレンダーできる: <WARN> 1
 exports[`/components/Snackbar 活性時 適切にレンダーできる: 長いテキスト 1`] = `
 <div>
   <span
-    class="css-1y2dszf"
+    class="css-33mmzo"
   >
     <div
       class="css-y9ug4i"

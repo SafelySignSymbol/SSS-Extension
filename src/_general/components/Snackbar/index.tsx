@@ -95,16 +95,14 @@ export const Snackbar = ({
 const feedIn = keyframes({
   '0%': {
     opacity: 0,
-    top: '34px',
+    top: '128px',
   },
-  '50%': {
+  '25%': {
     opacity: 1,
-    top: '34px',
-  },
-  '75%': {
-    top: '30px',
+    top: '40px',
   },
   '100%': {
+    opacity: 1,
     top: '32px',
   },
 })
