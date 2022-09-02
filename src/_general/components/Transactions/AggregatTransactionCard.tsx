@@ -16,7 +16,7 @@ const AggregateComplateTransactionCard: React.VFC<AggregateComplateProps> = ({
 }) => {
   return (
     <Wrapper>
-      <Typography text="Inner Transactions" fontSize={20} />
+      <Typography text="Inner Transactions" fontSize={22} />
       {transaction.innerTransactions.map((tx, i) => {
         return (
           <Wrapper>
