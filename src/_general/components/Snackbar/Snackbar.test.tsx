@@ -1,4 +1,4 @@
-import { render } from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
 import { Snackbar, SnackbarType } from '.'
 
 export {}
@@ -76,16 +76,16 @@ describe('/components/Snackbar', () => {
       )
       expect(container).toMatchSnapshot()
     })
-    // it('スナックバーに表示されるテキスト', () => {
-    //   render(
-    //     <Target
-    //       open={true}
-    //       text={test_snackbar_text_long}
-    //       type={SnackbarType.DEFAULT}
-    //     />
-    //   )
-    //   expect(screen.queryByText(test_snackbar_text)).toBeTruthy()
-    // })
+    it('スナックバーに表示されるテキスト', () => {
+      render(
+        <Target
+          open={true}
+          text={test_snackbar_text}
+          type={SnackbarType.DEFAULT}
+        />
+      )
+      expect(screen.queryByText(test_snackbar_text)).toBeTruthy()
+    })
   })
   // describe('非活性時にnullが帰る', () => {
   //   const { container } = render(
