@@ -29,6 +29,9 @@ export const getPreviousVersion = (): Promise<string[]> => {
 
 export const initialize = () => {
   const current = version.split('.')
+  if (version === '3.0.1') {
+    chrome.storage.local.remove('activeAccount')
+  }
   getPreviousVersion()
     .then((prev) => {
       if (prev[0] !== current[0]) {

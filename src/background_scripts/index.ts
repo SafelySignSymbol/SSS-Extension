@@ -21,9 +21,9 @@ import {
 import { openPopup } from './utils'
 
 chrome.runtime.onInstalled.addListener((detail) => {
+  initialize()
   if (detail.reason === chrome.runtime.OnInstalledReason.INSTALL) {
     chrome.runtime.openOptionsPage()
-    initialize()
   }
   chrome.contextMenus.create({
     type: 'normal',
