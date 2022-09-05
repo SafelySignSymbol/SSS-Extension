@@ -62,7 +62,7 @@ export const setActiveAccountV2 = (arrayNum: number, network: NetworkType) => {
         (a) => a.net_type !== network
       )
 
-      console.log({ activeAccounts })
+      // console.log({ activeAccounts })
       getExtensionAccount(arrayNum).then((acc) => {
         const newAccount = {
           account: acc,

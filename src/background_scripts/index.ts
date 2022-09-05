@@ -102,9 +102,9 @@ chrome.contextMenus.onClicked.addListener((info, tab) => {
   const protocol = info.pageUrl.split('://')[0]
   const domain = info.pageUrl.split('://')[1].split('/')[0]
   addAllowList(protocol + '://' + domain)
-  console.log({ tab })
+  // console.log({ tab })
   chrome.tabs.query({ active: true, currentWindow: true }).then((data) => {
-    console.log({ data })
+    // console.log({ data })
     const [tab] = data
     chrome.tabs.sendMessage(tab.id || 0, {
       type: RELOAD_PAGE,
