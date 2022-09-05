@@ -36,7 +36,6 @@ export const addExtensionAccount = (account: IExtensionAccount) => {
             )
 
             if (arr.length === 0) {
-              console.log({ newAccountsCount })
               setActiveAccountV2(
                 data.accountsCount,
                 getNetworkTypeByAddress(account.address)
