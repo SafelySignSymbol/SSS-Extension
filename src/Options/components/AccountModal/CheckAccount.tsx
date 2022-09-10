@@ -14,8 +14,6 @@ export type Props = {
 const Component: React.FC<Props> = ({ name, address, password }) => {
   const [t] = useTranslation()
 
-  console.log({ password })
-
   return (
     <Root>
       <Center>

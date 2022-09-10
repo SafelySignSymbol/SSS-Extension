@@ -42,7 +42,6 @@ const Component: React.VFC<Props> = ({ address }) => {
   const [count, setCount] = useState(0)
 
   useEffect(() => {
-    console.log({ UtilColors })
     accountHttp.getAccountInfo(address).subscribe(
       (accountInfo) => {
         repositoryFactory

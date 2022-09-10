@@ -34,7 +34,6 @@ const Options: React.VFC<Props> = ({ reload, update, setting }) => {
       )
 
       accs.push(...tmp)
-      console.log({ accs })
       setAccounts(accs)
     })
   }, [setting.networkType, update])
