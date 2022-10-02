@@ -3,13 +3,15 @@ import ReactDOM from 'react-dom'
 import Popup from './Popup'
 import Options from './Options'
 import reportWebVitals from './reportWebVitals'
-
+import { RecoilRoot } from 'recoil'
 import './style.css'
 
 if (process.env.REACT_APP_TARGET === 'popup') {
   ReactDOM.render(
     <React.StrictMode>
-      <Popup />
+      <RecoilRoot>
+        <Popup />
+      </RecoilRoot>
     </React.StrictMode>,
     document.getElementById('root') || document.createElement('div')
   )
@@ -18,7 +20,9 @@ if (process.env.REACT_APP_TARGET === 'popup') {
 if (process.env.REACT_APP_TARGET === 'options') {
   ReactDOM.render(
     <React.StrictMode>
-      <Options />
+      <RecoilRoot>
+        <Options />
+      </RecoilRoot>
     </React.StrictMode>,
     document.getElementById('root') || document.createElement('div')
   )

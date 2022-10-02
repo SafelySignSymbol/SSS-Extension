@@ -26,6 +26,12 @@ import {
 import Footer from './components/Footer'
 import { getExtensionAccounts } from '../_general/lib/Storage'
 
+import { useRecoilState } from 'recoil'
+
+import { networkAtom } from '../_general/utils/Atom'
+
+import { getActiveNode } from 'symbol-node-util'
+
 export type Page = 'SETTING' | 'ALLOW' | 'HOME' | 'ACCOUNTS' | 'HISTORY'
 export type Select = 'SETTING' | 'ACCOUNT' | 'NONE'
 
@@ -56,6 +62,8 @@ const Options: React.VFC = () => {
 
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
 
+  const [network, setNetwork] = useRecoilState(networkAtom)
+
   useEffect(() => {
     getSetting().then((s) => {
       if (s.lang === 'INIT') {
@@ -68,6 +76,10 @@ const Options: React.VFC = () => {
         i18n.changeLanguage(s.lang)
         setPageSetting(s)
       }
+      getActiveNode(s.networkType as number).then((node) => {
+        console.log({ node })
+        setNetwork(node)
+      })
     })
 
     if (!checkLoginSession()) {
