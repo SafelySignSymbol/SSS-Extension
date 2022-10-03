@@ -323,8 +323,8 @@ const Header = styled('div')({
 
 const Contents = styled('div')({
   margin: '16px 32px',
-  width: 'calc(100vw - 64px)',
-  height: 'calc(100vh - 32px - 80px - 80px)',
+  width: 'calc(100% - 64px)',
+  height: '408px',
   border: 'solid ' + addAlpha(Color.blue, 0.4),
   borderWidth: '4px 0px 4px 4px',
   boxSizing: 'border-box',
