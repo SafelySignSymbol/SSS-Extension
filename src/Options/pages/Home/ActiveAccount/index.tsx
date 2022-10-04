@@ -13,6 +13,9 @@ import Color, {
 import { getNetworkTypeByAddress } from '../../../../_general/lib/Symbol/Config'
 import Avatar from 'boring-avatars'
 
+import { useRecoilState } from 'recoil'
+import { networkAtom } from '../../../../_general/utils/Atom'
+
 export type Props = {
   address: Address
   name: string
@@ -20,8 +23,10 @@ export type Props = {
 
 const Component: React.VFC<Props> = ({ address, name }) => {
   const [amount, setAmount] = useState(['0', '0'])
+
+  const [network] = useRecoilState(networkAtom)
   useEffect(() => {
-    getAddressXym(address).then((xym) => {
+    getAddressXym(address, network).then((xym) => {
       setAmount((xym / Math.pow(10, 6)).toString().split('.'))
     })
   }, [address])

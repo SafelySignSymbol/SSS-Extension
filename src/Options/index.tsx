@@ -77,7 +77,6 @@ const Options: React.VFC = () => {
         setPageSetting(s)
       }
       getActiveNode(s.networkType as number).then((node) => {
-        console.log({ node })
         setNetwork(node)
       })
     })

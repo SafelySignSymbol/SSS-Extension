@@ -11,13 +11,12 @@ import {
 } from 'symbol-sdk'
 import Typography from '../../../../_general/components/Typography'
 import { Divider } from '@mui/material'
-import {
-  getNetworkTypeByAddress,
-  getNodeUrl,
-} from '../../../../_general/lib/Symbol/Config'
 
 import Avatar from 'boring-avatars'
 import Color, { UtilColors } from '../../../../_general/utils/Color'
+
+import { useRecoilState } from 'recoil'
+import { networkAtom } from '../../../../_general/utils/Atom'
 export type Props = {
   address: Address
 }
@@ -30,9 +29,9 @@ type MosaicData = {
 }
 
 const Component: React.VFC<Props> = ({ address }) => {
-  const net_type = getNetworkTypeByAddress(address.plain())
+  const [network] = useRecoilState(networkAtom)
 
-  const NODE_URL = getNodeUrl(net_type)
+  const NODE_URL = network
 
   const repositoryFactory = new RepositoryFactoryHttp(NODE_URL)
   const accountHttp = repositoryFactory.createAccountRepository()

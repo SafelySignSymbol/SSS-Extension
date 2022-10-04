@@ -19,10 +19,6 @@ import {
   SnackbarType,
 } from '../../../_general/components/Snackbar'
 
-import { useRecoilState } from 'recoil'
-
-import { networkAtom } from '../../../_general/utils/Atom'
-
 export type Props = {
   account: ExtensionAccount
   reload: () => void
@@ -36,10 +32,7 @@ const Component: React.VFC<Props> = ({ account, reload, setting }) => {
   const open = Boolean(anchorEl)
   const [snackbar, setSnackbar] = useState<SnackbarProps>({} as SnackbarProps)
 
-  const [network, setNetwork] = useRecoilState(networkAtom)
-
   const onClickActive = () => {
-    console.log({ network })
     if (!window.confirm('realy ?')) return
     getAccountIndexByAddress(account.address).then((index) => {
       setActiveAccountV2(index, setting.networkType)
