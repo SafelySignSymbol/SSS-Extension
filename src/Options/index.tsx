@@ -62,7 +62,8 @@ const Options: React.VFC = () => {
 
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
 
-  const [network, setNetwork] = useRecoilState(networkAtom)
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [_, setNetwork] = useRecoilState(networkAtom)
 
   useEffect(() => {
     getSetting().then((s) => {
@@ -84,6 +85,7 @@ const Options: React.VFC = () => {
     if (!checkLoginSession()) {
       resetLocalSession()
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [update])
 
   useEffect(() => {

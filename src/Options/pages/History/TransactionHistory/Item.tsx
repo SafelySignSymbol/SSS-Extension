@@ -28,7 +28,7 @@ const Component: React.VFC<Props> = ({ type, hash, netType, height }) => {
       }/${t.getDate()} ${format(t.getHours())}:${format(t.getMinutes())}`
       setTime(formatTime)
     })
-  }, [height, netType])
+  }, [height, netType, network])
 
   return (
     <Wrap>
