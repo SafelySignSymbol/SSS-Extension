@@ -7,6 +7,9 @@ import Color, { UtilColors } from '../../../../_general/utils/Color'
 import { Link } from '@mui/material'
 import Avatar from 'boring-avatars'
 
+import { useRecoilState } from 'recoil'
+import { networkAtom } from '../../../../_general/utils/Atom'
+
 export type Props = {
   type: string
   hash: string
@@ -16,15 +19,16 @@ export type Props = {
 
 const Component: React.VFC<Props> = ({ type, hash, netType, height }) => {
   const [time, setTime] = useState<string>('')
+  const [network] = useRecoilState(networkAtom)
 
   useEffect(() => {
-    getTimeStamp(height, netType).then((t) => {
+    getTimeStamp(height, netType, network).then((t) => {
       const formatTime = `${t.getFullYear()}/${
         t.getMonth() + 1
       }/${t.getDate()} ${format(t.getHours())}:${format(t.getMinutes())}`
       setTime(formatTime)
     })
-  }, [height, netType])
+  }, [height, netType, network])
 
   return (
     <Wrap>

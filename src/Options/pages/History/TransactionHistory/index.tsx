@@ -14,18 +14,22 @@ import { useTranslation } from 'react-i18next'
 import { IconContext } from 'react-icons'
 import { MdArrowRight, MdArrowLeft } from 'react-icons/md'
 
+import { useRecoilState } from 'recoil'
+import { networkAtom } from '../../../../_general/utils/Atom'
+
 export type Props = {
   address: Address
 }
 
 const Component: React.VFC<Props> = ({ address }) => {
   const [t] = useTranslation()
+  const [network] = useRecoilState(networkAtom)
 
   const [transactions, setTransactions] = useState<Transaction[]>([])
   const [isLastPage, setIsLastPage] = useState(false)
   const [pageNum, setPageNum] = useState(1)
   useEffect(() => {
-    getTransactions(address, pageNum, 10).then((txs) => {
+    getTransactions(address, pageNum, network, 10).then((txs) => {
       setTransactions(txs.data)
       setIsLastPage(txs.isLastPage)
     })

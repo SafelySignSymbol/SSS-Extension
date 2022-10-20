@@ -8,43 +8,37 @@ import {
   RepositoryFactoryHttp,
   UnresolvedAddress,
 } from 'symbol-sdk'
-import {
-  // getActiveAccount,
-  getActiveAccountV2,
-  getSetting,
-} from '../../../lib/Storage'
-import { getNetworkTypeByAddress, getNodeUrl } from '../../../lib/Symbol/Config'
+
+import { useRecoilState } from 'recoil'
+import { networkAtom } from '../../../utils/Atom'
 
 export type Props = {
   address: UnresolvedAddress
 }
 
 const TxAddress: React.VFC<Props> = ({ address }) => {
+  const [network] = useRecoilState(networkAtom)
   const [addr, setAddr] = useState('')
   useEffect(() => {
-    getSetting().then((s) => {
-      getActiveAccountV2(s.networkType).then((extensionAccount) => {
-        if (address instanceof NamespaceId) {
-          const addr = extensionAccount.address
-          const url = getNodeUrl(getNetworkTypeByAddress(addr))
-          const rep = new RepositoryFactoryHttp(url)
-          const nsRep = rep.createNamespaceRepository()
-          const nsService = new NamespaceService(nsRep)
+    if (address instanceof NamespaceId) {
+      const url = network
+      console.log({ network })
+      const rep = new RepositoryFactoryHttp(url)
+      const nsRep = rep.createNamespaceRepository()
+      const nsService = new NamespaceService(nsRep)
 
-          const nsId = NamespaceId.createFromEncoded(address.toHex())
-          nsService.namespace(nsId).subscribe(
-            (x) => {
-              setAddr(x.name)
-            },
-            (err) => {
-              setAddr('NameSpace Not Found')
-            }
-          )
-        } else {
-          setAddr(address.plain())
+      const nsId = NamespaceId.createFromEncoded(address.toHex())
+      nsService.namespace(nsId).subscribe(
+        (x) => {
+          setAddr(x.name)
+        },
+        (err) => {
+          setAddr('NameSpace Not Found')
         }
-      })
-    })
+      )
+    } else {
+      setAddr(address.plain())
+    }
   }, [address])
   return (
     <Wrapper>

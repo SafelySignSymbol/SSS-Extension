@@ -168,12 +168,22 @@ const Popup: React.VFC = () => {
     }
   }
 
-  return <Root>{getBody()}</Root>
+  return (
+    <Root>
+      <Content>{getBody()}</Content>
+    </Root>
+  )
 }
 
 export default Popup
 
 const Root = styled('div')({
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+})
+
+const Content = styled('div')({
   width: '800px',
   height: '600px',
 })

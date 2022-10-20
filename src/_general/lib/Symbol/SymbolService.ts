@@ -1,9 +1,4 @@
-import {
-  getEpoch,
-  getNetworkTypeByAddress,
-  getNodeUrl,
-  getXymId,
-} from './Config'
+import { getEpoch, getNetworkTypeByAddress, getXymId } from './Config'
 import {
   Address,
   Mosaic,
@@ -24,10 +19,11 @@ export type MosaicData = {
   mosaicInfo: MosaicInfo
 }
 
-export const getAddressMosaics = (address: Address): Promise<MosaicData[]> => {
-  const net_type = getNetworkTypeByAddress(address.plain())
-
-  const NODE_URL = getNodeUrl(net_type)
+export const getAddressMosaics = (
+  address: Address,
+  url: string
+): Promise<MosaicData[]> => {
+  const NODE_URL = url
   const repositoryFactory = new RepositoryFactoryHttp(NODE_URL)
   const accountHttp = repositoryFactory.createAccountRepository()
   const mosaicHttp = repositoryFactory.createMosaicRepository()
@@ -76,10 +72,13 @@ export const getAddressMosaics = (address: Address): Promise<MosaicData[]> => {
       })
   })
 }
-export const getAddressXym = (address: Address): Promise<number> => {
+export const getAddressXym = (
+  address: Address,
+  url: string
+): Promise<number> => {
   const net_type = getNetworkTypeByAddress(address.plain())
 
-  const NODE_URL = getNodeUrl(net_type)
+  const NODE_URL = url
   const repositoryFactory = new RepositoryFactoryHttp(NODE_URL)
   const accountHttp = repositoryFactory.createAccountRepository()
 
@@ -103,11 +102,10 @@ export const getAddressXym = (address: Address): Promise<number> => {
 export const getTransactions = (
   address: Address,
   pageNum: number,
+  url: string,
   pageSize: number = 50
 ): Promise<Page<Transaction>> => {
-  const net_type = getNetworkTypeByAddress(address.plain())
-
-  const NODE_URL = getNodeUrl(net_type)
+  const NODE_URL = url
   const repositoryFactory = new RepositoryFactoryHttp(NODE_URL)
   const transactionHttp = repositoryFactory.createTransactionRepository()
   const searchCriteria: TransactionSearchCriteria = {
@@ -131,9 +129,10 @@ export const getTransactions = (
 }
 export const getTimeStamp = (
   height: UInt64,
-  netType: NetworkType
+  netType: NetworkType,
+  url: string
 ): Promise<Date> => {
-  const NODE_URL = getNodeUrl(netType)
+  const NODE_URL = url
   const repositoryFactory = new RepositoryFactoryHttp(NODE_URL)
   const blockRep = repositoryFactory.createBlockRepository()
   return new Promise((resolve, reject) => {
