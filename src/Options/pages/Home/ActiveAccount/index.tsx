@@ -29,7 +29,7 @@ const Component: React.VFC<Props> = ({ address, name }) => {
     getAddressXym(address, network).then((xym) => {
       setAmount((xym / Math.pow(10, 6)).toString().split('.'))
     })
-  }, [address])
+  }, [address, network])
 
   return (
     <Root>

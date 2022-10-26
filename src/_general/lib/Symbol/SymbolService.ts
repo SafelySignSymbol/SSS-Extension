@@ -40,9 +40,12 @@ export const getAddressMosaics = (
           .getChainInfo()
           .toPromise()
           .then((chainInfo) => {
+            if (!accountInfo || !chainInfo) return
             for (let m of accountInfo.mosaics) {
               mosaicHttp.getMosaic(new MosaicId(m.id.id.toHex())).subscribe(
                 (mosaicInfo) => {
+                  if (!mosaicInfo) return
+
                   if (mosaicInfo.duration.toString() === '0') {
                     mosaics.push({
                       mosaicInfo: mosaicInfo,
@@ -87,6 +90,8 @@ export const getAddressXym = (
       .getAccountInfo(address)
       .toPromise()
       .then((accountInfo) => {
+        if (!accountInfo) return
+
         for (let m of accountInfo.mosaics) {
           if (m.id.id.toHex() === getXymId(net_type)) {
             resolve(m.amount.compact())
@@ -120,6 +125,7 @@ export const getTransactions = (
       .search(searchCriteria)
       .toPromise()
       .then((txs) => {
+        if (!txs) return reject()
         resolve(txs)
       })
       .catch(() => {
@@ -140,6 +146,7 @@ export const getTimeStamp = (
       .getBlockByHeight(height)
       .toPromise()
       .then((block) => {
+        if (!block) return reject()
         const d = new Date(block.timestamp.compact() + getEpoch(netType) * 1000)
         resolve(d)
       })

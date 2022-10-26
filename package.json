@@ -30,7 +30,7 @@
     "symbol-ledger-typescript": "^0.0.1-alpha-202106071548",
     "symbol-node-util": "^1.0.9",
     "symbol-qr-library": "^0.14.2",
-    "symbol-sdk": "^1.0.3",
+    "symbol-sdk": "^2.0.3",
     "symbol-uri-scheme": "^0.6.1",
     "typescript": "^4.4.2",
     "web-vitals": "^2.1.0"

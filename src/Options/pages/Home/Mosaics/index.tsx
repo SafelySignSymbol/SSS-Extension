@@ -53,11 +53,15 @@ const Component: React.VFC<Props> = ({ address }) => {
               )
               .toPromise()
               .then((data) => {
+                if (!data) return
+
                 data.forEach((val, index) => {
                   mosaicHttp
                     .getMosaic(val.mosaicId)
                     .toPromise()
                     .then((mosaicInfo) => {
+                      if (!mosaicInfo) return
+
                       if (
                         mosaicInfo.duration.toString() === '0' ||
                         chainInfo.height <
@@ -91,7 +95,7 @@ const Component: React.VFC<Props> = ({ address }) => {
     }, 5000)
     return () => clearInterval(interval)
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [network])
 
   const getText = (texts: string[]) => {
     return (

@@ -55,6 +55,7 @@ const TxMosaic: React.VFC<Props> = ({ mosaic }) => {
             .getMosaicsNames([mosaic.id])
             .toPromise()
             .then((ms) => {
+              if (!ms) return
               const m = ms[0]
               if (m.names.length !== 0) {
                 setId(m.names[0].name)
