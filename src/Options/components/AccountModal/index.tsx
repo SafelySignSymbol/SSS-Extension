@@ -25,6 +25,7 @@ import { MdArrowRight, MdArrowLeft } from 'react-icons/md'
 import { getNetworkTypeByAddress } from '../../../_general/lib/Symbol/Config'
 import CheckAccount from './CheckAccount'
 import Hardware from './Hardware'
+import Mnemonic from './Mnemonic'
 import {
   Snackbar,
   SnackbarProps,
@@ -37,7 +38,7 @@ export type Props = {
   reload: () => void
 }
 
-export type Method = 'IMPORT' | 'CREATE' | 'HARDWARE' | 'NONE'
+export type Method = 'IMPORT' | 'CREATE' | 'HARDWARE' | 'MNEMONIC' | 'NONE'
 
 const Component: React.VFC<Props> = ({ state, setState, reload }) => {
   const [name, setName] = useState('')
@@ -224,6 +225,16 @@ const Component: React.VFC<Props> = ({ state, setState, reload }) => {
           />
         )
       }
+      if (method === 'MNEMONIC') {
+        return (
+          <Mnemonic
+            setName={setName}
+            setAddress={setAddress}
+            setPrivateKey={setPrikey}
+            setPassword={setPass}
+          />
+        )
+      }
     }
 
     if (state === 3) {
@@ -263,6 +274,32 @@ const Component: React.VFC<Props> = ({ state, setState, reload }) => {
         )
       }
       if (method === 'CREATE') {
+        return (
+          <ButtonWrappr>
+            <BackButton onClick={() => setState(state - 1)}>
+              <IconContext.Provider value={{ size: '64px' }}>
+                <MdArrowLeft
+                  style={{ color: Color.base_white, margin: '0px 16px' }}
+                />
+                <Typography
+                  fontSize={32}
+                  text="Back"
+                  color={Color.base_white}
+                />
+              </IconContext.Provider>
+            </BackButton>
+            <NextButton onClick={nextCreate}>
+              <Typography fontSize={32} text="Next" color={Color.base_white} />
+              <IconContext.Provider value={{ size: '64px' }}>
+                <MdArrowRight
+                  style={{ color: Color.base_white, margin: '0px 16px' }}
+                />
+              </IconContext.Provider>
+            </NextButton>
+          </ButtonWrappr>
+        )
+      }
+      if (method === 'MNEMONIC') {
         return (
           <ButtonWrappr>
             <BackButton onClick={() => setState(state - 1)}>
