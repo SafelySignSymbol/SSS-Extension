@@ -49,6 +49,15 @@ const Component: React.FC<Props> = ({ setMethod, setState, setNettype }) => {
         </TextWrapper>
       </ListItemButton>
       <Divider />
+      <ListItemButton
+        onClick={() => {
+          handleClick('MNEMONIC')
+        }}>
+        <TextWrapper>
+          <Typography fontSize={20} text="Import Mnemonic β" />
+        </TextWrapper>
+      </ListItemButton>
+      <Divider />
     </Root>
   )
 }

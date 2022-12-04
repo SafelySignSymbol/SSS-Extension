@@ -19,7 +19,9 @@ const Options: React.VFC<Props> = ({ reload, update, setting }) => {
   const [account, setAccount] = useState<ExtensionAccount | null>(null)
 
   useEffect(() => {
+    console.log('set', setting)
     getActiveAccountV2(setting.networkType).then((acc) => {
+      console.log('acc', acc)
       const account = ExtensionAccount.createExtensionAccount(acc)
       setAccount(account)
     })

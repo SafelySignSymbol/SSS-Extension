@@ -14,7 +14,7 @@ const AccountMetadataCard: React.VFC<Props> = ({ transaction }) => {
       <TxAddress address={transaction.targetAddress} />
       <Metadata
         metadataKey={transaction.scopedMetadataKey.toHex()}
-        value={transaction.value}
+        value={transaction.value.toString()}
       />
     </Wrapper>
   )

@@ -8,12 +8,10 @@ import {
   NamespaceService,
   RepositoryFactoryHttp,
 } from 'symbol-sdk'
-import {
-  // getActiveAccount,
-  getActiveAccountV2,
-  getSetting,
-} from '../../../lib/Storage'
-import { getNodeUrl, getNetworkTypeByAddress } from '../../../lib/Symbol/Config'
+import { getActiveAccountV2, getSetting } from '../../../lib/Storage'
+
+import { networkAtom } from '../../../../_general/utils/Atom'
+import { useRecoilState } from 'recoil'
 
 export type Props = {
   mosaic: Mosaic
@@ -22,12 +20,13 @@ export type Props = {
 const TxMosaic: React.VFC<Props> = ({ mosaic }) => {
   const [id, setId] = useState('')
   const [div, setDiv] = useState(0)
+
+  const [network] = useRecoilState(networkAtom)
+
   useEffect(() => {
     getSetting().then((s) => {
-      getActiveAccountV2(s.networkType).then((extensionAccount) => {
-        const addr = extensionAccount.address
-        const url = getNodeUrl(getNetworkTypeByAddress(addr))
-        const rep = new RepositoryFactoryHttp(url)
+      getActiveAccountV2(s.networkType).then(async (extensionAccount) => {
+        const rep = new RepositoryFactoryHttp(network)
         const nsRep = rep.createNamespaceRepository()
         const nsService = new NamespaceService(nsRep)
         const mosaicHttp = rep.createMosaicRepository()
@@ -39,6 +38,7 @@ const TxMosaic: React.VFC<Props> = ({ mosaic }) => {
               if (x.alias.mosaicId) {
                 mosaicHttp.getMosaic(x.alias.mosaicId).subscribe(
                   (mosaicInfo) => {
+                    console.log('mosaicInfo', mosaicInfo)
                     setDiv(mosaicInfo.divisibility)
                   },
                   (err) => console.error('transaction info', err)
@@ -55,6 +55,7 @@ const TxMosaic: React.VFC<Props> = ({ mosaic }) => {
             .getMosaicsNames([mosaic.id])
             .toPromise()
             .then((ms) => {
+              if (!ms) return
               const m = ms[0]
               if (m.names.length !== 0) {
                 setId(m.names[0].name)

@@ -27,24 +27,23 @@ import { OPEN_POPUP } from '../_general/model/MessageType'
 
 const INJECT_SCRIPT = 'inject_script.js'
 const SNACKBAR = 'snackbar.css'
-const BODY = 'body'
 
 export {}
-const injectScript = function (file: string, node: any) {
-  const th = document.getElementsByTagName(node)[0]
+const injectScript = function (file: string) {
+  const container = document.head || document.documentElement;
   const s = document.createElement('script')
   s.setAttribute('type', 'text/javascript')
   s.setAttribute('src', chrome.runtime.getURL(file))
-  return th.appendChild(s)
+  return container.appendChild(s)
 }
 
-const injectStylefile = function (file: string, node: string) {
-  const th = document.getElementsByTagName(node)[0]
+const injectStylefile = function (file: string) {
+  const container = document.head || document.documentElement;
   const s = document.createElement('link')
   s.setAttribute('rel', 'stylesheet')
   s.setAttribute('type', 'text/css')
   s.setAttribute('href', chrome.runtime.getURL(file))
-  return th.appendChild(s)
+  return container.appendChild(s)
 }
 
 const injectSSS = () => {
@@ -81,8 +80,8 @@ const isAllowedDoamin = () => {
   )
 }
 
-injectScript(INJECT_SCRIPT, BODY)
-injectStylefile(SNACKBAR, BODY)
+injectScript(INJECT_SCRIPT)
+injectStylefile(SNACKBAR)
 isAllowedDoamin()
 
 // receive message

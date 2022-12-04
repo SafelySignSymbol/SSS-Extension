@@ -36,6 +36,9 @@ import {
   REQUEST_SIGN_COSIGNATURE,
   REQUEST_SIGN_WITH_COSIGNATORIES,
 } from '../_general/model/MessageType'
+import { useRecoilState } from 'recoil'
+import { networkAtom } from '../_general/utils/Atom'
+import { getActiveNode } from 'symbol-node-util'
 
 const LOGIN = 'LOGIN'
 const MAIN = 'MAIN'
@@ -50,6 +53,8 @@ const Popup: React.VFC = () => {
   const [update, setUpdate] = useState(new Date())
   const [pageSetting, setPageSetting] = useState<Setting>({} as Setting)
 
+  const [_, setNetwork] = useRecoilState(networkAtom)
+
   window.onbeforeunload = () => {
     chrome.runtime.sendMessage({
       type: REMOVE_DATA,
@@ -60,6 +65,11 @@ const Popup: React.VFC = () => {
   useEffect(() => {
     getSetting().then((s) => {
       setPageSetting(s)
+
+      getActiveNode(s.networkType as number).then((node) => {
+        setNetwork(node)
+      })
+
       getActiveAccountV2(s.networkType)
         .then((acc) => {
           const account = ExtensionAccount.createExtensionAccount(acc)

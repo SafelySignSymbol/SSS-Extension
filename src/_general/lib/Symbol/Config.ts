@@ -1,14 +1,14 @@
 import { NetworkType } from 'symbol-sdk'
 export const getGenerationHash = (type: NetworkType) => {
   if (type === NetworkType.TEST_NET) {
-    return '7FCCD304802016BEBBCD342A332F91FF1F3BB5E902988B352697BE245F48E836'
+    return '49D6E1CE276A85B70EAFE52349AACCA389302E7A9754BCF1221E79494FC665A4'
   } else {
     return '57F7DA205008026C776CB6AED843393F04CD458E0AA2D9F1D5F31A402072B2D6'
   }
 }
 export const getEpoch = (type: NetworkType) => {
   if (type === NetworkType.TEST_NET) {
-    return 1637848847
+    return 1667250467
   } else {
     return 1615853185
   }
@@ -16,7 +16,7 @@ export const getEpoch = (type: NetworkType) => {
 
 export const getXymId = (type: NetworkType) => {
   if (type === NetworkType.TEST_NET) {
-    return '3A8416DB2D53B6C8'
+    return '72C0212E67A08BCE'
   } else {
     return '6BED913FA20223F8'
   }
