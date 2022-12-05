@@ -11,3 +11,4 @@ export type Data = {
 
 export const TRANSACTION = 'TRANSACTION'
 export const MESSAGE = 'MESSAGE'
+export const ENCRYPTED_MESSAGE = 'ENCRYPTED_MESSAGE'

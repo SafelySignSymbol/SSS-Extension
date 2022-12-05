@@ -3,6 +3,7 @@ import {
   INJECT_SSS,
   REQUEST_SSS,
   SIGN_MESSAGE,
+  SIGN_MESSAGE_DECRYPT,
   SIGN_TRANSACTION,
 } from './../_general/model/MessageType'
 import { getNetworkTypeByAddress } from './../_general/lib/Symbol/Config'
@@ -16,8 +17,10 @@ import { requestSignCosignatureTransaction } from './signCosignatureTransaction'
 import { showSnackbar, createSnackbar } from './snackbar'
 import {
   getActiveAccountToken,
+  requestDecriptMessage,
   requestEncriptMessage,
   setEncriptionMessage,
+  setEncryptedMessage,
 } from './signEncription'
 
 export {}
@@ -90,7 +93,9 @@ const injectSSS = (
     requestSignWithCosignatories: requestSignWithCosignatories,
     requestSignCosignatureTransaction: requestSignCosignatureTransaction,
     requestSignEncription: requestEncriptMessage,
+    requestSignDecription: requestDecriptMessage,
     getActiveAccountToken: getActiveAccountToken,
+    setEncryptedMessage: setEncryptedMessage,
   }
 }
 
@@ -99,6 +104,12 @@ window.addEventListener(
   async (event) => {
     if (event.data.type === SIGN_MESSAGE) {
       window.SSS.encryptMessage = event.data.encryptMessage
+      window.SSS.signedFrag = true
+      window.SSS.isSet = false
+    }
+
+    if (event.data.type === SIGN_MESSAGE_DECRYPT) {
+      window.SSS.decryptMessage = event.data.decryptMessage
       window.SSS.signedFrag = true
       window.SSS.isSet = false
     }

@@ -5,9 +5,11 @@ import {
   OPEN_POPUP,
   RELOAD_PAGE,
   REMOVE_DATA,
+  SET_ENCRYPTED_MESSAGE,
   SET_MESSAGE,
   SET_TRANSACTION,
   SIGN_MESSAGE,
+  SIGN_MESSAGE_DECRYPT,
   SIGN_TRANSACTION,
 } from './../_general/model/MessageType'
 import {
@@ -80,6 +82,16 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
       })
     })
   }
+  if (message.type === SIGN_MESSAGE_DECRYPT) {
+    console.log({ message })
+    getData().then((data) => {
+      chrome.tabs.sendMessage(data.tabId, {
+        data,
+        type: SIGN_MESSAGE_DECRYPT,
+        decryptMessage: message.decryptMessage,
+      })
+    })
+  }
 
   if (message.type === SET_TRANSACTION) {
     chrome.tabs.query({ active: true, currentWindow: true }).then((data) => {
@@ -90,7 +102,13 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (message.type === SET_MESSAGE) {
     chrome.tabs.query({ active: true, currentWindow: true }).then((data) => {
       const [tab] = data
-      setMessageV2(message.message, message.publicKey, tab.id || 0)
+      setMessageV2(message.message, message.publicKey, 'PLAIN', tab.id || 0)
+    })
+  }
+  if (message.type === SET_ENCRYPTED_MESSAGE) {
+    chrome.tabs.query({ active: true, currentWindow: true }).then((data) => {
+      const [tab] = data
+      setMessageV2(message.message, message.publicKey, 'ENCRYPTED', tab.id || 0)
     })
   }
 

@@ -35,10 +35,13 @@ import {
   REQUEST_SIGN,
   REQUEST_SIGN_COSIGNATURE,
   REQUEST_SIGN_WITH_COSIGNATORIES,
+  SIGN_MESSAGE_DECRYPT,
 } from '../_general/model/MessageType'
 import { useRecoilState } from 'recoil'
 import { networkAtom } from '../_general/utils/Atom'
 import { getActiveNode } from 'symbol-node-util'
+
+import { EncriptionMessage } from '../_general/model/EncriptionMessage'
 
 const LOGIN = 'LOGIN'
 const MAIN = 'MAIN'
@@ -116,6 +119,35 @@ const Popup: React.VFC = () => {
       encription(message, pubkey, extensionAccount, pass)
     }
   }
+  const decriptMessage = (
+    encriptionMessage: EncriptionMessage,
+    pubkey: string
+  ) => {
+    if (extensionAccount === null) {
+      return
+    }
+
+    const priKey = extensionAccount.decrypt(pass)
+
+    const net_type = extensionAccount.getNetworktype()
+
+    const acc = Account.createFromPrivateKey(priKey, net_type)
+    // const recipient = PublicAccount.createFromPublicKey(pubkey, net_type)
+
+    const pubAcc = PublicAccount.createFromPublicKey(pubkey, net_type)
+
+    const msg = acc.decryptMessage(
+      new EncryptedMessage(encriptionMessage.message, pubAcc),
+      pubAcc
+    )
+
+    console.log(msg)
+
+    chrome.runtime.sendMessage({
+      type: SIGN_MESSAGE_DECRYPT,
+      decryptMessage: msg,
+    })
+  }
 
   const signTx = (transaction: Transaction | AggregateTransaction | null) => {
     if (extensionAccount === null || transaction === null) {
@@ -168,6 +200,7 @@ const Popup: React.VFC = () => {
           extensionAccount={extensionAccount}
           signTx={signTx}
           encriptMessage={encriptMessage}
+          decriptMessage={decriptMessage}
           type={signStatus}
           logout={() => {
             setStatus(LOGIN)

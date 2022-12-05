@@ -29,15 +29,20 @@ import { TransactionURI } from 'symbol-uri-scheme'
 import {
   Address,
   Convert,
+  EncryptedMessage,
   SignedTransaction,
   Transaction,
   TransactionMapping,
 } from 'symbol-sdk'
 import NotFoundTx from './components/NotFoundTx'
-import { EncriptionMessage } from '../../_general/model/EncriptionMessage'
-import { MESSAGE, TRANSACTION } from '../../_general/model/Data'
+import {
+  ENCRYPTED_MESSAGE,
+  MESSAGE,
+  TRANSACTION,
+} from '../../_general/model/Data'
 import {
   REQUEST_ACTIVE_ACCOUNT_TOKEN,
+  REQUEST_MESSAGE_DECODE,
   REQUEST_MESSAGE_ENCODE,
   REQUEST_SIGN,
   SIGN_TRANSACTION,
@@ -47,12 +52,14 @@ import { getNetworkTypeByAddress } from '../../_general/lib/Symbol/Config'
 import TransportWebHID from '@ledgerhq/hw-transport-webhid'
 import { SymbolLedger, LedgerNetworkType } from 'symbol-ledger-typescript'
 import { useTranslation } from 'react-i18next'
+import { EncriptionMessage } from '../../_general/model/EncriptionMessage'
 
 export interface Props {
   extensionAccount: ExtensionAccount
   type: string
   signTx: (tx: Transaction | null) => void
   encriptMessage: (message: string, pubkey: string) => void
+  decriptMessage: (message: EncriptionMessage, pubkey: string) => void
   logout: () => void
 }
 
@@ -61,6 +68,7 @@ const Main: React.VFC<Props> = ({
   type,
   signTx,
   encriptMessage,
+  decriptMessage,
   logout,
 }) => {
   const [transaction, setTransaction] = useState<string>('')
@@ -76,6 +84,11 @@ const Main: React.VFC<Props> = ({
         setTransaction(data.transaction)
       }
       if (data.dataType === MESSAGE && !!data.message) {
+        setEnMsg(
+          new EncriptionMessage(data.message.msg, data.message.publicKey)
+        )
+      }
+      if (data.dataType === ENCRYPTED_MESSAGE && !!data.message) {
         setEnMsg(
           new EncriptionMessage(data.message.msg, data.message.publicKey)
         )
@@ -177,12 +190,15 @@ const Main: React.VFC<Props> = ({
   }, [extensionAccount, type])
 
   const hundleClick = () => {
+    console.log({ type })
     if (
       (type === REQUEST_MESSAGE_ENCODE ||
         type === REQUEST_ACTIVE_ACCOUNT_TOKEN) &&
       enMsg !== null
     ) {
       encriptMessage(enMsg.message, enMsg.pubkey)
+    } else if (type === REQUEST_MESSAGE_DECODE && enMsg !== null) {
+      decriptMessage(enMsg, enMsg.pubkey)
     } else {
       const tx = TransactionURI.fromURI(
         transaction,
