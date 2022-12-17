@@ -5,14 +5,17 @@ import {
   RELOAD_PAGE,
   REMOVE_DATA,
   REQUEST_ACTIVE_ACCOUNT_TOKEN,
+  REQUEST_MESSAGE_DECODE,
   REQUEST_MESSAGE_ENCODE,
   REQUEST_SIGN,
   REQUEST_SIGN_COSIGNATURE,
   REQUEST_SIGN_WITH_COSIGNATORIES,
   REQUEST_SSS,
+  SET_ENCRYPTED_MESSAGE,
   SET_MESSAGE,
   SET_TRANSACTION,
   SIGN_MESSAGE,
+  SIGN_MESSAGE_DECRYPT,
   SIGN_TRANSACTION,
 } from './../_general/model/MessageType'
 import {
@@ -30,7 +33,7 @@ const SNACKBAR = 'snackbar.css'
 
 export {}
 const injectScript = function (file: string) {
-  const container = document.head || document.documentElement;
+  const container = document.head || document.documentElement
   const s = document.createElement('script')
   s.setAttribute('type', 'text/javascript')
   s.setAttribute('src', chrome.runtime.getURL(file))
@@ -38,7 +41,7 @@ const injectScript = function (file: string) {
 }
 
 const injectStylefile = function (file: string) {
-  const container = document.head || document.documentElement;
+  const container = document.head || document.documentElement
   const s = document.createElement('link')
   s.setAttribute('rel', 'stylesheet')
   s.setAttribute('type', 'text/css')
@@ -89,6 +92,9 @@ window.addEventListener('message', async (event) => {
   if (event.data.function === REQUEST_MESSAGE_ENCODE) {
     setSignStatus(event.data.function)
   }
+  if (event.data.function === REQUEST_MESSAGE_DECODE) {
+    setSignStatus(event.data.function)
+  }
   if (event.data.function === REQUEST_ACTIVE_ACCOUNT_TOKEN) {
     setSignStatus(event.data.function)
   }
@@ -110,6 +116,16 @@ window.addEventListener('message', async (event) => {
       message: event.data.message,
       publicKey: event.data.pubkey,
       encryptedMessage: event.data.encryptedMessage,
+    })
+    chrome.runtime.sendMessage({ type: OPEN_POPUP })
+  }
+
+  if (event.data.function == SET_ENCRYPTED_MESSAGE) {
+    chrome.runtime.sendMessage({
+      type: SET_ENCRYPTED_MESSAGE,
+      message: event.data.message,
+      publicKey: event.data.pubkey,
+      senderAccount: event.data.senderAccount,
     })
     chrome.runtime.sendMessage({ type: OPEN_POPUP })
   }
@@ -152,6 +168,16 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
       {
         type: SIGN_MESSAGE,
         encryptMessage: message.encryptMessage,
+      },
+      window.opener
+    )
+  }
+  if (message.type === SIGN_MESSAGE_DECRYPT) {
+    console.log('decode', message)
+    window.postMessage(
+      {
+        type: SIGN_MESSAGE_DECRYPT,
+        decryptMessage: message.decryptMessage,
       },
       window.opener
     )

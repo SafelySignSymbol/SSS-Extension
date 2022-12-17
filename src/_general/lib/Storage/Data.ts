@@ -1,5 +1,5 @@
 import { getStorage, setStorage } from '.'
-import { Data, MESSAGE, TRANSACTION } from '../../model/Data'
+import { Data, ENCRYPTED_MESSAGE, MESSAGE, TRANSACTION } from '../../model/Data'
 
 export const getData = (): Promise<Data> => {
   return new Promise((resolve) => {
@@ -24,11 +24,12 @@ export const setTransactionV2 = (tx: string, tabId: number) => {
 export const setMessageV2 = (
   message: string,
   publicKey: string,
+  type: 'PLAIN' | 'ENCRYPTED',
   tabId: number
 ) => {
   const data: Data = {
     tabId,
-    dataType: MESSAGE,
+    dataType: type === 'PLAIN' ? MESSAGE : ENCRYPTED_MESSAGE,
     message: {
       msg: message,
       publicKey,

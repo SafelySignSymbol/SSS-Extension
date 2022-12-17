@@ -1,6 +1,8 @@
 import {
   REMOVE_DATA,
   REQUEST_MESSAGE_ENCODE,
+  REQUEST_MESSAGE_DECODE,
+  SET_ENCRYPTED_MESSAGE,
 } from './../_general/model/MessageType'
 import { EncryptedMessage, PublicAccount } from 'symbol-sdk'
 import {
@@ -125,6 +127,60 @@ export const requestEncriptMessage = (): Promise<EncryptedMessage> => {
         clearInterval(timer)
         showSnackbar('alert_succsess_sign')
         resolve(window.SSS.encryptMessage as EncryptedMessage)
+      }
+      if (600 < count) {
+        window.postMessage(
+          {
+            function: REMOVE_DATA,
+          },
+          '*'
+        )
+        clearInterval(timer)
+        reject('ERROR: The transaction was not signed.')
+        showSnackbar('alert_failed_sign')
+      }
+      count++
+    }, 100)
+  })
+}
+
+export const setEncryptedMessage = (message: string, publickKey: string) => {
+  window.SSS.isSet = true
+  window.postMessage(
+    {
+      function: SET_ENCRYPTED_MESSAGE,
+      message: message,
+      pubkey: publickKey,
+    },
+    '*'
+  )
+}
+
+export const requestDecriptMessage = (): Promise<string> => {
+  if (!window.SSS.isSet) {
+    console.error('404')
+    showSnackbar('alert_notfound_tx')
+  }
+
+  window.postMessage(
+    {
+      function: REQUEST_MESSAGE_DECODE,
+    },
+    '*'
+  )
+
+  showSnackbar('alert_request_sign')
+
+  return new Promise((resolve, reject) => {
+    let count = 0
+    window.SSS.isSet = false
+
+    const timer = setInterval(() => {
+      if (window.SSS.signedFrag) {
+        window.SSS.signedFrag = false
+        clearInterval(timer)
+        showSnackbar('alert_succsess_sign')
+        resolve(window.SSS.decryptMessage.payload)
       }
       if (600 < count) {
         window.postMessage(
