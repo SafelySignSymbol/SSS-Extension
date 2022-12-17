@@ -53,6 +53,7 @@ import TransportWebHID from '@ledgerhq/hw-transport-webhid'
 import { SymbolLedger, LedgerNetworkType } from 'symbol-ledger-typescript'
 import { useTranslation } from 'react-i18next'
 import { EncriptionMessage } from '../../_general/model/EncriptionMessage'
+import MessageDecription from './components/MessageDecription'
 
 export interface Props {
   extensionAccount: ExtensionAccount
@@ -216,6 +217,13 @@ const Main: React.VFC<Props> = ({
       return (
         <Contents>
           <MessageEncription message={enMsg.message} />
+        </Contents>
+      )
+    }
+    if (type === REQUEST_MESSAGE_DECODE && enMsg !== null) {
+      return (
+        <Contents>
+          <MessageDecription />
         </Contents>
       )
     }
