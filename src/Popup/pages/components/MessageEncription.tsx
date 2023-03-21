@@ -13,7 +13,7 @@ const Component: React.VFC<Props> = ({ message }) => {
   return (
     <Wrapper>
       <Header>
-        <Typography text="MessageEncription" fontSize={20} />
+        <Typography text="MessageEncryption" fontSize={20} />
         <SDivider />
       </Header>
       <Content>
