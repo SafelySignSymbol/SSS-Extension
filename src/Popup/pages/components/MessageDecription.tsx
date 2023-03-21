@@ -8,7 +8,7 @@ import Color from '../../../_general/utils/Color'
 const Component: React.VFC = () => {
   return (
     <Content>
-      <Typography text="MessageDescription" fontSize={32} />
+      <Typography text="MessageDecryption" fontSize={32} />
     </Content>
   )
 }
