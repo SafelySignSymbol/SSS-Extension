@@ -7,6 +7,7 @@ import {
   MosaicDefinitionTransaction,
   MosaicMetadataTransaction,
   MosaicSupplyChangeTransaction,
+  MosaicSupplyRevocationTransaction,
   NamespaceMetadataTransaction,
   Transaction,
   TransactionType,
@@ -21,6 +22,7 @@ import MosaicMetadataCard from '../../../_general/components/Transactions/Mosaic
 import NamespaceMetadataCard from '../../../_general/components/Transactions/NamespaceMetadataCard'
 import MosaicDefinitionCard from '../../../_general/components/Transactions/MosaicDefinitionCard'
 import MosaicSupplyChangeCard from '../../../_general/components/Transactions/MosaicSupplyChangeCard'
+import MosaicRevocationCard from '../../../_general/components/Transactions/MosaicRevocationCard'
 
 export type Props = {
   transaction: Transaction
@@ -82,6 +84,14 @@ const TransactionCard: React.VFC<Props> = ({ transaction }) => {
     return (
       <MosaicSupplyChangeCard
         transaction={transaction as MosaicSupplyChangeTransaction}
+      />
+    )
+  }
+
+  if (transaction.type === TransactionType.MOSAIC_SUPPLY_REVOCATION) {
+    return (
+      <MosaicRevocationCard
+        transaction={transaction as MosaicSupplyRevocationTransaction}
       />
     )
   }
