@@ -1,7 +1,7 @@
 import React from 'react'
 
 import styled from '@emotion/styled'
-import { MosaicMetadataTransaction } from 'symbol-sdk'
+import { Convert, MosaicMetadataTransaction } from 'symbol-sdk'
 import Metadata from '../TransactionInfo/Metadata'
 import Typography from '../Typography'
 
@@ -15,7 +15,7 @@ const AccountMetadataCard: React.VFC<Props> = ({ transaction }) => {
       <Wrapper>
         <Metadata
           metadataKey={transaction.scopedMetadataKey.toHex()}
-          value={transaction.value.toString()}
+          value={Convert.uint8ToUtf8(transaction.value)}
         />
       </Wrapper>
     </Wrapper>

@@ -81,7 +81,7 @@ export const requestSign = (): Promise<SignedTransaction> => {
             window.SSS.signedTx.hash,
             window.SSS.signedTx.signerPublicKey,
             window.SSS.signedTx.type,
-            window.SSS.signedTx.NetworkType
+            window.SSS.signedTx.networkType
           )
         )
       }
