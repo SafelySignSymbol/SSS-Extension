@@ -1,7 +1,7 @@
 import React from 'react'
 
 import styled from '@emotion/styled'
-import { AccountMetadataTransaction } from 'symbol-sdk'
+import { AccountMetadataTransaction, Convert } from 'symbol-sdk'
 import TxAddress from '../TransactionInfo/Address'
 import Metadata from '../TransactionInfo/Metadata'
 
@@ -14,7 +14,7 @@ const AccountMetadataCard: React.VFC<Props> = ({ transaction }) => {
       <TxAddress address={transaction.targetAddress} />
       <Metadata
         metadataKey={transaction.scopedMetadataKey.toHex()}
-        value={transaction.value.toString()}
+        value={Convert.uint8ToUtf8(transaction.value)}
       />
     </Wrapper>
   )
